@@ -19,7 +19,7 @@
 /* Input params:	   n/a                          */
 /* Output params:	   n/a 							*/
 /* ************************************************ */
-void ledrgb_init(void);
+void ledSwi_init(void);
 
 /* ************************************************ */
 /* Method name: 	   ledrgb_write	         		*/
@@ -36,5 +36,10 @@ void ledrgb_init(void);
 /* Output params:	   n/a 							*/
 /* ************************************************ */
 void ledrgb_write(unsigned char ucRGBColor);
+void lerLED(void);
+void escreverLED(void);
+void setLED(void);
+void clearLED(void);
+void toggleLED(void);
 
 #endif /* SOURCES_LEDRGB_H_ */

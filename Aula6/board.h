@@ -26,5 +26,6 @@
 #define BLUE_LED_PIN	         (uint32_t) 1u
 //Definir os botões
 //definir os leds
+//#define LED1SWi
 
 #endif /* SOURCES_BOARD_H_ */

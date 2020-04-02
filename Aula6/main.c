@@ -16,14 +16,15 @@
 /* ***************************************************************** */
 
 /* our includes */
-#include "util.h"
-#include "mcg.h"
-#include "ledrgb.h"
+#include "ledSwi.h"
+#include "board.h"
 
 
 /* globals */
-static unsigned char cLedColor = 0;                 /* stores the current RGB led color */
-static unsigned int uiEstadosGPIO[4] = 0;
+static unsigned int *uiEstadosGPIO;
+static unsigned int uisetarLED=0;
+static unsigned int uiclearLED=0;
+static unsigned int uitoggleLED=0;
 
 /* ************************************************ */
 /* Method name:        boardInit                    */
@@ -38,7 +39,7 @@ void boardInit(void)
 	mcg_clockInit();
 
 	/* RGB LED initialization */
-	ledrgb_init();
+	ledSwi_init();
 }
 
 
@@ -50,8 +51,11 @@ void boardInit(void)
 /* ************************************************ */
 int main(void)
 {
+	unsigned int *uiEntrada;
 	/* board initializations */
 	boardInit();
+
+	uiEstadosGPIO = &uiEntrada;
 
 	/*chamar as funções criadas*/
 }

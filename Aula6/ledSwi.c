@@ -25,71 +25,92 @@
 /* Input params:	   n/a                          */
 /* Output params:	   n/a 							*/
 /* ************************************************ */
-void ledrgb_init(void)
+void ledSwi_init(void)
 {
+	unsigned int uiTamanhoEntrada;
+	unsigned int uij;
+
 	/* ligar o clock*/
-	SIM_SCGC5 |= 0x02; //Porta A
+	SIM_SCGC5 |= 0x0200; //Porta A
 
 	/* set pin as gpio */
-	PORTA_PCR0 |= 0X100; //pino 1 porta A
-	PORTA_PCR1 |= 0X100; //pino 2 porta A
-	PORTA_PCR2 |= 0X100; //pino 4 porta A
-	PORTA_PCR3 |= 0X100; //pino 5 porta A
+	PORTA_PCR1 |= 0X100; //pino 1 porta A
+	PORTA_PCR2 |= 0X100; //pino 2 porta A
+	PORTA_PCR4 |= 0X100; //pino 4 porta A
+	PORTA_PCR5 |= 0X100; //pino 5 porta A
+
+	uiTamanhoEntrada = length(uiEstadosGPIO);
 
 	/* seta pino como output ou input */
-	//if(vetor de EstadosGPIO)
-	GPIOA_PDDR |= 0x2; //pino 1
+	if(uiEstadosGPIO[3] == 0)
+		GPIOA_PDDR |= 0x0; //zero no pino 1
+	elseif(uiEstadosGPIO[3] != NULL)
+		GPIOA_PDDR |= 0x2; //um no pino 1
 
-	/*setar valor no pin*/
-	GPIO_PSOR |= 0x02;
+	if(uiEstadosGPIO[2] == 0)
+		GPIOA_PDDR |= 0x0; //zero no pino 2
+	else
+		GPIOA_PDDR |= 0x4; //um no pino 2
 
-	/* clear all leds */
+	if(uiEstadosGPIO[1] == 0)
+		GPIOA_PDDR |= 0x0; //zero no pino 4
+	else
+		GPIOA_PDDR |= 0x10; //um no pino 4
 
+	if(uiEstadosGPIO[0] == 0)
+		GPIOA_PDDR |= 0x0; //zero no pino 5
+	else
+		GPIOA_PDDR |= 0x20; //um no pino 5
 }
 
-/* ************************************************ */
-/* Method name: 	   ledrgb_write	         		*/
-/* Method description: Write the color of the RGB   */
-/*                     led.REMARKS LEDS are inverted*/
-/* Input params:	   ucRGBColor 0..7 (0 = off     */
-/*                     1 = red                      */
-/*                     2 = green                    */
-/*                     3 = red + green              */
-/*                     4 = blue                     */
-/*                     5 = blue + red               */
-/*                     6 = blue + green             */
-/*                     7 = blue + green + red)      */
-/* Output params:	   n/a 							*/
-/* ************************************************ */
-void ledrgb_write(unsigned char ucRGBColor)
-{
-	// if ucRGBColor is 1, 3 or 7
-	if (ucRGBColor & 1)
-		// lights up red LED
-		GPIO_HAL_ClearPinOutput(RED_LED_GPIO_BASE_PNT, RED_LED_PIN);
-	else
-		// turn off red LED
-		GPIO_HAL_SetPinOutput(RED_LED_GPIO_BASE_PNT, RED_LED_PIN);
-
-	// if ucRGBColor is 2, 3 or 6
-	if (ucRGBColor & 2)
-		// lights up green LED
-		GPIO_HAL_ClearPinOutput(GREEN_LED_GPIO_BASE_PNT, GREEN_LED_PIN);
-	else
-		// turn off green LED
-		GPIO_HAL_SetPinOutput(GREEN_LED_GPIO_BASE_PNT, GREEN_LED_PIN);
-
-	// if ucRGBColor is 4, 5 or 6
-	if (ucRGBColor & 4)
-		// lights up blue LED
-		GPIO_HAL_ClearPinOutput(BLUE_LED_GPIO_BASE_PNT, BLUE_LED_PIN);
-	else
-		// turn off blue LED
-		GPIO_HAL_SetPinOutput(BLUE_LED_GPIO_BASE_PNT, BLUE_LED_PIN);
-}
 
 /*função de leitura do status*/
+void lerLED(void)
+{
+
+}
 /*função para escrita do LED*/
-/*função para acender LED*/
-/*função para apagar LED*/
+void escreverLED(void)
+{
+
+}
+//função para acender LED
+void setLED(void)
+{
+	/*setar valor no pino*/
+
+	if(uiSetarLED == 1)
+		GPIOA_PSOR |= 0x02; //setar pino 1
+	else if(uiSetarLED == 2)
+		GPIOA_PSOR |= 0x4; //setar pino 2
+	else if(uiSetarLED == 3)
+		GPIOA_PSOR |= 0x10; //setar pino 4
+	else
+		GPIOA_PSOR |= 0x20; //setar pino 5
+}
+
+//função para apagar LED
+void clearLED(void)
+{
+	if(uiclearLED == 1)
+		GPIOA_PSOR |= 0x0; //setar pino 1
+	else if(uiclearLED == 2)
+		GPIOA_PSOR |= 0x0; //setar pino 2
+	else if(uiclearLED == 3)
+		GPIOA_PSOR |= 0x0; //setar pino 4
+	else
+		GPIOA_PSOR |= 0x0; //setar pino 5
+}
+
 /*função para mudar o status do LED*/
+void toggleLED(void)
+{
+	if(uitoggleLED == 1)
+		GPIOA_PTOR |= 0x02; //setar pino 1
+	else if(uitoggleLED == 2)
+		GPIOA_PTOR |= 0x4; //setar pino 2
+	else if(uitoggleLED == 3)
+		GPIOA_PTOR |= 0x10; //setar pino 4
+	else
+		GPIOA_PTOR |= 0x20; //setar pino 5
+}
