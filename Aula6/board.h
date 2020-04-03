@@ -1,12 +1,14 @@
-/* ***************************************************************** */
-/* File name:        board.h                                         */
-/* File description: Header file containing the peripherals mapping  */
-/*                     of the peripheral board for the ES670 hardware*/
-/*                                                                   */
-/* Author name:      Gustavo Moraes/Cassio Dezotti e Angelo Barbosa                              */
-/* Creation date:    01abril2020                                       */
-/* Revision date:    02mar2020                                       */
-/* ***************************************************************** */
+/* ************************************************************************ */
+/* Nome do Arquivo:        board.h                                          */
+/* Descrição do arquivo:   Este arquivo contem o mapeamento dos periféricos */
+/*                   	   de hardware para a placa da matéria ES670        */
+/*                                                                          */
+/*                                                                          */
+/* Nome dos autores:       Gustavo Moraes/Cassio Dezotti                    */
+/* RA:                     174217/168988                                    */
+/* Data de criação:        26mar2020                                        */
+/* Data da revisão:        04abril2020                                      */
+/* ************************************************************************ */
 
 #ifndef SOURCES_BOARD_H_
 #define SOURCES_BOARD_H_
@@ -14,8 +16,7 @@
 /* system includes */
 #include <MKL25Z4.h>
 
-/* FDRMKL25Z RGB LED pins defintions */
-/*Vou definir o botao e o led na mesma porta com o nome LEDSWI1,LEDSWI2,LEDSWI3,LEDSWI4 ai no programa definimos se é botao ou led*/
+/* FDRMKL25Z Definições de LED e Botão */
 #define LEDSWI1_PORT   PORTA /* peripheral port base pointer */
 #define LEDSWI1_GPIO   PTA   /* peripheral gpio base pointer */
 #define LEDSWI1_PIN	         (uint32_t) 1u
@@ -28,12 +29,5 @@
 #define LEDSWI4_PORT   PORTA /* peripheral port base pointer */
 #define LEDSWI4_GPIO   PTA   /* peripheral gpio base pointer */
 #define LEDSWI4_PIN	         (uint32_t) 5u
-<<<<<<< Updated upstream
-//Definir os botões
-//definir os leds
-//#define LED1SWi
-=======
-
->>>>>>> Stashed changes
 
 #endif /* SOURCES_BOARD_H_ */

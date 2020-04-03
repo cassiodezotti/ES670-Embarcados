@@ -1,19 +1,23 @@
-* ***************************************************************** */
-/* File name:        main.c                                          */
-/* File description: File dedicated to the ES670 prototype projects  */
-/*                   involving the FRDM-KL25Z board together with is */
-/*                   daughter board containing more peripherals      */
-/*                                                                   */
-/*                   Processor MKL25Z128VLK4 characteristics         */
-/*                   48 MHz ARM Cortex-M0+ core                      */
-/*                   128 KB program flash memory                     */
-/*                   16 KB SRAM                                      */
-/*                   Voltage range: 1.71 to 3.6 V                    */
-/*                                                                   */
-/* Author name:      Rodrigo M Bacurau                               */
-/* Creation date:    26fev2020                                       */
-/* Revision date:    02mar2020                                       */
-/* ***************************************************************** */
+
+/* ************************************************************************ */
+/* Nome do Arquivo:      main.c                                             */
+/* Descrição do arquivo: Este arquivo é dedicado a inicializar leds         */
+/*                   	 e botões utilizando as funções desenvolvidas       */
+/*                       e depois manipulá-lo, acendendo, apagando os leds  */
+/*                       e lendo as chaves                                  */
+/*                                                                          */
+/*                       Características do processador MKL25Z128VLK4       */
+/*                       48 MHz ARM Cortex-M0+ core                         */
+/*                       128 KB program flash memory                        */
+/*                       16 KB SRAM                                         */
+/*                       Voltage range: 1.71 to 3.6 V                       */
+/*                                                                          */
+/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
+/* RA:                   174217/168988                                      */
+/* Data de criação:      26mar2020                                          */
+/* Data da revisão:      04abril2020                                        */
+/* ************************************************************************ */
+
 
 /* our includes */
 #include "ledSwi.h"
@@ -21,54 +25,60 @@
 
 
 /* globals */
-static unsigned int estados[4];
-static unsigned int uisetarLED=0;
-static unsigned int uiclearLED=0;
-static unsigned int uitoggleLED=0;
+static int iEstados[4];
 
-/* ************************************************ */
-/* Method name:        boardInit                    */
-/* Method description: main board all needed        */
-/*                     initializations              */
-/* Input params:       n/a                          */
-/* Output params:      n/a                          */
-/* ************************************************ */
-void boardInit(int iEntrada[4])
+/* *********************************************************** */
+/* Nome da função: 	           iniciarPlaca	         		   */
+/* Descrição da função:        Inicia o clock e as entradas    */
+/*                             saídas desejadas                */
+/* parâmetros de entrada:	   vetor com 4 posições            */
+/*                             indicando a se a porta          */
+/*                             deve ser iniciada como          */
+/*                             led ou como botão. 1            */
+/*                             significa iniciar como          */
+/*                             led e 0 como botão              */
+/* parâmetros de saída:	       n/a 					           */
+/* *********************************************************** */
+
+void iniciarPlaca(int iEntrada[4])
 {
-	/* fist of all, clock configuration and initialization */
-	mcg_clockInit();
+    /* Configuração e inicialização do clock */
+    mcg_clockInit();
 
-	/* RGB LED initialization */
-	ledSwi_init(iEntrada);
+    /* Inicialização das portas de entrada e saída */
+    iniciarLedSwi(iEntrada);
 }
 
 
-/* ************************************************ */
-/* Method name:        main                         */
-/* Method description: system entry point           */
-/* Input params:       n/a                          */
-/* Output params:      n/a                          */
-/* ************************************************ */
+/* ****************************************************** */
+/* Nome da função:           main                         */
+/* Descrição da função:      Ponto de entrada do sistema  */
+/* parâmetros de entrada:    n/a                          */
+/* parâmetros de saída:      n/a                          */
+/* ****************************************************** */
 int main(void)
 {
+    /* Vetor para informar a configuração de leds e botões*/
 	int iEntrada[4] = {1,0,0,1};
+	/* Variável para informar a chave que será lida */
 	int iChave = 2;
+	/* Variável para armazenar o estado do botão*/
 	int iEstadoBotao;
-	/* board initializations */
-	boardInit(iEntrada);
+	/* Inicializa placa */
+	iniciarPlaca(iEntrada);
 
-
-	/*chamar as funções criadas*/
+	/*Lê chave 2 e armazena na variável*/
 	iEstadoBotao = lerChave(iChave);
+	/* Exibe estado*/
 	printf(&iEstadoBotao);
-
+    /* Escreve o valor 1 no LED1, acendendo-o*/
 	escreverLED(1,1);
-
-	setLED(4);
-
+    /*acende o LED4* */
+	setarLED(4);
+    /* Apaga LED1 */
 	clearLED(1);
-
-	toggleLED(1);
-
+    /* Altera estado LED1*/
+	alternarLED(1);
+    /* Escreve o valor 0 no LED4, apagando-o*/
 	escreverLED(4,0);
 }
