@@ -1,23 +1,24 @@
-/* ***************************************************************** */
-/* File name:        ledrgb.h                                        */
-/* File description: Header file containing the prototypes of the    */
-/*                   functions used to configure and set the color   */
-/*                   the RGB led.                                    */
-/*                                                                   */
-/* Author name:      Gustavo Moraes/Cassio Dezotti/Angelo Barbosa                              */
-/* Creation date:    26fev2020                                       */
-/* Revision date:    02mar2020                                       */
-/* ***************************************************************** */
+/* ******************************************************************** */
+/* Nome do Arquivo:        ledSwi.h                                     */
+/* Descrição do arquivo: Este arquivo contem funções para inicialização */
+/*                   	 e utilização dos leds e botões do kit.         */
+/*                                                                      */
+/*                                                                      */
+/* Author name:      Gustavo Moraes/Cassio Dezotti                      */
+/* RA:               174217/168988                                      */
+/* Creation date:    26mar2020                                          */
+/* Revision date:    04abril2020                                        */
+/* ******************************************************************** */
 
-#ifndef SOURCES_LEDRGB_H_
-#define SOURCES_LEDRGB_H_
+#ifndef SOURCES_LEDSWI_H_
+#define SOURCES_LEDSWI_H_
 
 
 /* ************************************************ */
-/* Method name: 	   ledrgb_init	         		*/
-/* Method description: Initialize the RGB LED device*/
-/* Input params:	   n/a                          */
-/* Output params:	   n/a 							*/
+/* Nome da função: 	   ledSwi_init	         		*/
+/* Descrição da função: Ini                         */
+/* parâmetros de entrada:	   n/a                  */
+/* parâmetros de saída:	       n/a 					*/
 /* ************************************************ */
 void ledSwi_init(void);
 
@@ -35,8 +36,7 @@ void ledSwi_init(void);
 /*                     7 = blue + green + red)      */
 /* Output params:	   n/a 							*/
 /* ************************************************ */
-void ledrgb_write(unsigned char ucRGBColor);
-void lerLED(void);
+void lerChave(void);
 void escreverLED(void);
 void setLED(void);
 void clearLED(void);
