@@ -25,11 +25,9 @@
 /* Input params:	   n/a                          */
 /* Output params:	   n/a 							*/
 /* ************************************************ */
-void ledSwi_init(void)
+void ledSwi_init(int estados[4])
 {
-	unsigned int uiTamanhoEntrada;
-	unsigned int uij;
-
+	unsigned char estado = 0;
 	/* ligar o clock*/
 	SIM_SCGC5 |= 0x0200; //Porta A
 
@@ -38,79 +36,96 @@ void ledSwi_init(void)
 	PORTA_PCR2 |= 0X100; //pino 2 porta A
 	PORTA_PCR4 |= 0X100; //pino 4 porta A
 	PORTA_PCR5 |= 0X100; //pino 5 porta A
+	/* Aqui percorri o vetor e shiftei o lugar que ele deveria corresponder no vetor final*/
+	estado |= (estados[0] << 1);
+	estado |= (estados[1] << 2);
+	estado |= (estados[2] << 4);
+	estado |= (estados[3] << 5);
 
-	uiTamanhoEntrada = length(uiEstadosGPIO);
+	GPIOA_PDDR |= estado;
 
-	/* seta pino como output ou input */
-	if(uiEstadosGPIO[3] == 0)
-		GPIOA_PDDR |= 0x0; //zero no pino 1
-	elseif(uiEstadosGPIO[3] != NULL)
-		GPIOA_PDDR |= 0x2; //um no pino 1
-
-	if(uiEstadosGPIO[2] == 0)
-		GPIOA_PDDR |= 0x0; //zero no pino 2
-	else
-		GPIOA_PDDR |= 0x4; //um no pino 2
-
-	if(uiEstadosGPIO[1] == 0)
-		GPIOA_PDDR |= 0x0; //zero no pino 4
-	else
-		GPIOA_PDDR |= 0x10; //um no pino 4
-
-	if(uiEstadosGPIO[0] == 0)
-		GPIOA_PDDR |= 0x0; //zero no pino 5
-	else
-		GPIOA_PDDR |= 0x20; //um no pino 5
 }
 
-
-/*função de leitura do status*/
-void lerLED(void)
+int mapeaEntrada(int valor)//como queremos que os números 1234 representem 1245 fiz essa função pra usar
 {
+	if(valor>2){
+		valor += 1;
+	}
+
+	return valor;
+}
+/*função de leitura do status*/
+<<<<<<< Updated upstream
+int lerChave(int chave)
+=======
+int lerChave(int iChave)
+>>>>>>> Stashed changes
+{
+	unsigned char chaveLida = 0;
+	int valorChave = mapeaEntrada(chave);//faço o mapeamento para 1245
+
+	chaveLida = (GPIOA_PDIR >> valorChave) & 1;//lê o bit que queremos (passado na entrada), do retorna da função de leitura da porta A
+	if( '1' == chaveLida){ //talvez aqui tenha q definir esse '1' como char
+		return 0;
+	}
+	if( '0' == chaveLida){
+		return 1;
+	}
 
 }
 /*função para escrita do LED*/
-void escreverLED(void)
+<<<<<<< Updated upstream
+void escreverLED(int writeLed, int setClear)
+=======
+void escreverLED(int iWriteLed, int iSetClear)
+>>>>>>> Stashed changes
 {
+	int ledWrite = mapeaEntrada(writeLed);//faço o mapeamento para 1245
+	unsigned char numeroDeComando = 1;
+
+<<<<<<< Updated upstream
+	if(1 == setClear){//primeiro vejo se é set ou clear
+=======
+	if(1 == isetClear){//primeiro vejo se é set ou clear
+>>>>>>> Stashed changes
+		GPIOA_PDOR |= (numeroDeComando << ledWrite);//se for set dou OU com a mascara do bit q eu quero
+	}
+	else if(0 == setClear){
+			GPIOA_PDOR &= ~(numeroDeComando << ledWrite);//se for clear dou E com a mascara de bits negada
+		}
 
 }
 //função para acender LED
-void setLED(void)
+void setLED(int setLed)
 {
 	/*setar valor no pino*/
+	int ledSetado = 0;
+	unsigned char numeroDeComando = 1;
 
-	if(uiSetarLED == 1)
-		GPIOA_PSOR |= 0x02; //setar pino 1
-	else if(uiSetarLED == 2)
-		GPIOA_PSOR |= 0x4; //setar pino 2
-	else if(uiSetarLED == 3)
-		GPIOA_PSOR |= 0x10; //setar pino 4
-	else
-		GPIOA_PSOR |= 0x20; //setar pino 5
+	ledSetado = mapeaEntrada(setLed);//faço o mapeamento para 1245
+	GPIOA_PSOR |= (numeroDeComando << ledSetado);//shifto o numero de comando para a posição do led que queremos setar e mando o comando
+
 }
 
 //função para apagar LED
-void clearLED(void)
+void clearLED(int clearLed)
 {
-	if(uiclearLED == 1)
-		GPIOA_PSOR |= 0x0; //setar pino 1
-	else if(uiclearLED == 2)
-		GPIOA_PSOR |= 0x0; //setar pino 2
-	else if(uiclearLED == 3)
-		GPIOA_PSOR |= 0x0; //setar pino 4
-	else
-		GPIOA_PSOR |= 0x0; //setar pino 5
+	int ledClear = 0;
+	unsigned char numeroDeComando = 1;
+
+	ledClear = mapeaEntrada(clearled);//faço o mapeamento para 1245
+	GPIOA_PCOR |= (numeroDeComando << ledClear);
+
 }
 
 /*função para mudar o status do LED*/
-void toggleLED(void)
+void toggleLED(int toggleLed)
 {
-	if(uitoggleLED == 1)
-		GPIOA_PTOR |= 0x02; //setar pino 1
-	else if(uitoggleLED == 2)
-		GPIOA_PTOR |= 0x4; //setar pino 2
-	else if(uitoggleLED == 3)
-		GPIOA_PTOR |= 0x10; //setar pino 4
-	else
-		GPIOA_PTOR |= 0x20; //setar pino 5
+	int ledToggled = 0;
+	unsigned char numeroDeComando = 1;
+
+	ledToggled = mapeaEntrada(toggleLed);
+	GPIOA_PTOR |= (numeroDeComando << ledToggled);
+
+
 }

@@ -35,8 +35,7 @@ void ledSwi_init(void);
 /*                     7 = blue + green + red)      */
 /* Output params:	   n/a 							*/
 /* ************************************************ */
-void ledrgb_write(unsigned char ucRGBColor);
-void lerLED(void);
+void lerChave(void);
 void escreverLED(void);
 void setLED(void);
 void clearLED(void);
