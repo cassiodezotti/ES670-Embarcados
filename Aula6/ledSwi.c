@@ -44,26 +44,6 @@ void ledSwi_init(int estados[4])
 
 	GPIOA_PDDR |= estado;
 
-	/* seta pino como output ou input
-	if(uiEstadosGPIO[3] == 0)
-		GPIOA_PDDR |= 0x0; //zero no pino 1
-	elseif(uiEstadosGPIO[3] != NULL)
-		GPIOA_PDDR |= 0x2; //um no pino 1
-
-	if(uiEstadosGPIO[2] == 0)
-		GPIOA_PDDR |= 0x0; //zero no pino 2
-	else
-		GPIOA_PDDR |= 0x4; //um no pino 2
-
-	if(uiEstadosGPIO[1] == 0)
-		GPIOA_PDDR |= 0x0; //zero no pino 4
-	else
-		GPIOA_PDDR |= 0x10; //um no pino 4
-
-	if(uiEstadosGPIO[0] == 0)
-		GPIOA_PDDR |= 0x0; //zero no pino 5
-	else
-		GPIOA_PDDR |= 0x20; //um no pino 5*/
 }
 
 int mapeaEntrada(int valor)//como queremos que os números 1234 representem 1245 fiz essa função pra usar
@@ -81,7 +61,7 @@ int lerChave(int chave)
 	int valorChave = mapeaEntrada(chave);//faço o mapeamento para 1245
 
 	chaveLida = (GPIOA_PDIR >> valorChave) & 1;//lê o bit que queremos (passado na entrada), do retorna da função de leitura da porta A
-	if('1' == chaveLida){ //talvez aqui tenha q definir esse '1' como char
+	if( '1' == chaveLida){ //talvez aqui tenha q definir esse '1' como char
 		return 0;
 	}
 	if( '0' == chaveLida){
@@ -113,15 +93,6 @@ void setLED(int setLed)
 	ledSetado = mapeaEntrada(setLed);//faço o mapeamento para 1245
 	GPIOA_PSOR |= (numeroDeComando << ledSetado);//shifto o numero de comando para a posição do led que queremos setar e mando o comando
 
-	/*
-	if(uiSetarLED == 1)
-		GPIOA_PSOR |= 0x02; //setar pino 1
-	else if(uiSetarLED == 2)
-		GPIOA_PSOR |= 0x4; //setar pino 2
-	else if(uiSetarLED == 3)
-		GPIOA_PSOR |= 0x10; //setar pino 4
-	else
-		GPIOA_PSOR |= 0x20; //setar pino 5*/
 }
 
 //função para apagar LED
@@ -133,15 +104,6 @@ void clearLED(int clearLed)
 	ledClear = mapeaEntrada(clearled);//faço o mapeamento para 1245
 	GPIOA_PCOR |= (numeroDeComando << ledClear);
 
-	/*
-	if(uiclearLED == 1)
-		GPIOA_PCOR |= 0x0; //setar pino 1
-	else if(uiclearLED == 2)
-		GPIOA_PCOR |= 0x0; //setar pino 2
-	else if(uiclearLED == 3)
-		GPIOA_PCOR |= 0x0; //setar pino 4
-	else
-		GPIOA_PCOR |= 0x0; //setar pino 5*/
 }
 
 /*função para mudar o status do LED*/
@@ -153,12 +115,5 @@ void toggleLED(int toggleLed)
 	ledToggled = mapeaEntrada(toggleLed);
 	GPIOA_PTOR |= (numeroDeComando << ledToggled);
 
-	/*if(uitoggleLED == 1)
-		GPIOA_PTOR |= 0x02; //setar pino 1
-	else if(uitoggleLED == 2)
-		GPIOA_PTOR |= 0x4; //setar pino 2
-	else if(uitoggleLED == 3)
-		GPIOA_PTOR |= 0x10; //setar pino 4
-	else
-		GPIOA_PTOR |= 0x20; //setar pino 5*/
+
 }
