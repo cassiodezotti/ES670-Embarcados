@@ -1,13 +1,14 @@
-/* ***************************************************************** */
-/* File name:        ledrgb.c                                        */
-/* File description: File dedicated to the hardware abstraction layer*/
-/*                   related RGB LED from the FRDM-KL25Z board       */
-/*                   controller. REMARKS LEDS are inverted output    */
-/*                                                                   */
-/* Author name:      Rodrigo M Bacurau                               */
-/* Creation date:    26fev2020                                       */
-/* Revision date:    02mar2020                                       */
-/* ***************************************************************** */
+/* ******************************************************************** */
+/* Nome do Arquivo:        ledSwi.h                                     */
+/* Descrição do arquivo: Este arquivo contem funções para inicialização */
+/*                   	 e utilização dos leds e botões do kit.         */
+/*                                                                      */
+/*                                                                      */
+/* Author name:      Gustavo Moraes/Cassio Dezotti                      */
+/* RA:               174217/168988                                      */
+/* Creation date:    26mar2020                                          */
+/* Revision date:    04abril2020                                        */
+/* ******************************************************************** */
 
 /* our includes */
 #include "board.h"
@@ -19,23 +20,17 @@
 #include "fsl_gpio_hal.h"
 
 
-/* ************************************************ */
-/* Method name: 	   ledrgb_init	         		*/
-/* Method description: Initialize the RGB LED device*/
-/* Input params:	   n/a                          */
-/* Output params:	   n/a 							*/
-/* ************************************************ */
-void ledSwi_init(int estados[4])
+void iniciarLedSwi(int iEstados[4])
 {
-	unsigned char estado = 0;
-	/* ligar o clock*/
-	SIM_SCGC5 |= 0x0200; //Porta A
+	unsigned char ucEstado = 0;
+	/* ligar o clock da porta A*/
+	SIM_SCGC5 |= 0x0200;
 
-	/* set pin as gpio */
-	PORTA_PCR1 |= 0X100; //pino 1 porta A
-	PORTA_PCR2 |= 0X100; //pino 2 porta A
-	PORTA_PCR4 |= 0X100; //pino 4 porta A
-	PORTA_PCR5 |= 0X100; //pino 5 porta A
+	/* seta os pinos 1 2 4 5 como gpio */
+	PORTA_PCR1 |= 0X100;
+	PORTA_PCR2 |= 0X100;
+	PORTA_PCR4 |= 0X100;
+	PORTA_PCR5 |= 0X100;
 	/* Aqui percorri o vetor e shiftei o lugar que ele deveria corresponder no vetor final*/
 	estado |= (estados[0] << 1);
 	estado |= (estados[1] << 2);
