@@ -15,15 +15,19 @@
 #include <MKL25Z4.h>
 
 /* FDRMKL25Z RGB LED pins defintions */
-#define RED_LED_PORT_BASE_PNT    PORTB /* peripheral port base pointer */
-#define RED_LED_GPIO_BASE_PNT    PTB   /* peripheral gpio base pointer */
-#define RED_LED_PIN		         (uint32_t) 18u
-#define GREEN_LED_PORT_BASE_PNT  PORTB /* peripheral port base pointer */
-#define GREEN_LED_GPIO_BASE_PNT  PTB   /* peripheral gpio base pointer */
-#define GREEN_LED_PIN	         (uint32_t) 19u
-#define BLUE_LED_PORT_BASE_PNT   PORTD /* peripheral port base pointer */
-#define BLUE_LED_GPIO_BASE_PNT   PTD   /* peripheral gpio base pointer */
-#define BLUE_LED_PIN	         (uint32_t) 1u
+/*Vou definir o botao e o led na mesma porta com o nome LEDSWI1,LEDSWI2,LEDSWI3,LEDSWI4 ai no programa definimos se é botao ou led*/
+#define LEDSWI1_PORT   PORTA /* peripheral port base pointer */
+#define LEDSWI1_GPIO   PTA   /* peripheral gpio base pointer */
+#define LEDSWI1_PIN	         (uint32_t) 1u
+#define LEDSWI2_PORT   PORTA /* peripheral port base pointer */
+#define LEDSWI2_GPIO   PTA   /* peripheral gpio base pointer */
+#define LEDSWI2_PIN	         (uint32_t) 2u
+#define LEDSWI3_PORT   PORTA /* peripheral port base pointer */
+#define LEDSWI3_GPIO   PTA   /* peripheral gpio base pointer */
+#define LEDSWI3_PIN	         (uint32_t) 4u
+#define LEDSWI4_PORT   PORTA /* peripheral port base pointer */
+#define LEDSWI4_GPIO   PTA   /* peripheral gpio base pointer */
+#define LEDSWI4_PIN	         (uint32_t) 5u
 //Definir os botões
 //definir os leds
 //#define LED1SWi
