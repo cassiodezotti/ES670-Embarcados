@@ -55,7 +55,11 @@ int mapeaEntrada(int valor)//como queremos que os números 1234 representem 1245 
 	return valor;
 }
 /*função de leitura do status*/
+<<<<<<< Updated upstream
 int lerChave(int chave)
+=======
+int lerChave(int iChave)
+>>>>>>> Stashed changes
 {
 	unsigned char chaveLida = 0;
 	int valorChave = mapeaEntrada(chave);//faço o mapeamento para 1245
@@ -70,12 +74,20 @@ int lerChave(int chave)
 
 }
 /*função para escrita do LED*/
+<<<<<<< Updated upstream
 void escreverLED(int writeLed, int setClear)
+=======
+void escreverLED(int iWriteLed, int iSetClear)
+>>>>>>> Stashed changes
 {
 	int ledWrite = mapeaEntrada(writeLed);//faço o mapeamento para 1245
 	unsigned char numeroDeComando = 1;
 
+<<<<<<< Updated upstream
 	if(1 == setClear){//primeiro vejo se é set ou clear
+=======
+	if(1 == isetClear){//primeiro vejo se é set ou clear
+>>>>>>> Stashed changes
 		GPIOA_PDOR |= (numeroDeComando << ledWrite);//se for set dou OU com a mascara do bit q eu quero
 	}
 	else if(0 == setClear){

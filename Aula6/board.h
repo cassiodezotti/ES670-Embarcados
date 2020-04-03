@@ -28,8 +28,12 @@
 #define LEDSWI4_PORT   PORTA /* peripheral port base pointer */
 #define LEDSWI4_GPIO   PTA   /* peripheral gpio base pointer */
 #define LEDSWI4_PIN	         (uint32_t) 5u
+<<<<<<< Updated upstream
 //Definir os botões
 //definir os leds
 //#define LED1SWi
+=======
+
+>>>>>>> Stashed changes
 
 #endif /* SOURCES_BOARD_H_ */

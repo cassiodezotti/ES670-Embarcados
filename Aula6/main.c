@@ -21,7 +21,7 @@
 
 
 /* globals */
-static unsigned int *uiEstadosGPIO;
+static unsigned int estados[4];
 static unsigned int uisetarLED=0;
 static unsigned int uiclearLED=0;
 static unsigned int uitoggleLED=0;
@@ -33,13 +33,13 @@ static unsigned int uitoggleLED=0;
 /* Input params:       n/a                          */
 /* Output params:      n/a                          */
 /* ************************************************ */
-void boardInit(void)
+void boardInit(int iEntrada[4])
 {
 	/* fist of all, clock configuration and initialization */
 	mcg_clockInit();
 
 	/* RGB LED initialization */
-	ledSwi_init();
+	ledSwi_init(iEntrada);
 }
 
 
@@ -51,11 +51,24 @@ void boardInit(void)
 /* ************************************************ */
 int main(void)
 {
-	unsigned int *uiEntrada;
+	int iEntrada[4] = {1,0,0,1};
+	int iChave = 2;
+	int iEstadoBotao;
 	/* board initializations */
-	boardInit();
+	boardInit(iEntrada);
 
-	uiEstadosGPIO = &uiEntrada;
 
 	/*chamar as funções criadas*/
+	iEstadoBotao = lerChave(iChave);
+	printf(&iEstadoBotao);
+
+	escreverLED(1,1);
+
+	setLED(4);
+
+	clearLED(1);
+
+	toggleLED(1);
+
+	escreverLED(4,0);
 }
