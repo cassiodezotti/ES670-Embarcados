@@ -95,7 +95,7 @@ int lerChave(int iChave)
 
     unsigned char ucChaveLida = 0;
     /* Mapeamento da entrada para 1245*/
-    int iValorChave = mapeaEntrada(chave);
+    int iValorChave = mapearEntrada(iChave);
     /*
      * Shifta o retorno da função de leitura da porta A, o número
      * de vezes necessário para extrairmos o bit de interesse, para isso
@@ -114,10 +114,11 @@ int lerChave(int iChave)
 	 *  Se o valor lido for 0, o botão está pressionado,
 	 * retornamos 1.
 	 */
-    if( '0' == ucChaveLida){
+    else if( '0' == ucChaveLida){
 	    return 1;
     }
 
+    return -1;
 }
 /* **************************************************************************** */
 /* Nome da função: 	      escreverLED	         		                        */
@@ -134,7 +135,7 @@ int lerChave(int iChave)
 void escreverLED(int iWriteLed, int iSetClear)
 {
 	/* Mapeamento da entrada para 1245*/
-    int iLedWrite = mapeaEntrada(writeLed);
+    int iLedWrite = mapearEntrada(iWriteLed);
     unsigned char ucNumeroDeComando = 1;
 
     /*
@@ -171,7 +172,7 @@ void escreverLED(int iWriteLed, int iSetClear)
 void setarLED(int iSetLed)
 {
 	/* Mapeamento da entrada para 1245*/
-    int iLedSetado = mapeaEntrada(iSetLed);
+    int iLedSetado = mapearEntrada(iSetLed);
     unsigned char ucNumeroDeComando = 1;
     /*
      * Fazemos um shift do número 1 até a posição do bit desejada
@@ -194,7 +195,7 @@ void setarLED(int iSetLed)
 void apagarLED(int iClearLed)
 {
 	/* Mapeamento da entrada para 1245*/
-    int iLedClear = mapeaEntrada(iClearLed);
+    int iLedClear = mapearEntrada(iClearLed);
     unsigned char ucNumeroDeComando = 1;
     /*
      * Fazemos um shift do número 1 até a posição do bit desejada
@@ -218,7 +219,7 @@ void apagarLED(int iClearLed)
 void alternarLED(int iToggleLed)
 {
 	/* Mapeamento da entrada para 1245*/
-    int iLedToggled = mapeaEntrada(iToggleLed);
+    int iLedToggled = mapearEntrada(iToggleLed);
     unsigned char ucNumeroDeComando = 1;
     /*
      * Fazemos um shift do número 1 até a posição do bit desejada

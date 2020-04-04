@@ -24,8 +24,6 @@
 #include "board.h"
 
 
-/* globals */
-static int iEstados[4];
 
 /* *********************************************************** */
 /* Nome da função: 	           iniciarPlaca	         		   */
@@ -63,7 +61,7 @@ int main(void)
 	/* Variável para informar a chave que será lida */
 	int iChave = 2;
 	/* Variável para armazenar o estado do botão*/
-	int iEstadoBotao;
+	int iEstadoBotao = 0;
 	/* Inicializa placa */
 	iniciarPlaca(iEntrada);
 
@@ -76,7 +74,7 @@ int main(void)
     /*acende o LED4* */
 	setarLED(4);
     /* Apaga LED1 */
-	clearLED(1);
+	apagarLED(1);
     /* Altera estado LED1*/
 	alternarLED(1);
     /* Escreve o valor 0 no LED4, apagando-o*/
