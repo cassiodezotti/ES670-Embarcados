@@ -1,0 +1,2 @@
+Este branch foi desenvolvido para criar uma série de funções para configurar e manipular os LED e botões do kit McLab2.
+Foram criadas as fuções para, inicializar, leitura de chave, escrita em LED, acender LED, apagar LED e mudar status do LED.
