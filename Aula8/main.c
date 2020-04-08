@@ -39,7 +39,7 @@
 /* parâmetros de saída:	       n/a 					           */
 /* *********************************************************** */
 
-void iniciarPlaca(int iEntrada[4])
+void iniciarPlaca(void)
 {
     /* Configuração e inicialização do clock */
     mcg_clockInit();
@@ -57,6 +57,15 @@ void iniciarPlaca(int iEntrada[4])
 /* ****************************************************** */
 int main(void)
 {
-	lcd_dummyText();
+	const char cMensagem1[] = "Teste linha 1";
+	const char cMensagem2[] = "Teste linha 2";
+	char *c ;
+	int iLinhaUm = 1;
+	int iLinhaZero = 0;
+
+	c = &cMensagem1;
+	lcd_writeText(iLinhaUm, c);
+	c = &cMensagem2;
+	lcd_writeText(iLinhaZero, c);
 
 }

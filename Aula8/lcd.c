@@ -237,3 +237,21 @@ void lcd_dummyText(void)
     lcd_setCursor(1,0);
     lcd_writeString("Prj Sis Embarcad");
 }
+
+void lcd_writeText(int iLinha, const *char cString){
+
+	if(0 == iLinha){
+		lcd_sendCommand(CMD_CLEAR);
+
+		lcd_setCursor(0,0);
+		lcd_writeString(cString);
+	}
+	else if(1 == iLinha){
+		lcd_sendCommand(CMD_CLEAR);
+
+		lcd_setCursor(1,0);
+		lcd_writeString(cString);
+	}
+
+}
+
