@@ -1,7 +1,7 @@
 /* ***************************************************************** */
 /* File name:        board.h                                         */
 /* File description: Header file containing the peripherals mapping  */
-/*                     of the peripheral board for the ES670 hardware*/
+/*                   of the peripheral board for the ES670 hardware  */
 /*                                                                   */
 /* Author name:      Rodrigo M Bacurau                               */
 /* Creation date:    26fev2020                                       */
