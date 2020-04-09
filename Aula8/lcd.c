@@ -1,33 +1,23 @@
-
-/* ************************************************************************ */
-/* Nome do Arquivo:      main.c                                             */
-/* Descri��o do arquivo: Este arquivo � dedicado a inicializar o lcd        */
-/*                   	 e manipul�-lo, utilizando as fun��es               */
-/*                       desenvolvidas, escrevendo uma string na linha      */
-/*                       desejada.                                          */
-/*                                                                          */
-/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
-/* RA:                   174217/168988                                      */
-/* Data de cria��o:      05abril2020                                        */
-/* Data da revis�o:      09abril2020                                        */
-/* ************************************************************************ */
-
-
+/* ***************************************************************** */
+/* File name:        lcd.c                                           */
+/* File description: File dedicated to the hardware abstraction layer*/
+/*                   related to the LCD HARDWARE based on the KS006U */
+/*                   controller                                      */
+/* Author name:      dloubach                                        */
+/* Creation date:    16out2015                                       */
+/* Revision date:    25fev2016                                       */
+/* ***************************************************************** */
 
 #include "lcd.h"
 #include "board.h"
 #include "util.h"
 
-
-/* includes do sistema */
-
+/* system includes */
 #include "fsl_clock_manager.h"
 #include "fsl_port_hal.h"
 #include "fsl_gpio_hal.h"
 
-
-/* linha e coluna zero */
-
+/* line and columns */
 #define LINE0        0U
 #define COLUMN0        0U
 
@@ -43,59 +33,72 @@
 /* ************************************************ */
 void lcd_initLcd(void)
 {
-
-    int i;
-
+	int i;
     unsigned char ucVetorInit = 0;
     /* pins configured as outputs */
 
     /* un-gate port clock*/
     SIM_SCGC5 |= 0x0800;
 
+    /* set pin as gpio */
+    PORTC_PCR8 |= 0X100; //RS
+	PORTC_PCR9 |= 0X100; //Enable
+	PORTC_PCR0 |= 0X100; //DB0
+	PORTC_PCR1 |= 0X100; //DB1
+	PORTC_PCR2 |= 0X100; //DB2
+	PORTC_PCR3 |= 0X100; //DB3
+	PORTC_PCR4 |= 0X100; //DB4
+	PORTC_PCR5 |= 0X100; //DB5
+	PORTC_PCR6 |= 0X100; //DB6
+	PORTC_PCR7 |= 0X100; //DB7
 
-    /*
-     * set pin as gpio 0 = DB0, 1 = DB1...
-     * 8 = RS, 9 = Enable.
-     */
-    PORTC_PCR8 |= 0X100;
-    PORTC_PCR9 |= 0X100;
-    PORTC_PCR0 |= 0X100;
-    PORTC_PCR1 |= 0X100;
-    PORTC_PCR2 |= 0X100;
-    PORTC_PCR3 |= 0X100;
-    PORTC_PCR4 |= 0X100;
-    PORTC_PCR5 |= 0X100;
-    PORTC_PCR6 |= 0X100;
-    PORTC_PCR7 |= 0X100;
+    /*PORT_HAL_SetMuxMode(LCD_PORT_BASE_PNT, LCD_RS_PIN, LCD_RS_ALT);
+    PORT_HAL_SetMuxMode(LCD_PORT_BASE_PNT, LCD_ENABLE_PIN, LCD_ENABLE_ALT);
+    PORT_HAL_SetMuxMode(LCD_PORT_BASE_PNT, LCD_DATA_DB0_PIN, LCD_DATA_ALT);
+    PORT_HAL_SetMuxMode(LCD_PORT_BASE_PNT, LCD_DATA_DB1_PIN, LCD_DATA_ALT);
+    PORT_HAL_SetMuxMode(LCD_PORT_BASE_PNT, LCD_DATA_DB2_PIN, LCD_DATA_ALT);
+    PORT_HAL_SetMuxMode(LCD_PORT_BASE_PNT, LCD_DATA_DB3_PIN, LCD_DATA_ALT);
+    PORT_HAL_SetMuxMode(LCD_PORT_BASE_PNT, LCD_DATA_DB4_PIN, LCD_DATA_ALT);
+    PORT_HAL_SetMuxMode(LCD_PORT_BASE_PNT, LCD_DATA_DB5_PIN, LCD_DATA_ALT);
+    PORT_HAL_SetMuxMode(LCD_PORT_BASE_PNT, LCD_DATA_DB6_PIN, LCD_DATA_ALT);
+    PORT_HAL_SetMuxMode(LCD_PORT_BASE_PNT, LCD_DATA_DB7_PIN, LCD_DATA_ALT);*/
 
     /* set pin as digital output */
-    for(i=0;i<10;i++)
-    {
-        ucVetorInit |= (1 << i);
-    }
-    /*
-     * Ap�s esse for temos um os primeiros 10 pinos setados com 1
-     * para passar como output.
-     */
-    GPIOC_PDDR |= ucVetorInit;  //colocando 1 nos pinos de 0 a 9
 
+	for(i=0;i<10;i++)
+	{
+	    ucVetorInit |= (1 << i);
+	}
+	GPIOC_PDDR |= ucVetorInit;  //colocando 1 nos pinos de 0 a 9
 
-    /* turn-on LCD, with no cursor and no blink */
+    /*GPIO_HAL_SetPinDir(LCD_GPIO_BASE_PNT, LCD_RS_PIN, LCD_RS_DIR);
+    GPIO_HAL_SetPinDir(LCD_GPIO_BASE_PNT, LCD_ENABLE_PIN, LCD_ENABLE_DIR);
+    GPIO_HAL_SetPinDir(LCD_GPIO_BASE_PNT, LCD_DATA_DB0_PIN, LCD_DATA_DIR);
+    GPIO_HAL_SetPinDir(LCD_GPIO_BASE_PNT, LCD_DATA_DB1_PIN, LCD_DATA_DIR);
+    GPIO_HAL_SetPinDir(LCD_GPIO_BASE_PNT, LCD_DATA_DB2_PIN, LCD_DATA_DIR);
+    GPIO_HAL_SetPinDir(LCD_GPIO_BASE_PNT, LCD_DATA_DB3_PIN, LCD_DATA_DIR);
+    GPIO_HAL_SetPinDir(LCD_GPIO_BASE_PNT, LCD_DATA_DB4_PIN, LCD_DATA_DIR);
+    GPIO_HAL_SetPinDir(LCD_GPIO_BASE_PNT, LCD_DATA_DB5_PIN, LCD_DATA_DIR);
+    GPIO_HAL_SetPinDir(LCD_GPIO_BASE_PNT, LCD_DATA_DB6_PIN, LCD_DATA_DIR);
+    GPIO_HAL_SetPinDir(LCD_GPIO_BASE_PNT, LCD_DATA_DB7_PIN, LCD_DATA_DIR);*/
+
+    // turn-on LCD, with no cursor and no blink
     lcd_sendCommand(CMD_NO_CUR_NO_BLINK);
 
-    /* init LCD */
+    // init LCD
     lcd_sendCommand(CMD_INIT_LCD);
 
-    /* clear LCD */
+    // clear LCD
     lcd_sendCommand(CMD_CLEAR);
 
-    /* LCD with no cursor */
+    // LCD with no cursor
     lcd_sendCommand(CMD_NO_CURSOR);
 
-    /* cursor shift to right */
+    // cursor shift to right
     lcd_sendCommand(CMD_CURSOR2R);
 
 }
+
 
 
 /* ************************************************ */
@@ -108,43 +111,35 @@ void lcd_initLcd(void)
 /* ************************************************ */
 void lcd_write2Lcd(unsigned char ucBuffer,  unsigned char cDataType)
 {
-
-    unsigned char ucAux = 0;
-    int i;
-
     /* writing data or command */
     if(LCD_RS_CMD == cDataType)
         /* will send a command */
-       GPIOC_PCOR |= (1 << LCD_RS_PIN);
+       GPIOC_PCOR |= (1 << 8);
     else
         /* will send data */
-       GPIOC_PSOR |= (1 << LCD_RS_PIN);
+       GPIOC_PSOR |= (1 << 8);
 
+    /* write in the LCD bus */
+    GPIO_HAL_WritePinOutput(LCD_GPIO_BASE_PNT, LCD_DATA_DB0_PIN, ((ucBuffer & (1u << 0u)) >> 0u));
+    GPIO_HAL_WritePinOutput(LCD_GPIO_BASE_PNT, LCD_DATA_DB1_PIN, ((ucBuffer & (1u << 1u)) >> 1u));
+    GPIO_HAL_WritePinOutput(LCD_GPIO_BASE_PNT, LCD_DATA_DB2_PIN, ((ucBuffer & (1u << 2u)) >> 2u));
+    GPIO_HAL_WritePinOutput(LCD_GPIO_BASE_PNT, LCD_DATA_DB3_PIN, ((ucBuffer & (1u << 3u)) >> 3u));
+    GPIO_HAL_WritePinOutput(LCD_GPIO_BASE_PNT, LCD_DATA_DB4_PIN, ((ucBuffer & (1u << 4u)) >> 4u));
+    GPIO_HAL_WritePinOutput(LCD_GPIO_BASE_PNT, LCD_DATA_DB5_PIN, ((ucBuffer & (1u << 5u)) >> 5u));
+    GPIO_HAL_WritePinOutput(LCD_GPIO_BASE_PNT, LCD_DATA_DB6_PIN, ((ucBuffer & (1u << 6u)) >> 6u));
+    GPIO_HAL_WritePinOutput(LCD_GPIO_BASE_PNT, LCD_DATA_DB7_PIN, ((ucBuffer & (1u << 7u)) >> 7u));
 
-    /*
-     * Faz um E bit a bit com o caracter armazenado no ucBuffer
-     * extraindo os 8 primeiros bit do buffer para a vari�vel
-     * ucAux.
-     */
-    for(i=0;i<8;i++)
-    {
-     ucAux |= (ucBuffer & (1u << i));
-    }
-    /* Envia os 8 primeiros bits de data para as portas */
-    GPIOC_PDOR |= ucAux;
-    /*
-     *
-     *enable, delay, disable LCD
-     *this generates a pulse in the enable pin this
-     */
-    GPIOC_PSOR |= (1 << LCD_ENABLE_PIN);
+    /* enable, delay, disable LCD */
+    /* this generates a pulse in the enable pin */
+    GPIOC_PSOR |= (1 << 9);
+    //GPIO_HAL_WritePinOutput(LCD_GPIO_BASE_PNT, LCD_ENABLE_PIN, LCD_ENABLED);
     util_genDelay1ms();
-
-    GPIOC_PCOR |= (1 << LCD_ENABLE_PIN);
-
+    GPIOC_PCOR |= (1 << 9);
+    //GPIO_HAL_WritePinOutput(LCD_GPIO_BASE_PNT, LCD_ENABLE_PIN, LCD_DISABLED);
     util_genDelay1ms();
     util_genDelay1ms();
 }
+
 
 
 /* ************************************************ */
@@ -159,6 +154,7 @@ void lcd_writeData(unsigned char ucData)
     lcd_write2Lcd(ucData, LCD_RS_DATA);
 }
 
+
 /* ************************************************ */
 /* Method name:        lcd_sendCommand              */
 /* Method description: Write command to LCD         */
@@ -170,6 +166,7 @@ void lcd_sendCommand(unsigned char ucCmd)
     /* just a relay to send command */
     lcd_write2Lcd(ucCmd, LCD_RS_CMD);
 }
+
 
 
 /* ************************************************ */
@@ -193,11 +190,10 @@ void lcd_setCursor(unsigned char cLine, unsigned char cColumn)
     /* maximum MAX_COLUMN columns */
     cCommand += (cColumn & MAX_COLUMN);
 
-
-    /* send the command to set the cursor */
-
+    // send the command to set the cursor
     lcd_sendCommand(cCommand);
 }
+
 
 
 /* ************************************************ */
@@ -216,6 +212,7 @@ void lcd_writeString(const char *cBuffer)
 }
 
 
+
 /* ************************************************ */
 /* Method name:        lcd_dummyText                */
 /* Method description: Write a dummy hard coded text*/
@@ -224,39 +221,16 @@ void lcd_writeString(const char *cBuffer)
 /* ************************************************ */
 void lcd_dummyText(void)
 {
-
-    /* clear LCD */
+    // clear LCD
     lcd_sendCommand(CMD_CLEAR);
-    /* set the cursor line 0, column 1 */
+
+    // set the cursor line 0, column 1
     lcd_setCursor(0,1);
 
-    /* send string */
+    // send string
     lcd_writeString("*** ES670 ***");
 
-    /* set the cursor line 1, column 0 */
-
+    // set the cursor line 1, column 0
     lcd_setCursor(1,0);
     lcd_writeString("Prj Sis Embarcad");
 }
-
-void lcd_writeText(int iLinha, const char *cString)
-{
-    /*
-     * Primeiro analisa se a linha a ser escrita � a primeira
-     * ou a segunda, chamando a fu��o setCursor para definir onde
-     * a mensagem come�ar�. Em seguida enviamos a String para ser escrita
-     * no LCD
-     */
-    if(0 == iLinha)
-    {
-        lcd_setCursor(LINE0,COLUMN0);
-        lcd_writeString(cString);
-    }
-    else if(1 == iLinha)
-    {
-        lcd_setCursor(1,COLUMN0);
-        lcd_writeString(cString);
-    }
-
-}
-

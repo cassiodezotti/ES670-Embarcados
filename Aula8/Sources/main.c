@@ -1,12 +1,10 @@
 
 /* ************************************************************************ */
 /* Nome do Arquivo:      main.c                                             */
-/* DescriÁ„o do arquivo: Este arquivo È dedicado a inicializar leds         */
-/*                   	 e botıes utilizando as funÁıes desenvolvidas       */
-/*                       e depois manipul·-lo, acendendo, apagando os leds  */
-/*                       e lendo as chaves                                  */
+/* Descri√ß√£o do arquivo: Este arquivo √© dedicado a inicializar a placa      */
+/*                       fazendo a inicializa√ß√£o do clock e o LCD           */
 /*                                                                          */
-/*                       CaracterÌsticas do processador MKL25Z128VLK4       */
+/*                       Caracter√≠sticas do processador MKL25Z128VLK4       */
 /*                       48 MHz ARM Cortex-M0+ core                         */
 /*                       128 KB program flash memory                        */
 /*                       16 KB SRAM                                         */
@@ -14,10 +12,9 @@
 /*                                                                          */
 /* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
 /* RA:                   174217/168988                                      */
-/* Data de criaÁ„o:      26mar2020                                          */
-/* Data da revis„o:      04abril2020                                        */
+/* Data de cria√ß√£o:      06abril2020                                        */
+/* Data da revis√£o:      09abril2020                                        */
 /* ************************************************************************ */
-
 
 /* our includes */
 #include "lcd.h"
@@ -25,46 +22,48 @@
 #include "mcg.h"
 
 
+/* *********************************************************** */
+/* Nome da fun√ß√£o: 	           iniciarPlaca	         		       */
+/* Descri√ß√£o da fun√ß√£o:        Inicia o clock e o lcd          */
+/*                             sa√≠das desejadas                */
+/* par√¢metros de entrada:	     n/a                             */
+/* par√¢metros de sa√≠da:	       n/a 					                   */
+/* *********************************************************** */
 
-/* *********************************************************** */
-/* Nome da funÁ„o: 	           iniciarPlaca	         		   */
-/* DescriÁ„o da funÁ„o:        Inicia o clock e o lcd          */
-/*                             saÌdas desejadas                */
-/* par‚metros de entrada:	   n/a                             */
-/* par‚metros de saÌda:	       n/a 					           */
-/* *********************************************************** */
 
 void iniciarPlaca(void)
 {
-    /* ConfiguraÁ„o e inicializaÁ„o do clock */
+    /* Configura√ß√£o e inicializa√ß√£o do clock */
     mcg_clockInit();
 
-    /* InicializaÁ„o das portas de entrada e saÌda */
+    /* Inicializa√ß√£o das portas de entrada e sa√≠da */
     lcd_initLcd();
 }
 
 
-/* ****************************************************** */
-/* Nome da funÁ„o:           main                         */
-/* DescriÁ„o da funÁ„o:      Ponto de entrada do sistema  */
-/* par‚metros de entrada:    n/a                          */
-/* par‚metros de saÌda:      n/a                          */
-/* ****************************************************** */
+
+/* ******************************************************* */
+/* Nome da fun√ß√£o:           main                          */
+/* Descri√ß√£o da fun√ß√£o:      Ponto de entrada do sistema   */
+/*                           onde s√£o realizados os testes */
+/* par√¢metros de entrada:    n/a                           */
+/* par√¢metros de sa√≠da:      n/a                           */
+/* ******************************************************* */
 int main(void)
 {
-    /* Cria as mensagens e vari·veis para teste */
+    /* Cria as mensagens e vari√°veis para teste */
     const char cMensagem1[] = "Teste linha 1";
     const char cMensagem2[] = "Teste linha 2";
     const char *c;
     int iLinhaUm = 1;
     int iLinhaZero = 0;
 
-    /* chama a dummy para testar se conexıes e inicializaÁ„o est„o corretas */
+    /* chama a dummy para testar se conex√µes e inicializa√ß√£o est√£o corretas */
     lcd_dummyText();
 
     /*
-     * atribui a mensagem ‡ um ponteiro e envia para a writeText, esse ponteiro
-     * e a linha que ser· escrita.
+     * atribui a mensagem √† um ponteiro e envia para a writeText, esse ponteiro
+     * e a linha que ser√° escrita.
      */
     c = cMensagem1;
     lcd_writeText(iLinhaUm,c);
