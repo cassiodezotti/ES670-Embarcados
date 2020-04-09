@@ -28,14 +28,9 @@
 
 /* *********************************************************** */
 /* Nome da função: 	           iniciarPlaca	         		   */
-/* Descrição da função:        Inicia o clock e as entradas    */
+/* Descrição da função:        Inicia o clock e o lcd          */
 /*                             saídas desejadas                */
-/* parâmetros de entrada:	   vetor com 4 posições            */
-/*                             indicando a se a porta          */
-/*                             deve ser iniciada como          */
-/*                             led ou como botão. 1            */
-/*                             significa iniciar como          */
-/*                             led e 0 como botão              */
+/* parâmetros de entrada:	   n/a                             */
 /* parâmetros de saída:	       n/a 					           */
 /* *********************************************************** */
 
@@ -57,15 +52,23 @@ void iniciarPlaca(void)
 /* ****************************************************** */
 int main(void)
 {
-	const char cMensagem1[] = "Teste linha 1";
-	const char cMensagem2[] = "Teste linha 2";
-	const char *c;
-	int iLinhaUm = 1;
-	int iLinhaZero = 0;
+    /* Cria as mensagens e variáveis para teste */
+    const char cMensagem1[] = "Teste linha 1";
+    const char cMensagem2[] = "Teste linha 2";
+    const char *c;
+    int iLinhaUm = 1;
+    int iLinhaZero = 0;
 
-	c = cMensagem1;
-	lcd_writeText(iLinhaUm,c);
-	c = cMensagem2;
-	lcd_writeText(iLinhaZero,c);
+    /* chama a dummy para testar se conexões e inicialização estão corretas */
+    lcd_dummyText();
+
+    /*
+     * atribui a mensagem à um ponteiro e envia para a writeText, esse ponteiro
+     * e a linha que será escrita.
+     */
+    c = cMensagem1;
+    lcd_writeText(iLinhaUm,c);
+    c = cMensagem2;
+    lcd_writeText(iLinhaZero,c);
 
 }
