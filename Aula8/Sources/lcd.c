@@ -59,7 +59,6 @@ void lcd_initLcd(void)
 	}
 	GPIOC_PDDR |= ucVetorInit;  //colocando 1 nos pinos de 0 a 9
 
-
     // turn-on LCD, with no cursor and no blink
     lcd_sendCommand(CMD_NO_CUR_NO_BLINK);
 
@@ -74,9 +73,7 @@ void lcd_initLcd(void)
 
     // cursor shift to right
     lcd_sendCommand(CMD_CURSOR2R);
-
 }
-
 
 /* ************************************************ */
 /* Method name:        lcd_write2Lcd                */
