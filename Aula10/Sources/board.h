@@ -3,9 +3,9 @@
 /* File description: Header file containing the peripherals mapping  */
 /*                     of the peripheral board for the ES670 hardware*/
 /*                                                                   */
-/* Author name:      Rodrigo M Bacurau                               */
+/* Author name:      Rodrigo M Bacurau/Gustavo M./Cassio D.          */
 /* Creation date:    26fev2020                                       */
-/* Revision date:    02mar2020                                       */
+/* Revision date:    18abr2020                                       */
 /* ***************************************************************** */
 
 #ifndef SOURCES_BOARD_H_
@@ -54,23 +54,14 @@
 
 #define DISPLAY_CC_LOW              0U
 
-#define DISPLAY_7SEG_A              0u
-#define DISPLAY_7SEG_B              1u
-#define DISPLAY_7SEG_C              2u
-#define DISPLAY_7SEG_D              3u
-#define DISPLAY_7SEG_E              4u
-#define DISPLAY_7SEG_F              5u
-#define DISPLAY_7SEG_G              6u
-#define DISPLAY_7SEG_DP             7u
-
-/*#define LCD_DATA_DB0_DIR            (GPIO_OUTPUT << LCD_DATA_DB0_PIN)
-#define LCD_DATA_DB1_DIR            (GPIO_OUTPUT << LCD_DATA_DB1_PIN)
-#define LCD_DATA_DB2_DIR            (GPIO_OUTPUT << LCD_DATA_DB2_PIN)
-#define LCD_DATA_DB3_DIR            (GPIO_OUTPUT << LCD_DATA_DB3_PIN)
-#define LCD_DATA_DB4_DIR            (GPIO_OUTPUT << LCD_DATA_DB4_PIN)
-#define LCD_DATA_DB5_DIR            (GPIO_OUTPUT << LCD_DATA_DB5_PIN)
-#define LCD_DATA_DB6_DIR            (GPIO_OUTPUT << LCD_DATA_DB6_PIN)
-#define LCD_DATA_DB7_DIR            (GPIO_OUTPUT << LCD_DATA_DB7_PIN)*/
-/*                 END OF LCD definitions                 */
+#define DISPLAY_7SEG_A_PIN          0u
+#define DISPLAY_7SEG_B_PIN          1u
+#define DISPLAY_7SEG_C_PIN          2u
+#define DISPLAY_7SEG_D_PIN          3u
+#define DISPLAY_7SEG_E_PIN          4u
+#define DISPLAY_7SEG_F_PIN          5u
+#define DISPLAY_7SEG_G_PIN          6u
+#define DISPLAY_7SEG_DP_PIN         7u
+/*                 END OF DISPLAY definitions                 */
 
 #endif /* SOURCES_BOARD_H_ */

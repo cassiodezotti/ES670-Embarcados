@@ -1,10 +1,9 @@
-
 /* ************************************************************************ */
 /* Nome do Arquivo:      main.c                                             */
-/* Descrição do arquivo: Este arquivo é dedicado a inicializar a placa      */
-/*                       fazendo a inicialização do clock e o LCD           */
+/* Descricao do arquivo: Este arquivo inicializa a placa                    */
+/*                       fazendo a inicializacao do clock e do display      */
 /*                                                                          */
-/*                       Características do processador MKL25Z128VLK4       */
+/*                       Caracteristicas do processador MKL25Z128VLK4       */
 /*                       48 MHz ARM Cortex-M0+ core                         */
 /*                       128 KB program flash memory                        */
 /*                       16 KB SRAM                                         */
@@ -12,8 +11,8 @@
 /*                                                                          */
 /* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
 /* RA:                   174217/168988                                      */
-/* Data de criação:      06abril2020                                        */
-/* Data da revisão:      09abril2020                                        */
+/* Data de criacao:      16abril2020                                        */
+/* Data da revisao:      18abril2020                                        */
 /* ************************************************************************ */
 
 /* our includes */
@@ -22,60 +21,79 @@
 #include "display7seg.h"
 #include "lptmr.h"
 
+
 int iInterruptFlag = 0;
 int iIndexCounter = 0;
-unsigned char ucVetorDisplay[4] = {13,12,11,10};
+unsigned char ucVetorDisplay[4] = {0x1000,0x800,0x400,0x200};
 unsigned char ucVetorCaracter[4];
 
+/* ************************************************************ */
+/* Nome da funcao: 	           main_cyclicExecuteIsr   		    */
+/* Descri�ao da funcao:        Tratamento da interrupcao        */
+/*                             do clock, atraves do acionamento */
+/*                             da variavel global               */
+/*                             saidas desejadas.                */
+/* parametros de entrada:	   n/a                              */
+/* parametros de saida:	       n/a 					            */
+/* ************************************************************ */
 void main_cyclicExecuteIsr(void)
 {
-    iInterruptFlag = 1;
+	iInterruptFlag = 1;
 
-    if(iIndexCounter < 4)
-    	iIndexCounter += 1;
-    else
-    	iIndexCounter = 0;
+	if(iIndexCounter < 4)
+		iIndexCounter += 1;
+	else
+		iIndexCounter = 0;
 }
 
-
-/* *********************************************************** */
-/* Nome da função: 	           iniciarPlaca	         		       */
-/* Descrição da função:        Inicia o clock e o lcd          */
-/*                             saídas desejadas                */
-/* parâmetros de entrada:	     n/a                             */
-/* parâmetros de saída:	       n/a 					                   */
-/* *********************************************************** */
+/* ************************************************************ */
+/* Nome da funcao: 	           iniciarPlaca         		    */
+/* Descricao da funcao:        Inicia a placa e os displays     */
+/* parametros de entrada:	   n/a                              */
+/* parametros de saida:	       n/a 					            */
+/* ************************************************************ */
 void iniciarPlaca(void)
 {
-    /* Configuração e inicialização do clock */
+    /* Configuracao e inicializacao do clock */
     mcg_clockInit();
 
-    /* Inicialização das portas de entrada e saída */
+    /* Inicializacao das portas de saida */
     display7seg_init();
 }
 
-/* ******************************************************* */
-/* Nome da função:           main                          */
-/* Descrição da função:      Ponto de entrada do sistema   */
-/*                           onde são realizados os testes */
-/* parâmetros de entrada:    n/a                           */
-/* parâmetros de saída:      n/a                           */
-/* ******************************************************* */
+/* ************************************************************** */
+/* Nome da funcao: 	           main         		              */
+/* Descricao da funcao:        Inicializa o timer e controla a    */
+/*                             escrita nos displays de acordo com */
+/*                             a interrupcao                      */
+/* parametros de entrada:	   n/a                                */
+/* parametros de saida:	       n/a 					              */
+/* ************************************************************** */
 int main(void)
 {
-	iniciarPlaca();
+    unsigned char ucValor7seg = 0;
+    iniciarPlaca();
 
-	//tc_installLptmr(tempoClock,main_cyclicExecuteIsr);
-	//display7seg_writeSymbol(1,2);
-	while(1)
-	{
-        //ucVetorDisplay
-		//ucVetorCaracter
-	    //GPIOC_PDOR |=
+    /* Inicializa o timer com 4ms */
+    tc_installLptmr0(4,main_cyclicExecuteIsr);
 
-		while(iInterruptFlag == 0);
-		iInterruptFlag = 0;
-	}
+    /* Enviando 1,2,3,4 para escrever nos displays */
+    display7seg_writeSymbol(1,1);
+    display7seg_writeSymbol(2,2);
+    display7seg_writeSymbol(3,3);
+    display7seg_writeSymbol(4,4);
 
+    while(1)
+    {
+    	/* Zerando os pinos de catodo dos displays nao utilizados */
+	    GPIOC_PDOR &= ~(ucVetorDisplay[iIndexCounter] ^ 0x3c0);
+	    /* Unindo o caracter a ser escrito com o pino do display que queremos escrever */
+	    ucValor7seg = (ucVetorDisplay[iIndexCounter] | ucVetorCaracter[iIndexCounter]);
+	    GPIOC_PDOR |= ucValor7seg;
+
+	    /* Espera a interrupcao para fazer a proxima iteracao */
+        while(iInterruptFlag == 0)
+            iInterruptFlag = 0;
+    }
     return 0;
 }
