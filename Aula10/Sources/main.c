@@ -22,6 +22,8 @@
 #include "display7seg.h"
 #include "lptmr.h"
 
+
+#define TEMPO_CLOCK = 4;
 void main_cyclicExecuteIsr(void)
 {
 
@@ -55,9 +57,12 @@ void iniciarPlaca(void)
 /* ******************************************************* */
 int main(void)
 {
+	unsigned char ucValor7seg = 0;
 	iniciarPlaca();
 
-	//tc_installLptmr(tempoClock,main_cyclicExecuteIsr);
+	tc_installLptmr(TEMPO_CLOCK,main_cyclicExecuteIsr);
+	display7seg_writeSymbol(1,1);
+	display7seg_writeSymbol(2,2);
 
 
     return 0;

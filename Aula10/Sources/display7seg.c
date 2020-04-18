@@ -123,7 +123,9 @@ int mapearEntrada(unsigned char ucDisplay)
 /* ************************************************ */
 void display7seg_writeSymbol(unsigned char ucDisplay, unsigned char ucValue)
 {
+
 	int ivalorEntrada = mapearEntrada(ucDisplay);
+
 
 
 

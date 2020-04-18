@@ -54,14 +54,14 @@
 
 #define DISPLAY_CC_LOW              0U
 
-#define DISPLAY_7SEG_A              0u
-#define DISPLAY_7SEG_B              1u
-#define DISPLAY_7SEG_C              2u
-#define DISPLAY_7SEG_D              3u
-#define DISPLAY_7SEG_E              4u
-#define DISPLAY_7SEG_F              5u
-#define DISPLAY_7SEG_G              6u
-#define DISPLAY_7SEG_DP             7u
+#define DISPLAY_7SEG_A_PIN          0u
+#define DISPLAY_7SEG_B_PIN          1u
+#define DISPLAY_7SEG_C_PIN          2u
+#define DISPLAY_7SEG_D_PIN          3u
+#define DISPLAY_7SEG_E_PIN          4u
+#define DISPLAY_7SEG_F_PIN          5u
+#define DISPLAY_7SEG_G_PIN          6u
+#define DISPLAY_7SEG_DP_PIN         7u
 
 /*#define LCD_DATA_DB0_DIR            (GPIO_OUTPUT << LCD_DATA_DB0_PIN)
 #define LCD_DATA_DB1_DIR            (GPIO_OUTPUT << LCD_DATA_DB1_PIN)
