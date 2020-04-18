@@ -22,11 +22,19 @@
 #include "display7seg.h"
 #include "lptmr.h"
 
+int iInterruptFlag = 0;
+int iIndexCounter = 0;
+unsigned char ucVetorDisplay[4] = {13,12,11,10};
+unsigned char ucVetorCaracter[4];
+
 void main_cyclicExecuteIsr(void)
 {
+    iInterruptFlag = 1;
 
-	//display7seg_writeSymbol(unsigned char ucDisplay, unsigned char ucValue)
-
+    if(iIndexCounter < 4)
+    	iIndexCounter += 1;
+    else
+    	iIndexCounter = 0;
 }
 
 
@@ -58,7 +66,16 @@ int main(void)
 	iniciarPlaca();
 
 	//tc_installLptmr(tempoClock,main_cyclicExecuteIsr);
+	//display7seg_writeSymbol(1,2);
+	while(1)
+	{
+        //ucVetorDisplay
+		//ucVetorCaracter
+	    //GPIOC_PDOR |=
 
+		while(iInterruptFlag == 0);
+		iInterruptFlag = 0;
+	}
 
     return 0;
 }

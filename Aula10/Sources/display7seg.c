@@ -17,6 +17,8 @@
 #include "fsl_clock_manager.h"
 #include "fsl_port_hal.h"
 #include "fsl_gpio_hal.h"
+extern unsigned char ucVetorDisplay[4];
+extern unsigned char ucVetorCaracter[4];
 
 
 /* ************************************************ */
@@ -85,28 +87,7 @@ void display7seg_init()
 	ucVetor   |= (1 << DISPLAY_7SEG_D3_PIN);
 	ucVetor   |= (1 << DISPLAY_7SEG_D2_PIN);
 	ucVetor   |= (1 << DISPLAY_7SEG_D1_PIN);
-	GPIO_PDDR |= ucVetor;
-}
-int mapearEntrada(unsigned char ucDisplay)
-{
-	int ivalorEntrada;
-
-	switch(ucDisplay)
-	{
-	    case "1":
-	        ivalorEntrada = 13;
-
-	    case "2":
-	    	ivalorEntrada = 12;
-
-	    case "3":
-	        ivalorEntrada = 11;
-
-	    case "4":
-	        ivalorEntrada = 10;
-	}
-
-	return ivalorEntrada;
+	GPIOC_PDDR |= ucVetor;
 }
 
 /* ************************************************ */
@@ -121,12 +102,36 @@ int mapearEntrada(unsigned char ucDisplay)
 /*                     uiTimeInUs                   */
 /* Output params:      n/a                          */
 /* ************************************************ */
+
 void display7seg_writeSymbol(unsigned char ucDisplay, unsigned char ucValue)
 {
-	int ivalorEntrada = mapearEntrada(ucDisplay);
+	unsigned char ucAuxiliar = charTo7seg(ucValue);
+
+	switch(ucDisplay)
+	{
+		    case '1':
+		        ucVetorCaracter[0] = ucAuxiliar;
+		        break;
+
+		    case '2':
+		    	ucVetorCaracter[1] = ucAuxiliar;
+		    	break;
+
+		    case '3':
+		    	ucVetorCaracter[2] = ucAuxiliar;
+		        break;
+
+		    case '4':
+		    	ucVetorCaracter[3] = ucAuxiliar;
+		        break;
+	}
+}
+
+unsigned char charTo7seg(unsigned char ucValue)
+{
+
+	unsigned char ucAuxiliar;
 
 
-
-
-
+	return ucAuxiliar;
 }
