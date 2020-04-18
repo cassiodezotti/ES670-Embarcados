@@ -75,7 +75,7 @@ int main(void)
     iniciarPlaca();
 
     /* Inicializa o timer com 4ms */
-    tc_installLptmr0(4,main_cyclicExecuteIsr);
+    tc_installLptmr0(4000,main_cyclicExecuteIsr);
 
     /* Enviando 1,2,3,4 para escrever nos displays */
     display7seg_writeSymbol(1,1);
