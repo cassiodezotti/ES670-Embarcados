@@ -17,9 +17,17 @@
 /* ************************************************************************ */
 
 /* our includes */
-#include "lcd.h"
 #include "board.h"
 #include "mcg.h"
+#include "display7seg.h"
+#include "lptmr.h"
+
+void main_cyclicExecuteIsr(void)
+{
+
+	//display7seg_writeSymbol(unsigned char ucDisplay, unsigned char ucValue)
+
+}
 
 
 /* *********************************************************** */
@@ -29,18 +37,14 @@
 /* parâmetros de entrada:	     n/a                             */
 /* parâmetros de saída:	       n/a 					                   */
 /* *********************************************************** */
-
-
 void iniciarPlaca(void)
 {
     /* Configuração e inicialização do clock */
     mcg_clockInit();
 
     /* Inicialização das portas de entrada e saída */
-    lcd_initLcd();
+    display7seg_init();
 }
-
-
 
 /* ******************************************************* */
 /* Nome da função:           main                          */
@@ -51,23 +55,10 @@ void iniciarPlaca(void)
 /* ******************************************************* */
 int main(void)
 {
-    /* Cria as mensagens e variáveis para teste */
-    const char cMensagem1[] = "Teste linha 1";
-    const char cMensagem2[] = "Teste linha 2";
-    const char *c;
-    int iLinhaUm = 1;
-    int iLinhaZero = 0;
+	iniciarPlaca();
 
-    /* chama a dummy para testar se conexões e inicialização estão corretas */
-    lcd_dummyText();
+	//tc_installLptmr(tempoClock,main_cyclicExecuteIsr);
 
-    /*
-     * atribui a mensagem à um ponteiro e envia para a writeText, esse ponteiro
-     * e a linha que será escrita.
-     */
-    c = cMensagem1;
-    lcd_writeText(iLinhaUm,c);
-    c = cMensagem2;
-    lcd_writeText(iLinhaZero,c);
 
+    return 0;
 }
