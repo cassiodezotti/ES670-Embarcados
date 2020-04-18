@@ -40,4 +40,7 @@ void display7seg_init();
 /* ************************************************ */
 void display7seg_writeSymbol(unsigned char ucDisplay, unsigned char ucValue);
 
+
+unsigned char charTo7seg(unsigned char ucValue);
+
 #endif /* SOURCES_LPTMR_H_ */

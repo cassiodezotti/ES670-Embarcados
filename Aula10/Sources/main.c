@@ -24,6 +24,12 @@
 
 
 #define TEMPO_CLOCK = 4;
+int iInterruptFlag = 0;
+int iIndexCounter = 0;
+unsigned char ucVetorDisplay[4] = {DISPLAY_7SEG_D1_PIN,DISPLAY_7SEG_D2_PIN,DISPLAY_7SEG_D3_PIN,DISPLAY_7SEG_D4_PIN};
+unsigned char ucVetorCaracter[4];
+
+
 void main_cyclicExecuteIsr(void)
 {
 
@@ -63,6 +69,17 @@ int main(void)
 	tc_installLptmr(TEMPO_CLOCK,main_cyclicExecuteIsr);
 	display7seg_writeSymbol(1,1);
 	display7seg_writeSymbol(2,2);
+	display7seg_writeSymbol(3,3);
+	display7seg_writeSymbol(4,4);
+
+	while(1)
+	{
+
+
+	    GPIOC_PDIR &= ~(0x3c0);
+	    ucValor7seg = (ucVectorDisplay[iIndexCounter] | ucVetorCaracter);
+	    GPIOC_PDIR |= ucValor7seg;
+
 
 
     return 0;
