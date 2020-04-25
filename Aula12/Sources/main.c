@@ -46,8 +46,15 @@ void iniciarPlaca(void)
 /* ************************************************************** */
 int main(void)
 {
-    unsigned char ucValor7seg = 0;
+
+    float fDutyC,fDutyH;
+
     iniciarPlaca();
 
+    coolerfan_init();
+    heater_init();
+
+    coolerfan_PWMDuty(fDutyC);
+    heater_PWMDuty(fDutyH)
 
 }

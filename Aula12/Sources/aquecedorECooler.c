@@ -41,20 +41,33 @@ void PWM_init()
     /*TPM0_C0V = //colocar 50% de duty cycle */
     /*TPM0_C1V = */
 
-    SIM_SGC5 |= 0x200; //configurar porta do pino PWM
+}
 
-    /*PORTA_PCR12 |=
-	PORTA_PCR13 |=   MUX para o pino*/
+void coolerfan_init()
+{
+	/*PORTA_PCR13 |=   MUX para o pino*/
+}
 
+void heater_init()
+{
+	 /*PORTA_PCR12 |= MUX para o pino*/
 }
 
 void coolerfan_PWMDuty(float fCoolerDuty)
 {
-
+	if(fCoolerDuty > 0 && fCoolerDuty < 1)
+	{
+		/*TPM0_C0V = //colocar a variavel de duty cycle */
+	}
 }
 
 void heater_PWMDuty(float fHeaterDuty)
 {
+
+	if(fHeaterDuty > 0 && fHeaterDuty < 1)
+    {
+		/*TPM0_C0V = //colocar a variavel de duty cycle */
+    }
 
 }
 

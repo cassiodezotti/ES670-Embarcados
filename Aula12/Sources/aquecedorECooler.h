@@ -46,5 +46,30 @@ void coolerfan_PWMDuty(float fCoolerDuty);
 /* ****************************************************************** */
 void heater_PWMDuty(float fHeaterDuty);
 
+/* ****************************************************************** */
+/* Nome da função: lcd_writeData                                      */
+/* Descrição da função: Função de apoio que faz a chamada da          */
+/*                      função lcd_Write2Lcd a qual escreve no LCD    */
+/*                                                                    */
+/* Parâmetros de entrada: Recebe um valor 0 ou 1                      */
+/*                        Se 0 --> LCD receberá um comando            */
+/*                        Se 1 --> LCD receberá um dado               */
+/* Parâmetros de saída:   n/a                                         */
+/* ****************************************************************** */
+void coolerfan_init();
+
+/* ****************************************************************** */
+/* Nome da função: lcd_writeData                                      */
+/* Descrição da função: Função de apoio que faz a chamada da          */
+/*                      função lcd_Write2Lcd a qual escreve no LCD    */
+/*                                                                    */
+/* Parâmetros de entrada: Recebe um valor 0 ou 1                      */
+/*                        Se 0 --> LCD receberá um comando            */
+/*                        Se 1 --> LCD receberá um dado               */
+/* Parâmetros de saída:   n/a                                         */
+/* ****************************************************************** */
+void heater_init();
+
+
 
 #endif /* SOURCES_AQUECEDORECOOLER_H_ */
