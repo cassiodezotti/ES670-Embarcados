@@ -16,14 +16,6 @@
 
 /*                 General uC definitions                 */
 
-/* Clock gate control */
-#define  CGC_CLOCK_DISABLED         0x00U
-#define  CGC_CLOCK_ENABLED          0x01U
-
-/* GPIO input / output */
-#define GPIO_INPUT                  0x00U
-#define GPIO_OUTPUT                 0x01U
-
 /*                 ATUADORES definitions                 */
 
 #define ATUADORES_PORT_BASE_PNT          PORTA                                   /* peripheral port base pointer */
@@ -37,8 +29,6 @@
 /*#define DISPLAY_7SEG_D3_DIR              (GPIO_OUTPUT << DISPLAY_7SEG_D3_PIN)
 #define DISPLAY_7SEG_D3_ALT              kPortMuxAsGpio*/
 
-#define DISPLAY_CC_HIGH             1U
-#define DISPLAY_CC_LOW              0U
 
 /*                 END OF ATUADORES definitions                 */
 

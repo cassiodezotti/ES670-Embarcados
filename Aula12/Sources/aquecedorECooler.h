@@ -1,75 +1,75 @@
 /* ************************************************************************ */
-/* Nome do Arquivo:      main.c                                             */
+/* Nome do Arquivo:      aquecedorECooler.h                                 */
 /* Descrição do arquivo: Este arquivo é dedicado a apresentar todas as      */
 /*                       funções utilizadas no programa                     */
 /*                                                                          */
 /* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
 /* RA:                   174217/168988                                      */
-/* Data de criação:      06abril2020                                        */
-/* Data da revisão:      09abril2020                                        */
+/* Data de criação:      24abril2020                                        */
+/* Data da revisão:      26abril2020                                        */
 /* ************************************************************************ */
 
 #ifndef SOURCES_AQUECEDORECOOLER_H_
 #define SOURCES_AQUECEDORECOOLER_H_
 
-
 /* *********************************************************************  */
-/* Nome da função: lcd_initLcd                                            */
-/* Descrição da função: Essa função inicializa todo o LCD e os parâmetros */
-/*                      necessários como o clock, a porta e os pinos.     */
+/* Nome da função: PWM_init                                               */
+/* Descrição da função: Essa função inicializa o PWM e os parâmetros      */
+/*                      necessários como o clock e contador.              */
 /* Parâmetros de entrada:    n/a                                          */
 /* Parâmetros de saída:      n/a                                          */
 /* *********************************************************************  */
 void PWM_init();
 
-/* ****************************************************************** */
-/* Nome da função: lcd_write2Lcd                                      */
-/* Descrição da função: Função que faz a escrita de um dado no LCD.   */
-/*                                                                    */
-/* Parâmetros de entrada: Recebe um caractere de dado ou comando      */
-/*                        e o tipo da ação que ela realizará.          */
-/*                        Se 0 --> LCD receberá um comando            */
-/*                        Se 1 --> LCD receberá um dado               */
-/* Parâmetros de saída:   n/a                                         */
-/* ****************************************************************** */
-void coolerfan_PWMDuty(float fCoolerDuty);
-
-/* ****************************************************************** */
-/* Nome da função: lcd_writeData                                      */
-/* Descrição da função: Função de apoio que faz a chamada da          */
-/*                      função lcd_Write2Lcd a qual escreve no LCD    */
-/*                                                                    */
-/* Parâmetros de entrada: Recebe um valor 0 ou 1                      */
-/*                        Se 0 --> LCD receberá um comando            */
-/*                        Se 1 --> LCD receberá um dado               */
-/* Parâmetros de saída:   n/a                                         */
-/* ****************************************************************** */
-void heater_PWMDuty(float fHeaterDuty);
-
-/* ****************************************************************** */
-/* Nome da função: lcd_writeData                                      */
-/* Descrição da função: Função de apoio que faz a chamada da          */
-/*                      função lcd_Write2Lcd a qual escreve no LCD    */
-/*                                                                    */
-/* Parâmetros de entrada: Recebe um valor 0 ou 1                      */
-/*                        Se 0 --> LCD receberá um comando            */
-/*                        Se 1 --> LCD receberá um dado               */
-/* Parâmetros de saída:   n/a                                         */
-/* ****************************************************************** */
+/* ******************************************************************** */
+/* Nome da função: coolerfan_init                                       */
+/* Descrição da função: Função que habilita o clock, a porta do atuador */
+/*                      e configura o pino 13 como PWM                  */
+/*                                                                      */
+/* Parâmetros de entrada: n/a                                           */
+/* Parâmetros de saída:   n/a                                           */
+/* ******************************************************************** */
 void coolerfan_init();
 
-/* ****************************************************************** */
-/* Nome da função: lcd_writeData                                      */
-/* Descrição da função: Função de apoio que faz a chamada da          */
-/*                      função lcd_Write2Lcd a qual escreve no LCD    */
-/*                                                                    */
-/* Parâmetros de entrada: Recebe um valor 0 ou 1                      */
-/*                        Se 0 --> LCD receberá um comando            */
-/*                        Se 1 --> LCD receberá um dado               */
-/* Parâmetros de saída:   n/a                                         */
-/* ****************************************************************** */
+/* ******************************************************************** */
+/* Nome da função: heater_init                                          */
+/* Descrição da função: Função que habilita o clock, a porta do atuador */
+/*                      e configura o pino 12 como PWM                  */
+/*                                                                      */
+/* Parâmetros de entrada: n/a                                           */
+/* Parâmetros de saída:   n/a                                           */
+/* ******************************************************************** */
 void heater_init();
 
+/* ************************************************************************* */
+/* Nome da função: coolerfan_PWMDuty                                         */
+/* Descrição da função:  Recebe um numero que corresponde ao Duty Cycle      */
+/*                       desejado para o cooler e altera o Duty Cycle do PWM */
+/*                                                                           */
+/* Parâmetros de entrada: Recebe um float entre 0 e 1                        */
+/* Parâmetros de saída:   n/a                                                */
+/* ************************************************************************* */
+void coolerfan_PWMDuty(float fCoolerDuty);
+
+/* **************************************************************************** */
+/* Nome da função: heater_PWMDuty                                               */
+/* Descrição da função:  Recebe um numero que corresponde ao Duty Cycle         */
+/*                       desejado para o aquecedor e altera o Duty Cycle do PWM */
+/*                                                                              */
+/* Parâmetros de entrada: Recebe um float entre 0 e 1                           */
+/* Parâmetros de saída:   n/a                                                   */
+/* **************************************************************************** */
+void heater_PWMDuty(float fHeaterDuty);
+
+/* ******************************************************************* */
+/* Nome da função: convertDuty                                         */
+/* Descrição da função: Função de apoio recebe o valor do Duty Cycle   */
+/*                      e converte para um numero de 16 bits           */
+/*                                                                     */
+/* Parâmetros de entrada: Recebe um float entre 0 e 1                  */
+/* Parâmetros de saída:   Retorna um unsigned char com o valor do Duty */
+/*                        Cycle nos primeiros 16 bits                  */
+/* ******************************************************************* */
 unsigned char convertDuty(float duty);
 
 #endif /* SOURCES_AQUECEDORECOOLER_H_ */

@@ -4,22 +4,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Sources/display7seg.c \
-../Sources/lptmr.c \
+../Sources/aquecedorECooler.c \
 ../Sources/main.c \
 ../Sources/mcg.c \
 ../Sources/util.c 
 
 OBJS += \
-./Sources/display7seg.o \
-./Sources/lptmr.o \
+./Sources/aquecedorECooler.o \
 ./Sources/main.o \
 ./Sources/mcg.o \
 ./Sources/util.o 
 
 C_DEPS += \
-./Sources/display7seg.d \
-./Sources/lptmr.d \
+./Sources/aquecedorECooler.d \
 ./Sources/main.d \
 ./Sources/mcg.d \
 ./Sources/util.d 

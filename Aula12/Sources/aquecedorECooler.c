@@ -1,30 +1,36 @@
-/************************************************************************** */
-/* Nome do Arquivo:      main.c                                             */
-/* Descricao do arquivo: Este arquivo inicializa a placa                    */
-/*                       fazendo a inicializacao do clock e do display      */
-/*                                                                          */
-/*                       Caracteristicas do processador MKL25Z128VLK4       */
-/*                       48 MHz ARM Cortex-M0+ core                         */
-/*                       128 KB program flash memory                        */
-/*                       16 KB SRAM                                         */
-/*                       Voltage range: 1.71 to 3.6 V                       */
-/*                                                                          */
-/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
-/* RA:                   174217/168988                                      */
-/* Data de criacao:      16abril2020                                        */
-/* Data da revisao:      18abril2020                                        */
-/* ************************************************************************ */
+/************************************************************************ */
+/* Nome do Arquivo:      aquecedorECooler.c                               */
+/* Descricao do arquivo: Arquivo que construi as funções que controlam o  */
+/*                       PWM e os atuadores                               */
+/*                                                                        */
+/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                    */
+/* RA:                   174217/168988                                    */
+/* Data de criacao:      24abril2020                                      */
+/* Data da revisao:      26abril2020                                      */
+/* ********************************************************************** */
 
 /* our includes */
-#include "aquecedorECooler.h";
+#include "aquecedorECooler.h"
+#include "board.h"
+extern unsigned char ucPeriodo;
 
+/* *********************************************************************  */
+/* Nome da função: PWM_init                                               */
+/* Descrição da função: Essa função inicializa o PWM e os parâmetros      */
+/*                      necessários como o clock e contador.              */
+/* Parâmetros de entrada:    n/a                                          */
+/* Parâmetros de saída:      n/a                                          */
+/* *********************************************************************  */
 void PWM_init()
 {
-    SIM_SCG6 |= 0x2000000; //passo 1 - liberar o clock para o timer
+	/* liberar o clock para o timer */
+    SIM_SCGC6 |= 0x2000000;
 
-    TPM1_SC |= 0x05;/*/divisor de clock 32*/
+    /* escolhendo divisor 32 para o clock */
+    TPM1_SC |= 0x05;
 
-    SIM_SOPT2 |= 0x3000000; /*/fonte de clocl seleciona o mcgirclk (32KHz) para o tpm*/
+    /* fonte de clock seleciona o mcgirclk (32KHz) para o TPM */
+    SIM_SOPT2 |= 0x3000000;
 
     /*Configurar o contador do clock como up counting e a cada pulso */
     TPM1_SC &= ~(0x30);
@@ -34,58 +40,100 @@ void PWM_init()
      * estourando em 100 (MOD+1) MOD = 99 (0x0063)
      */
     TPM1_CNT &= ~(0xFFFF);
-    TPM1_MOD |= 0x0063
-    TPM1_C0NS &= ~(0x14);
-    TPM1_C0NS |= 0x28;
+    /* Configura o estouro do contador como Periodo - 1 = 0x0063 (99) */
+    TPM1_MOD |= 0x0063;
 
-    TPM1_C1NS &= ~(0x14);
-    TPM1_C1NS |= 0x28;
-
-    TPM0_C0V = 0x0032;/*/colocar 50% de duty cycle, 50% de 100, 50 (0x0032) */
-    TPM0_C1V = 0x0032;
-
+    /* Configura o TPM como Edge aligned com High-true pulses */
+    TPM1_C0SC &= ~(0x14);
+    TPM1_C0SC |= 0x28;
+    TPM1_C1SC &= ~(0x14);
+    TPM1_C1SC |= 0x28;
 }
 
+/* ******************************************************************** */
+/* Nome da função: coolerfan_init                                       */
+/* Descrição da função: Função que habilita o clock, a porta do atuador */
+/*                      e configura o pino como PWM                     */
+/*                                                                      */
+/* Parâmetros de entrada: n/a                                           */
+/* Parâmetros de saída:   n/a                                           */
+/* ******************************************************************** */
 void coolerfan_init()
 {
-	PORTA_PCR13 |=   0x300;/*MUX para o pino*/
+	/* Habilitando o clock e selecionando como PWM o MUX de cada pino */
+    SIM_SCGC5 |= 0x200;
+    PORTA_PCR13 &= ~(0x400);
+    PORTA_PCR13 |= 0x300;
 }
 
+/* ******************************************************************** */
+/* Nome da função: heater_init                                          */
+/* Descrição da função: Função que habilita o clock, a porta do atuador */
+/*                      e configura o pino 12 como PWM                  */
+/*                                                                      */
+/* Parâmetros de entrada: n/a                                           */
+/* Parâmetros de saída:   n/a                                           */
+/* ******************************************************************** */
 void heater_init()
 {
-	 PORTA_PCR12 |= 0x300;/*MUX para o pino*/
+	/* Habilitando o clock e selecionando como PWM o MUX de cada pino */
+    SIM_SCGC5 |= 0x200;
+    PORTA_PCR12 &= ~(0x400);
+	PORTA_PCR12 |= 0x300;
 }
 
+/* ************************************************************************* */
+/* Nome da função: coolerfan_PWMDuty                                         */
+/* Descrição da função:  Recebe um numero que corresponde ao Duty Cycle      */
+/*                       desejado para o cooler e altera o Duty Cycle do PWM */
+/*                                                                           */
+/* Parâmetros de entrada: Recebe um float entre 0 e 1                        */
+/* Parâmetros de saída:   n/a                                                */
+/* ************************************************************************* */
 void coolerfan_PWMDuty(float fCoolerDuty)
 {
-	if(fCoolerDuty > 0 && fCoolerDuty < 1)
-	{
-		/*TPM0_C0V = //colocar a variavel de duty cycle */
-	}
+    /* Define o novo valor para o Duty Cycle do cooler */
+    if(fCoolerDuty > 0 && fCoolerDuty < 1)
+    {
+        TPM0_C0V |= convertDuty(fCoolerDuty);
+    }
 }
 
+/* **************************************************************************** */
+/* Nome da função: heater_PWMDuty                                               */
+/* Descrição da função:  Recebe um numero que corresponde ao Duty Cycle         */
+/*                       desejado para o aquecedor e altera o Duty Cycle do PWM */
+/*                                                                              */
+/* Parâmetros de entrada: Recebe um float entre 0 e 1                           */
+/* Parâmetros de saída:   n/a                                                   */
+/* **************************************************************************** */
 void heater_PWMDuty(float fHeaterDuty)
 {
-
-	if(fHeaterDuty > 0 && fHeaterDuty < 1)
+    /* Define o novo valor para o Duty Cycle do aquecedor */
+    if(fHeaterDuty > 0 && fHeaterDuty < 1)
     {
-		/*TPM0_C0V = //colocar a variavel de duty cycle */
+        TPM0_C0V |= convertDuty(fHeaterDuty);
     }
-
 }
 
-unsigned char convertDuty(float duty){
+/* ******************************************************************* */
+/* Nome da função: convertDuty                                         */
+/* Descrição da função: Função de apoio recebe o valor do Duty Cycle   */
+/*                      e converte para um numero de 16 bits           */
+/*                                                                     */
+/* Parâmetros de entrada: Recebe um float entre 0 e 1                  */
+/* Parâmetros de saída:   Retorna um unsigned char com o valor do Duty */
+/*                        Cycle nos primeiros 16 bits                  */
+/* ******************************************************************* */
+unsigned char convertDuty(float duty)
+{
+    unsigned char cValor = 0;
+    int iValor = duty*10000;
 
-	unsigned char cValor;
-	int iValor = duty*10000;
+    /* Converte o float para um valor de 0 a periodo em 16 bits */
+    iValor = iValor*ucPeriodo;
+    iValor = iValor/10000;
+    cValor |= (0xFFFF & iValor);
 
-	iValor = iValor*PERIODO;
-	iValor = iValor/10000;
-	cValor |= (0xFFFF & iValor);
-
-	return(cValor);
-
+   return(cValor);
 }
-
-
-
