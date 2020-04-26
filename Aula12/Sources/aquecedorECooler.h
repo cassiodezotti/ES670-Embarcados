@@ -70,6 +70,6 @@ void coolerfan_init();
 /* ****************************************************************** */
 void heater_init();
 
-
+unsigned char convertDuty(float duty);
 
 #endif /* SOURCES_AQUECEDORECOOLER_H_ */
