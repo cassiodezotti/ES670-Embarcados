@@ -33,6 +33,7 @@ void PWM_init()
     /*configurar o período do PWM para 10 Hz com o contador
      * estourando em 100 (MOD+1) MOD = 99 (0x0063)
      */
+    TPM1_CNT &= ~(0xFFFF);
     TPM1_MOD |= 0x0063
     TPM1_C0NS &= ~(0x14);
     TPM1_C0NS |= 0x28;
