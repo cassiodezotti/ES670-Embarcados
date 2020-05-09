@@ -24,7 +24,7 @@
 
  void main_cyclicExecuteIsr(void)
 {
-	tachometer_readSensor(250000);
+    tachometer_readSensor(250000);
 }
 
 /* ************************************************************ */
@@ -52,11 +52,13 @@ void iniciarPlaca(void)
 int main(void)
 {
 
-	iniciarPlaca();
+    iniciarPlaca();
 
-	while(1)
-	{
+    tc_installLptmr0(250000,main_cyclicExecuteIsr);
 
-	}
+    while(1)
+    {
+
+    }
 
 }
