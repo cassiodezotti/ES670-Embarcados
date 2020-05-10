@@ -4,21 +4,24 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Sources/aquecedorECooler.c \
+../Sources/lptmr.c \
 ../Sources/main.c \
 ../Sources/mcg.c \
+../Sources/tacometro.c \
 ../Sources/util.c 
 
 OBJS += \
-./Sources/aquecedorECooler.o \
+./Sources/lptmr.o \
 ./Sources/main.o \
 ./Sources/mcg.o \
+./Sources/tacometro.o \
 ./Sources/util.o 
 
 C_DEPS += \
-./Sources/aquecedorECooler.d \
+./Sources/lptmr.d \
 ./Sources/main.d \
 ./Sources/mcg.d \
+./Sources/tacometro.d \
 ./Sources/util.d 
 
 

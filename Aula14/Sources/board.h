@@ -5,7 +5,7 @@
 /*                                                                   */
 /* Author name:      Rodrigo M Bacurau/Gustavo M./Cassio D.          */
 /* Creation date:    26fev2020                                       */
-/* Revision date:    18abr2020                                       */
+/* Revision date:    10maio2020                                       */
 /* ***************************************************************** */
 
 #ifndef SOURCES_BOARD_H_
@@ -22,16 +22,12 @@
 #define COOLER_PWM_BASE_PNT            PTA                                     /* peripheral gpio base pointer */
 
 #define COOLER_PIN                     13U                                      /* register selector */
-/*#define COOLER_DIR                       (GPIO_OUTPUT << COOLER_PIN)
-#define COOLER_ALT                       kPortMuxAsGpio*/
+
 
 #define ENCODER_PORT_BASE_PNT           PORTE                                   /* peripheral port base pointer */
 #define ENCODER_PWM_BASE_PNT            PTE                                     /* peripheral gpio base pointer */
 
 #define ENCODER_PIN                     29U                                      /* register selector */
-/*#define COOLER_DIR                       (GPIO_OUTPUT << COOLER_PIN)
-#define COOLER_ALT                       kPortMuxAsGpio*/
-
 
 /*                 END OF ATUADORES definitions                 */
 

@@ -11,8 +11,8 @@
 /*                                                                          */
 /* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
 /* RA:                   174217/168988                                      */
-/* Data de criacao:      24abril2020                                        */
-/* Data da revisao:      26abril2020                                        */
+/* Data de criacao:      09maio2020                                        */
+/* Data da revisao:      10maio2020                                        */
 /* ************************************************************************ */
 
 /* our includes */
@@ -22,6 +22,14 @@
 #include "lptmr.h"
 
 
+/* *************************************************************** */
+/* Nome da funcao: 	           main_cyclicExecuteIsr               */
+/* Descricao da funcao:        Função da rotina de interrupção que */
+/*                             faz a chamada da função que lê a    */
+/*                             velocidade do cooler                */
+/* parametros de entrada:	   n/a                                 */
+/* parametros de saida:	       n/a 					               */
+/* *************************************************************** */
  void main_cyclicExecuteIsr(void)
 {
     tachometer_readSensor(250000);
@@ -44,7 +52,7 @@ void iniciarPlaca(void)
 
 /* *********************************************************************** */
 /* Nome da funcao: 	           main         		                       */
-/* Descricao da funcao:        Inicializa o contador e chama as funções    */
+/* Descricao da funcao:        Inicializa o contador e a placa             */
 /*                             dos atuadores para o controle do Duty Cycle */
 /* parametros de entrada:	   n/a                                         */
 /* parametros de saida:	       n/a 					                       */
@@ -54,11 +62,10 @@ int main(void)
 
     iniciarPlaca();
 
+    /* Dá inicio a contagem da interrupção e chama a função para trata-la quando occore */
     tc_installLptmr0(250000,main_cyclicExecuteIsr);
 
+    /* Loop infinito para prender o sistema até que uma interrupção seja gerada */
     while(1)
-    {
-
-    }
-
+    { }
 }

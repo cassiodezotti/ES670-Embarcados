@@ -1,35 +1,30 @@
-/* ************************************************************************ */
-/* Nome do Arquivo:      main.c                                             */
-/* Descricao do arquivo: Este arquivo inicializa a placa                    */
-/*                       fazendo a inicializacao do clock e do PWM          */
-/*                                                                          */
-/*                       Caracteristicas do processador MKL25Z128VLK4       */
-/*                       48 MHz ARM Cortex-M0+ core                         */
-/*                       128 KB program flash memory                        */
-/*                       16 KB SRAM                                         */
-/*                       Voltage range: 1.71 to 3.6 V                       */
-/*                                                                          */
-/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
-/* RA:                   174217/168988                                      */
-/* Data de criacao:      24abril2020                                        */
-/* Data da revisao:      26abril2020                                        */
-/* ************************************************************************ */
+/* ******************************************************************************* */
+/* Nome do Arquivo:      tacometro.h                                               */
+/* Descricao do arquivo: Este arquivo apresenta as funções que serão desenvolvidas */
+/*                       no programa.                                              */
+/*                                                                                 */
+/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                             */
+/* RA:                   174217/168988                                             */
+/* Data de criacao:      09maio2020                                                */
+/* Data da revisao:      10maio2020                                                */
+/* ******************************************************************************* */
 
 
-/* ************************************************************ */
-/* Nome da funcao: 	           iniciarPlaca         		    */
-/* Descricao da funcao:        Inicia a placa e o PWM           */
-/* parametros de entrada:	   n/a                              */
-/* parametros de saida:	       n/a 					            */
-/* ************************************************************ */
+/* ****************************************************************** */
+/* Nome da funcao: 	           tachometer_init         		          */
+/* Descricao da funcao:        Inicia o PWM e configura os parâmetros */
+/*                             necessários do modo correto            */
+/* parametros de entrada:	   n/a                                    */
+/* parametros de saida:	       n/a 					                  */
+/* ****************************************************************** */
 void tachometer_init();
 
-/* ************************************************************ */
-/* Nome da funcao: 	           iniciarPlaca         		    */
-/* Descricao da funcao:        Inicia a placa e o PWM           */
-/* parametros de entrada:	   n/a                              */
-/* parametros de saida:	       n/a 					            */
-/* ************************************************************ */
+/* *********************************************************************** */
+/* Nome da funcao: 	           tachometer_readSensor                       */
+/* Descricao da funcao:        Recebe o valor do período do sinal do clock */
+/*                             e calcula a velocidade do cooler em RPM     */
+/*                                                                         */
+/* parametros de entrada:	   Período do sinal                            */
+/* parametros de saida:	       Velocidade do cooler em RPM                 */
+/* *********************************************************************** */
 unsigned int tachometer_readSensor(unsigned int uiPeriod);
-
-#endif

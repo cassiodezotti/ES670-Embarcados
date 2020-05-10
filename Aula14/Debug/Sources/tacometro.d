@@ -1,4 +1,4 @@
-Sources/main.o: ../Sources/main.c ../Sources/board.h \
+Sources/tacometro.o: ../Sources/tacometro.c ../Sources/board.h \
  ../SDK/platform/devices/MKL25Z4/include/MKL25Z4.h \
  ../SDK/platform/CMSIS/Include/core_cm0plus.h \
  ../SDK/platform/CMSIS/Include/core_cmInstr.h \
