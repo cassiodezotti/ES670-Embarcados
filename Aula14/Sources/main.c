@@ -21,7 +21,7 @@
 #include "tacometro.h"
 #include "lptmr.h"
 
-
+unsigned int uiVelTacometro = 0
 /* *************************************************************** */
 /* Nome da funcao: 	           main_cyclicExecuteIsr               */
 /* Descricao da funcao:        Função da rotina de interrupção que */
@@ -32,7 +32,7 @@
 /* *************************************************************** */
  void main_cyclicExecuteIsr(void)
 {
-    tachometer_readSensor(250000);
+	uiVelTacometro = tachometer_readSensor(250000);
 }
 
 /* ************************************************************ */
