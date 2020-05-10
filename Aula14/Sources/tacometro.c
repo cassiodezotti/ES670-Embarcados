@@ -54,14 +54,19 @@ void tachometer_init()
 /* *********************************************************************** */
 unsigned int tachometer_readSensor(unsigned int uiPeriod)
 {
+	unsigned int uiPeriodo = uiPeriod/1000;
     unsigned char ucNPulsos = TPM0_CNT;
     unsigned int uiVelocidade;
 
-    /* Divide o número de pulsos pelo período recebido */
-    uiVelocidade = ucNPulsos / uiPeriod;
+    /* Divide o número de pulsos pelo período recebido, multiplica
+     * por 60000 mili segundos para transformar em RPM e divide
+     * por 7 pois temos 7 pás.
+     */
+    uiVelocidade = ucNPulsos * 60000;
+    uiVelocidade = uiVelocidade / 7;
+    uiVelocidade = uiVelocidade / uiPeriodo;
 
-    /* Multiplica a velocidade encontrada por 60 para obtê-lá em RPM */
-    uiVelocidade *= 60;
+
 
     /* Zera o contador */
     TPM0_CNT &= ~(0xFFFF);
