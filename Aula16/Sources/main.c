@@ -11,8 +11,8 @@
 /*                                                                          */
 /* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
 /* RA:                   174217/168988                                      */
-/* Data de criacao:      14maio2020                                        */
-/* Data da revisao:      15maio2020                                        */
+/* Data de criacao:      14maio2020                                         */
+/* Data da revisao:      15maio2020                                         */
 /* ************************************************************************ */
 
 /* our includes */
@@ -20,7 +20,16 @@
 #include "mcg.h"
 #include "UART.h"
 #include "print_scan.h"
+#include "communicationStateMachine.h";
 
+#define MAX_VALUE_LENGHT 7
+
+unsigned char ucAnswer[MAX_VALUE_LENGHT+1];
+unsigned char ucTemperatura[MAX_VALUE_LENGHT+1];
+unsigned char ucEnable;
+unsigned char ucTempAtual[2];
+unsigned char ucHeaterDuty[4];
+unsigned char ucCoolerDuty[4];
 
 /* ************************************************************ */
 /* Nome da funcao: 	           iniciarPlaca         		    */
@@ -51,9 +60,6 @@ int main(void)
     /* Habilita a interrupção */
     UART0_enableIRQ();
 
-    /*Loop infinito para aguardar a interrupção */
-    while(1)
-    {
 
-    }
+
 }

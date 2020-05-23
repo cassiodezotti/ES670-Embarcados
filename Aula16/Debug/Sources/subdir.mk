@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Sources/UART.c \
+../Sources/communicationStateMachine.c \
 ../Sources/fsl_debug_console.c \
 ../Sources/main.c \
 ../Sources/mcg.c \
@@ -13,6 +14,7 @@ C_SRCS += \
 
 OBJS += \
 ./Sources/UART.o \
+./Sources/communicationStateMachine.o \
 ./Sources/fsl_debug_console.o \
 ./Sources/main.o \
 ./Sources/mcg.o \
@@ -21,6 +23,7 @@ OBJS += \
 
 C_DEPS += \
 ./Sources/UART.d \
+./Sources/communicationStateMachine.d \
 ./Sources/fsl_debug_console.d \
 ./Sources/main.d \
 ./Sources/mcg.d \
