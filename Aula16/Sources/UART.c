@@ -16,15 +16,9 @@
 #include "fsl_smc_hal.h"
 #include "fsl_debug_console.h"
 #include "communicationStateMachine.h"
+#include "board.h"
 
-/* UART definitions */
-#ifndef BOARD_DEBUG_UART_INSTANCE
-    #define BOARD_DEBUG_UART_INSTANCE   0
-    #define BOARD_DEBUG_UART_BASEADDR   UART0
-#endif
-#ifndef BOARD_DEBUG_UART_BAUD
-    #define BOARD_DEBUG_UART_BAUD       115200
-#endif
+
 
 
 /* ************************************************ */
@@ -37,9 +31,9 @@ void UART0_init (void)
 {
     /* UART0 */
     /* UART0_RX */
-    PORT_HAL_SetMuxMode(PORTA, 1u, kPortMuxAlt2);
+    PORT_HAL_SetMuxMode(UART_PORT, UART_PIN_1, UART_ALT);
     /* UART0_TX */
-    PORT_HAL_SetMuxMode(PORTA, 2u, kPortMuxAlt2);
+    PORT_HAL_SetMuxMode(UART_PORT, UART_PIN_2, UART_ALT);
 
     /* Select the clock source for UART0 */
     SIM_SOPT2 |= 0x4000000;

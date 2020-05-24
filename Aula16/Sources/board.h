@@ -18,17 +18,16 @@
 
 /*                 ATUADORES definitions                 */
 
-#define COOLER_PORT_BASE_PNT           PORTA                                   /* peripheral port base pointer */
-#define COOLER_PWM_BASE_PNT            PTA                                     /* peripheral gpio base pointer */
+#define BOARD_DEBUG_UART_INSTANCE   0
+#define BOARD_DEBUG_UART_BASEADDR   UART0
+#define BOARD_DEBUG_UART_BAUD       115200
 
-#define COOLER_PIN                     13U                                      /* register selector */
+#define UART_PORT                   PORTA
+#define UART_ALT                    kPortMuxAlt2
+#define UART_PIN_1                  1u
+#define UART_PIN_1                  2u
 
 
-#define ENCODER_PORT_BASE_PNT           PORTE                                   /* peripheral port base pointer */
-#define ENCODER_PWM_BASE_PNT            PTE                                     /* peripheral gpio base pointer */
 
-#define ENCODER_PIN                     29U                                      /* register selector */
-
-/*                 END OF ATUADORES definitions                 */
 
 #endif /* SOURCES_BOARD_H_ */

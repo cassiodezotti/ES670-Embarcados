@@ -27,7 +27,7 @@
 unsigned char ucAnswer[MAX_VALUE_LENGHT+1];
 unsigned char ucTemperatura[MAX_VALUE_LENGHT+1];
 unsigned char ucEnable;
-unsigned char ucTempAtual[2];
+unsigned char ucTempAtual[4];
 unsigned char ucHeaterDuty[4];
 unsigned char ucCoolerDuty[4];
 
