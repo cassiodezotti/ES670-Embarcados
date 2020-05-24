@@ -1,10 +1,11 @@
-/* ***************************************************************** */
-/* File name:        UART.c                                          */
-/* File description: Debugging through UART interface                */
-/* Author name:      dloubach, rbacurau                              */
-/* Creation date:    22out2015                                       */
-/* Revision date:    01mai2020                                       */
-/* ***************************************************************** */
+/* ********************************************************************* */
+/* File name:        communicationStateMachine.c                         */
+/* File description: Desenvolve a maquina de estados e as outras funções */
+/*                   que cuidam da comunicação                           */
+/* Author name:      Gustavo M./Cassio D.                                */
+/* Creation date:    22mai2020                                           */
+/* Revision date:    24mai2020                                           */
+/* ********************************************************************* */
 
 /* definition include */
 #include "communicationStateMachine.h"
@@ -202,7 +203,7 @@ void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT+1])
 /* ************************************************* */
 void lerTemp()
 {
-	for(i=0;i<4;i++){
+	for(int i=0;i<4;i++){
 	    ucAnswer[i+2] = ucTempAtual[i];
 	}
 	ucAnswer[6] = 0x3b;
@@ -218,7 +219,7 @@ void lerTemp()
 /* ************************************************* */
 void heater_PWMDuty()
 {
-	for(i=0;i<4;i++){
+	for(int i=0;i<4;i++){
         ucAnswer[i+2] = ucHeaterDuty[0];
 	}
 	ucAnswer[6] = 0x3b;
@@ -234,10 +235,8 @@ void heater_PWMDuty()
 /* ************************************************* */
 void coolerFan_PWMDuty()
 {
-	for(i=0;i<4;i++){
+	for(int i=0;i<4;i++){
 	    ucAnswer[i+2] = ucCoolerDuty[0];
 	}
 	ucAnswer[6] = 0x3b;
 }
-
-

@@ -19,8 +19,6 @@
 #include "board.h"
 
 
-
-
 /* ************************************************ */
 /* Method name:        UART0_init               */
 /* Method description: Initialize the UART0 as debug*/
@@ -73,6 +71,5 @@ void UART0_IRQHandler(void)
 {
 	// Echo received character
 	processamentoByte(debug_getchar());
-	//debug_putchar(debug_getchar());
 }
 

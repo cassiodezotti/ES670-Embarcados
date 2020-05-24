@@ -1,10 +1,10 @@
-/* ***************************************************************** */
-/* File name:        UART.h                                          */
-/* File description: Debugging through UART interface                */
-/* Author name:      dloubach, rbacurau                              */
-/* Creation date:    22out2015                                       */
-/* Revision date:    01mai2020                                       */
-/* ***************************************************************** */
+/* *********************************************************************** */
+/* File name:        communicationStateMachine.c                           */
+/* File description: Contêm a descrição das funções utilizadas no programa */
+/* Author name:      Gustavo M./Cassio D.                                  */
+/* Creation date:    22mai2020                                             */
+/* Revision date:    24mai2020                                             */
+/* *********************************************************************** */
 
 #ifndef COMMUNICATION_STATE_MACHINE_H_
 #define COMMUNICATION_STATE_MACHINE_H_

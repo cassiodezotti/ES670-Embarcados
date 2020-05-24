@@ -21,7 +21,9 @@ Sources/UART.o: ../Sources/UART.c ../Sources/UART.h \
  C:/Freescale/KSDK_1.2.0/platform/hal/inc/fsl_smc_hal.h \
  C:/Freescale/KSDK_1.2.0/platform/utilities/inc/fsl_debug_console.h \
  C:/Freescale/KSDK_1.2.0/platform/osa/inc/fsl_os_abstraction.h \
- C:/Freescale/KSDK_1.2.0/platform/osa/inc/fsl_os_abstraction_bm.h
+ C:/Freescale/KSDK_1.2.0/platform/osa/inc/fsl_os_abstraction_bm.h \
+ ../Sources/communicationStateMachine.h ../Sources/board.h \
+ ../SDK/platform/devices/MKL25Z4/include/MKL25Z4.h
 
 ../Sources/UART.h:
 
@@ -70,3 +72,9 @@ C:/Freescale/KSDK_1.2.0/platform/utilities/inc/fsl_debug_console.h:
 C:/Freescale/KSDK_1.2.0/platform/osa/inc/fsl_os_abstraction.h:
 
 C:/Freescale/KSDK_1.2.0/platform/osa/inc/fsl_os_abstraction_bm.h:
+
+../Sources/communicationStateMachine.h:
+
+../Sources/board.h:
+
+../SDK/platform/devices/MKL25Z4/include/MKL25Z4.h:

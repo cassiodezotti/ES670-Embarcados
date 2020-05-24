@@ -1,7 +1,7 @@
 /* ************************************************************************ */
 /* Nome do Arquivo:      main.c                                             */
 /* Descricao do arquivo: Este arquivo inicializa a placa                    */
-/*                       fazendo a inicializacao do clock e do PWM          */
+/*                       fazendo a inicializacao da interrupção e da UART   */
 /*                                                                          */
 /*                       Caracteristicas do processador MKL25Z128VLK4       */
 /*                       48 MHz ARM Cortex-M0+ core                         */
@@ -11,8 +11,8 @@
 /*                                                                          */
 /* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
 /* RA:                   174217/168988                                      */
-/* Data de criacao:      14maio2020                                         */
-/* Data da revisao:      15maio2020                                         */
+/* Data de criacao:      22maio2020                                         */
+/* Data da revisao:      24maio2020                                         */
 /* ************************************************************************ */
 
 /* our includes */
@@ -20,7 +20,7 @@
 #include "mcg.h"
 #include "UART.h"
 #include "print_scan.h"
-#include "communicationStateMachine.h";
+#include "communicationStateMachine.h"
 
 #define MAX_VALUE_LENGHT 7
 
@@ -33,7 +33,7 @@ unsigned char ucCoolerDuty[4];
 
 /* ************************************************************ */
 /* Nome da funcao: 	           iniciarPlaca         		    */
-/* Descricao da funcao:        Inicia a placa e o PWM           */
+/* Descricao da funcao:        Inicia a placa e o UART          */
 /* parametros de entrada:	   n/a                              */
 /* parametros de saida:	       n/a 					            */
 /* ************************************************************ */
@@ -60,6 +60,8 @@ int main(void)
     /* Habilita a interrupção */
     UART0_enableIRQ();
 
+    while(1)
+    {
 
-
+    }
 }
