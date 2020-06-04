@@ -19,6 +19,19 @@
 #include "board.h"
 #include "mcg.h"
 #include "aquecedorECooler.h"
+#include "adc.h"
+#include "UART.h"
+#include "print_scan.h"
+#include "communicationStateMachine.h"
+
+#define MAX_VALUE_LENGHT 7
+
+unsigned char ucAnswer[MAX_VALUE_LENGHT+1];
+unsigned char ucTemperatura[MAX_VALUE_LENGHT+1];
+unsigned char ucEnable;
+unsigned char ucTempAtual[4];
+unsigned char ucHeaterDuty[4];
+unsigned char ucCoolerDuty[4];
 
 
 unsigned char ucPeriodo = 0x64;
@@ -35,7 +48,8 @@ void iniciarPlaca(void)
     mcg_clockInit();
 
     /* Inicializacao do PWM */
-    PWM_init();
+    adc_initADCModule();
+    adc_initConvertion();
 }
 
 /* *********************************************************************** */
@@ -49,8 +63,20 @@ int main(void)
 {
     float fDutyC = 0.5;
 	float fDutyH = 0.5;
+	int iValorTemp = 0;
 
     iniciarPlaca();
+
+    while(1)
+    {
+        if(adc_isAdcDone)
+        {
+        	iValorTemp = adc_getConvertionValue();
+        	adc_initConvertion();
+        }
+    }
+
+
 
     coolerfan_init();
     heater_init();

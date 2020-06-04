@@ -60,6 +60,8 @@
 									<listOptionValue builtIn="false" value="C:/Freescale/KSDK_1.2.0/platform/hal/inc"/>
 									<listOptionValue builtIn="false" value="C:/Freescale/KSDK_1.2.0/platform/system/inc"/>
 									<listOptionValue builtIn="false" value="C:/Freescale/KSDK_1.2.0/platform/osa/inc"/>
+									<listOptionValue builtIn="false" value="&quot;${PROJECT_KSDK_PATH}/platform/utilities/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${PROJECT_KSDK_PATH}/platform/utilities/src&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1645366389" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="&quot;CPU_MKL25Z128VLK4&quot;"/>

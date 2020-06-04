@@ -69,7 +69,7 @@ void lerTemp();
 /* Input params:       n/a                           */
 /* Output params:      n/a                           */
 /* ************************************************* */
-void heater_PWMDuty();
+void heater_PWMDuty1();
 
 /* ************************************************* */
 /* Method name:        coolerFan_PWMDuty             */
@@ -79,6 +79,6 @@ void heater_PWMDuty();
 /* Input params:       n/a                           */
 /* Output params:      n/a                           */
 /* ************************************************* */
-void coolerFan_PWMDuty();
+void coolerFan_PWMDuty1();
 
 #endif /* UART_H_ */

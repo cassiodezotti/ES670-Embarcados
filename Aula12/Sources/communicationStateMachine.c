@@ -158,10 +158,10 @@ void returnPARAM(unsigned char ucPARAM)
 	    	lerTemp();
 	        break;
 	    case 'a':
-	    	heater_PWMDuty();
+	    	heater_PWMDuty1();
 	    	break;
 	    case 'c':
-	    	coolerFan_PWMDuty();
+	    	coolerFan_PWMDuty1();
 	    	break;
 	}
 }
@@ -217,7 +217,7 @@ void lerTemp()
 /* Input params:       n/a                           */
 /* Output params:      n/a                           */
 /* ************************************************* */
-void heater_PWMDuty()
+void heater_PWMDuty1()
 {
 	for(int i=0;i<4;i++){
         ucAnswer[i+2] = ucHeaterDuty[0];
@@ -233,7 +233,7 @@ void heater_PWMDuty()
 /* Input params:       n/a                           */
 /* Output params:      n/a                           */
 /* ************************************************* */
-void coolerFan_PWMDuty()
+void coolerFan_PWMDuty1()
 {
 	for(int i=0;i<4;i++){
 	    ucAnswer[i+2] = ucCoolerDuty[0];
