@@ -33,13 +33,13 @@ void PWM_init()
     SIM_SOPT2 |= 0x3000000;
 
     /*Configurar o contador do clock como up counting e a cada pulso */
-    TPM1_SC &= ~(0x30);
+    TPM1_SC &= ~(0x030);
     TPM1_SC |= 0x8;
 
     /*configurar o período do PWM para 10 Hz com o contador
      * estourando em 100 (MOD+1) MOD = 99 (0x0063)
      */
-    TPM1_CNT &= ~(0xFFFF);
+
     /* Configura o estouro do contador como Periodo - 1 = 0x0063 (99) */
     TPM1_MOD |= 0x0063;
 

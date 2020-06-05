@@ -62,23 +62,25 @@ void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT+1]);
 void lerTemp();
 
 /* ************************************************* */
-/* Method name:        heater_PWMDuty                */
+/* Method name:        lerHeaterDuty                */
 /* Method description: Funcao para ler duty cycle do */
 /*                     aquecedor, sera reformulada   */
 /*                     nas proximas etapas           */
 /* Input params:       n/a                           */
 /* Output params:      n/a                           */
 /* ************************************************* */
-void heater_PWMDuty1();
+void lerHeaterDuty();
 
 /* ************************************************* */
-/* Method name:        coolerFan_PWMDuty             */
+/* Method name:        lerCoolerFanDuty             */
 /* Method description: Funcao para ler duty cycle do */
 /*                     cooler, sera reformulada nas  */
 /*                     proximas etapas               */
 /* Input params:       n/a                           */
 /* Output params:      n/a                           */
 /* ************************************************* */
-void coolerFan_PWMDuty1();
+void lerCoolerFanDuty();
+
+float UARTReceiveIRQ(unsigned char ucReceivedChar)
 
 #endif /* UART_H_ */

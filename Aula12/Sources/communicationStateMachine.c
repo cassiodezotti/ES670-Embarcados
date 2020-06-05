@@ -10,6 +10,8 @@
 /* definition include */
 #include "communicationStateMachine.h"
 #include "board.h"
+#include "aquecedorECooler.h"
+#include "adc.h"
 
 #define IDDLE '0'
 #define READY '1'
@@ -19,14 +21,21 @@
 #define VALUE '5'
 #define MAX_VALUE_LENGHT 7
 
+typedef union {
+	unsigned char ucBytes[4];
+	float fReal;
+}floatUCharType;
+
 unsigned char ucUARTState = IDDLE;
 unsigned char ucValueCount = '0';
+extern int iValorTempAtual;
 extern unsigned char ucAnswer[MAX_VALUE_LENGHT+1];
 extern unsigned char ucTemperatura[MAX_VALUE_LENGHT+1];
 extern unsigned char ucEnable;
 extern unsigned char ucTempAtual[4];
 extern unsigned char ucHeaterDuty[4];
 extern unsigned char ucCoolerDuty[4];
+
 
 /* ************************************************ */
 /* Method name:        processamentoByte            */
@@ -88,7 +97,7 @@ void processamentoByte(unsigned char ucByte)
     		      * local 'e'.
     		      */
     		    case SET:
-    		    	if('t' == ucByte || 'e' == ucByte)
+    		    	if('t' == ucByte || 'e' == ucByte || 'a' == ucByte || 'c' == ucByte)
     		    	{
     		    		ucPARAM = ucByte;
     		      		ucUARTState = VALUE;
@@ -158,10 +167,14 @@ void returnPARAM(unsigned char ucPARAM)
 	    	lerTemp();
 	        break;
 	    case 'a':
-	    	heater_PWMDuty1();
+	    	/*no futuro será implementado*/
+	    	lerHeaterDuty();
 	    	break;
 	    case 'c':
-	    	coolerFan_PWMDuty1();
+	    	/*no futuro será implementado*/
+	    	lerCoolerFanDuty();
+	    	break;
+	    default:
 	    	break;
 	}
 }
@@ -181,16 +194,34 @@ void returnPARAM(unsigned char ucPARAM)
 /* ************************************************ */
 void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT+1])
 {
-	if('t' == ucPARAM)
-	{
-		for(int i=0; i<MAX_VALUE_LENGHT; i++)
-		{
-			ucTemperatura[i] = ucValue[i];
+	float aux;
+	switch(ucParam){
+	case: 't':
+	    /*no projeto será implementado*/
+	    for(int i=0; i<MAX_VALUE_LENGHT; i++)
+			{
+				ucTemperatura[i] = ucValue[i];
+			}
+	    break;
+	case: 'e':
+	    /*no projeto será implementado*/
+	    ucEnable = ucValue[0];
+		break;
+	case: 'a':
+	    for(int i=0;i<4;i++){
+	    	aux = UARTReceiveIRQ(ucValue[i]);
+	    }
+	    heater_PWMDuty(aux);
+		break;
+	case: 'c':
+	    for(int i=0;i<4;i++){
+			aux = UARTReceiveIRQ(ucValue[i]);
 		}
+	    coolerfan_PWMDuty(aux);
+		break;
 	}
 
-	else if('e' == ucPARAM)
-	   ucEnable = ucValue[0];
+
 }
 
 /* ************************************************* */
@@ -203,10 +234,12 @@ void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT+1])
 /* ************************************************* */
 void lerTemp()
 {
-	for(int i=0;i<4;i++){
-	    ucAnswer[i+2] = ucTempAtual[i];
-	}
-	ucAnswer[6] = 0x3b;
+    if(adc_isAdcDone())
+    {
+    	iValorTempAtual = adc_getConvertionValue();
+        adc_initConvertion();
+    }
+
 }
 
 /* ************************************************* */
@@ -217,7 +250,7 @@ void lerTemp()
 /* Input params:       n/a                           */
 /* Output params:      n/a                           */
 /* ************************************************* */
-void heater_PWMDuty1()
+void lerHeaterDuty()
 {
 	for(int i=0;i<4;i++){
         ucAnswer[i+2] = ucHeaterDuty[0];
@@ -233,10 +266,30 @@ void heater_PWMDuty1()
 /* Input params:       n/a                           */
 /* Output params:      n/a                           */
 /* ************************************************* */
-void coolerFan_PWMDuty1()
+void lerCoolerFanDuty()
 {
 	for(int i=0;i<4;i++){
 	    ucAnswer[i+2] = ucCoolerDuty[0];
 	}
 	ucAnswer[6] = 0x3b;
+}
+
+
+
+
+
+
+float UARTReceiveIRQ(unsigned char ucReceivedChar)
+{
+	floatUCharType varFloatUChar;
+	static unsignedchar ucCount;
+
+	varFloatUChar.ucBytes[ucCount] = ucReceivedChar;
+	if(++ucCount>= 4)
+	{
+		return varFloatUChar.fReal;
+		ucCount= 0;
+
+	}
+	return (0);
 }

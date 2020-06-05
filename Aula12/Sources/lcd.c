@@ -45,7 +45,7 @@ void lcd_initLcd(void)
 
     int i;
 
-    unsigned char ucVetorInit = 0;
+    unsigned int uiVetorInit = 0;
     /* pins configured as outputs */
 
     /* un-gate port clock*/
@@ -70,13 +70,13 @@ void lcd_initLcd(void)
     /* set pin as digital output */
     for(i=0;i<10;i++)
     {
-        ucVetorInit |= (1 << i);
+        uiVetorInit |= (1 << i);
     }
     /*
      * Apos esse for, temos um os primeiros 10 pinos setados com 1
      * para passar como output.
      */
-    GPIOC_PDDR |= ucVetorInit;  //colocando 1 nos pinos de 0 a 9
+    GPIOC_PDDR |= uiVetorInit;  //colocando 1 nos pinos de 0 a 9
 
 
     /* turn-on LCD, with no cursor and no blink */
@@ -113,13 +113,19 @@ void lcd_write2Lcd(unsigned char ucBuffer,  unsigned char cDataType)
     unsigned char ucAux = 0;
     int i;
 
+
+
     /* writing data or command */
-    if(LCD_RS_CMD == cDataType)
+    if(LCD_RS_CMD == cDataType){
         /* will send a command */
+       GPIOC_PSOR &= ~(0x17F);
        GPIOC_PCOR |= (1 << LCD_RS_PIN);
-    else
+    }
+    else{
         /* will send data */
+       GPIOC_PSOR &= ~(0x17F);
        GPIOC_PSOR |= (1 << LCD_RS_PIN);
+    }
 
 
     /*

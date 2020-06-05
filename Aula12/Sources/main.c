@@ -23,6 +23,7 @@
 #include "UART.h"
 #include "print_scan.h"
 #include "communicationStateMachine.h"
+#include "lcd.h"
 
 #define MAX_VALUE_LENGHT 7
 
@@ -32,7 +33,7 @@ unsigned char ucEnable;
 unsigned char ucTempAtual[4];
 unsigned char ucHeaterDuty[4];
 unsigned char ucCoolerDuty[4];
-
+int iValorTempAtual = 0;
 
 unsigned char ucPeriodo = 0x64;
 
@@ -50,6 +51,11 @@ void iniciarPlaca(void)
     /* Inicializacao do PWM */
     adc_initADCModule();
     adc_initConvertion();
+    lerTemperatura();
+    lcd_initLcd();
+    UART0_init();
+    coolerfan_init();
+    heater_init();
 }
 
 /* *********************************************************************** */
@@ -64,25 +70,28 @@ int main(void)
     float fDutyC = 0.5;
 	float fDutyH = 0.5;
 	int iValorTemp = 0;
+	const char cMensagem1[] = "A Temperatura é: ";
+	const char cValor = iValorTempAtual+'0';
+	const char *c;
 
     iniciarPlaca();
 
-    while(1)
-    {
-        if(adc_isAdcDone)
-        {
-        	iValorTemp = adc_getConvertionValue();
-        	adc_initConvertion();
-        }
+    UART0_enableIRQ();
+
+    while(1){
+    	/* clear LCD */
+    	lcd_sendCommand(CMD_CLEAR);
+    	/* set the cursor line 0, column 1 */
+    	lcd_setCursor(0,1);
+    	c = cMensagem1;
+    	lcd_writeText(0,c);
+    	c = cValor;
+        lcd_writeText(1,c);
     }
 
 
 
-    coolerfan_init();
-    heater_init();
 
-    /* Definindo 50% para o Duty Cycle */
-    coolerfan_PWMDuty(fDutyC);
-    heater_PWMDuty(fDutyH);
+
 
 }
