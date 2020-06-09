@@ -66,16 +66,17 @@ void iniciarPlaca(void)
 /* *********************************************************************** */
 int main(void)
 {
+	int iAux=0;
 	const char cMensagem1[] = "A Temperatura é: ";
-	const char cValor = iValorTempAtual+'0';
 	const char *c;
-	const char cTemp[] = {cValor};
+	const char cTemp[] = "00";
 
     iniciarPlaca();
 
     UART0_enableIRQ();
 
     while(1){
+
     	/* clear LCD */
     	lcd_sendCommand(CMD_CLEAR);
     	/* set the cursor line 0, column 1 */
@@ -83,6 +84,13 @@ int main(void)
     	c = cMensagem1;
     	lcd_writeText(0,c);
         lerTemp();
+        /*separa dezena de unidade*/
+        iAux = (iValorTempAtual/10)+48;
+        cTemp[0]=(char)iAux;
+
+        iAux = (iValorTempAtual%10)+48;
+        /*converte int para char*/
+        cTemp[1]=(char)iAux;
         /* Escreve a temperatura no LCD */
     	c = cTemp;
         lcd_writeText(1,c);
