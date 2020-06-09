@@ -12,6 +12,7 @@
 #include "board.h"
 #include "aquecedorECooler.h"
 #include "adc.h"
+#include "lut_adc_3v3.h"
 
 #define IDDLE '0'
 #define READY '1'
@@ -26,11 +27,17 @@ typedef union {
 	float fReal;
 }floatUCharType;
 
+typedef union {
+	unsigned char ucBytes[4];
+	int fReal;
+}
+intUCharType;
+
 unsigned char ucUARTState = IDDLE;
 unsigned char ucValueCount = '0';
 extern int iValorTempAtual;
-extern unsigned char ucAnswer[MAX_VALUE_LENGHT+1];
-extern unsigned char ucTemperatura[MAX_VALUE_LENGHT+1];
+extern unsigned char ucAnswer[MAX_VALUE_LENGHT];
+extern unsigned char ucTemperatura[4];
 extern unsigned char ucEnable;
 extern unsigned char ucTempAtual[4];
 extern unsigned char ucHeaterDuty[4];
@@ -49,7 +56,7 @@ extern unsigned char ucCoolerDuty[4];
 void processamentoByte(unsigned char ucByte)
 {
 	static unsigned char ucPARAM;
-	static unsigned char ucValue[MAX_VALUE_LENGHT+1];
+	static unsigned char ucValue[MAX_VALUE_LENGHT];
 
 
 	/* Toda mensagem comeca com '#'*/
@@ -177,6 +184,9 @@ void returnPARAM(unsigned char ucPARAM)
 	    default:
 	    	break;
 	}
+	for(int i=0;i<MAX_VALUE_LENGHT;i++){
+        putchar(cuAnswer[i])
+	}
 }
 
 /* ************************************************ */
@@ -192,7 +202,7 @@ void returnPARAM(unsigned char ucPARAM)
 /*                     interface local              */
 /* Output params:      n/a                          */
 /* ************************************************ */
-void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT+1])
+void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT])
 {
 	float aux;
 	switch(ucParam){
@@ -210,6 +220,9 @@ void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT+1])
 	case: 'a':
 	    for(int i=0;i<4;i++){
 	    	aux = UARTReceiveIRQ(ucValue[i]);
+	    }
+	    if(aux>0.5){
+	        aux=0.5;
 	    }
 	    heater_PWMDuty(aux);
 		break;
@@ -234,12 +247,13 @@ void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT+1])
 /* ************************************************* */
 void lerTemp()
 {
-    if(adc_isAdcDone())
+	adc_initConvertion();
+    while(!adc_isAdcDone())
     {
-    	iValorTempAtual = adc_getConvertionValue();
-        adc_initConvertion();
-    }
 
+    }
+    iValorTempAtual = tabela_temp[adc_getConvertionValue()];
+    //atualizar answer
 }
 
 /* ************************************************* */
@@ -253,7 +267,7 @@ void lerTemp()
 void lerHeaterDuty()
 {
 	for(int i=0;i<4;i++){
-        ucAnswer[i+2] = ucHeaterDuty[0];
+        ucAnswer[i+2] = ucHeaterDuty[i];
 	}
 	ucAnswer[6] = 0x3b;
 }
@@ -269,7 +283,7 @@ void lerHeaterDuty()
 void lerCoolerFanDuty()
 {
 	for(int i=0;i<4;i++){
-	    ucAnswer[i+2] = ucCoolerDuty[0];
+	    ucAnswer[i+2] = ucCoolerDuty[i];
 	}
 	ucAnswer[6] = 0x3b;
 }
@@ -279,7 +293,7 @@ void lerCoolerFanDuty()
 
 
 
-float UARTReceiveIRQ(unsigned char ucReceivedChar)
+float convertChar2Float(unsigned char ucReceivedChar)
 {
 	floatUCharType varFloatUChar;
 	static unsignedchar ucCount;
@@ -292,4 +306,24 @@ float UARTReceiveIRQ(unsigned char ucReceivedChar)
 
 	}
 	return (0);
+}
+
+
+
+
+void convertInt2Char(int ucReceivedInt)
+{
+	unsigned char ucAux[4];
+	intUCharType varIntUChar;
+	unsigned char ucSendChar, ucCount;
+	int iSendReal;
+
+	varIntUChar.iReal= ucReceivedInt;
+
+	for (ucCount= 0; ucCount< 4; ucCount++)
+	{
+		ucSendChar= varIntUChar.ucBytes[ucCount];
+		ucAnswer[ucCount+2] = ucSendChar;
+	}
+	ucAnswer[6] = 0x3b;
 }

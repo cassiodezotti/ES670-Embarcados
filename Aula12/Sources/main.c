@@ -25,10 +25,11 @@
 #include "communicationStateMachine.h"
 #include "lcd.h"
 
+
 #define MAX_VALUE_LENGHT 7
 
-unsigned char ucAnswer[MAX_VALUE_LENGHT+1];
-unsigned char ucTemperatura[MAX_VALUE_LENGHT+1];
+unsigned char ucAnswer[MAX_VALUE_LENGHT];
+unsigned char ucTemperatura[4];
 unsigned char ucEnable;
 unsigned char ucTempAtual[4];
 unsigned char ucHeaterDuty[4];
@@ -51,7 +52,6 @@ void iniciarPlaca(void)
     /* Inicializacao do PWM */
     adc_initADCModule();
     adc_initConvertion();
-    lerTemperatura();
     lcd_initLcd();
     UART0_init();
     coolerfan_init();
@@ -85,6 +85,7 @@ int main(void)
     	lcd_setCursor(0,1);
     	c = cMensagem1;
     	lcd_writeText(0,c);
+        lerTemperatura();
     	c = cValor;
         lcd_writeText(1,c);
     }

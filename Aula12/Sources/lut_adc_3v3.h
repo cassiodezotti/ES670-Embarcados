@@ -11,6 +11,6 @@
 #ifndef SOURCES_ADC_LUT_ADC_3V3_H_
 #define SOURCES_ADC_LUT_ADC_3V3_H_
 
-const unsigned char tabela_temp[256];
+extern const unsigned char tabela_temp[256];
 
 #endif /* SOURCES_ADC_LUT_ADC_3V3_H_ */

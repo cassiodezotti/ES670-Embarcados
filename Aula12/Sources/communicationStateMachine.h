@@ -81,6 +81,9 @@ void lerHeaterDuty();
 /* ************************************************* */
 void lerCoolerFanDuty();
 
-float UARTReceiveIRQ(unsigned char ucReceivedChar)
+float convertChar2Float(unsigned char ucReceivedChar);
+
+void convertInt2Char(int ucReceivedInt);
+
 
 #endif /* UART_H_ */
