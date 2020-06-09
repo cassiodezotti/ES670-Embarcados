@@ -5,7 +5,8 @@ Sources/main.o: ../Sources/main.c ../Sources/board.h \
  ../SDK/platform/CMSIS/Include/core_cmFunc.h \
  ../Project_Settings/Startup_Code/system_MKL25Z4.h ../Sources/mcg.h \
  ../Sources/aquecedorECooler.h ../Sources/adc.h ../Sources/UART.h \
- ../Sources/print_scan.h ../Sources/communicationStateMachine.h
+ ../Sources/print_scan.h ../Sources/communicationStateMachine.h \
+ ../Sources/lcd.h
 
 ../Sources/board.h:
 
@@ -30,3 +31,5 @@ Sources/main.o: ../Sources/main.c ../Sources/board.h \
 ../Sources/print_scan.h:
 
 ../Sources/communicationStateMachine.h:
+
+../Sources/lcd.h:

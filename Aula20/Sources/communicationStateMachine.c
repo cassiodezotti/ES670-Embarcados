@@ -3,8 +3,8 @@
 /* File description: Desenvolve a maquina de estados e as outras funções */
 /*                   que cuidam da comunicação                           */
 /* Author name:      Gustavo M./Cassio D.                                */
-/* Creation date:    22mai2020                                           */
-/* Revision date:    24mai2020                                           */
+/* Creation date:    03jun2020                                           */
+/* Revision date:    09jun2020                                           */
 /* ********************************************************************* */
 
 /* definition include */
@@ -14,6 +14,13 @@
 #include "adc.h"
 #include "lut_adc_3v3.h"
 
+/* system includes */
+#include "fsl_clock_manager.h"
+#include "fsl_device_registers.h"
+#include "fsl_port_hal.h"
+#include "fsl_smc_hal.h"
+#include "fsl_debug_console.h"
+
 #define IDDLE '0'
 #define READY '1'
 #define GET '2'
@@ -22,14 +29,14 @@
 #define VALUE '5'
 #define MAX_VALUE_LENGHT 7
 
-typedef union {
-	unsigned char ucBytes[4];
-	float fReal;
+typedef union{
+    unsigned char ucBytes[4];
+    float fReal;
 }floatUCharType;
 
-typedef union {
-	unsigned char ucBytes[4];
-	int fReal;
+typedef union{
+    unsigned char ucBytes[4];
+    int iReal;
 }
 intUCharType;
 
@@ -57,7 +64,6 @@ void processamentoByte(unsigned char ucByte)
 {
 	static unsigned char ucPARAM;
 	static unsigned char ucValue[MAX_VALUE_LENGHT];
-
 
 	/* Toda mensagem comeca com '#'*/
 
@@ -98,10 +104,11 @@ void processamentoByte(unsigned char ucByte)
     		    		ucUARTState = IDDLE;
     		    	}
     		        break;
-    		    /*
+    		      /*
     		      * Para set, temos a opcao de temperatura 't',
-    		      * e a opcao de habilitar/desabilitar a interface
-    		      * local 'e'.
+    		      * a opcao de habilitar/desabilitar a interface
+    		      * local 'e' e as opcoes 'a' e 'c' para o duty cycle
+    		      * do aquecedor e cooler.
     		      */
     		    case SET:
     		    	if('t' == ucByte || 'e' == ucByte || 'a' == ucByte || 'c' == ucByte)
@@ -184,8 +191,9 @@ void returnPARAM(unsigned char ucPARAM)
 	    default:
 	    	break;
 	}
+	/* Envia a resposta de volta para a UART */
 	for(int i=0;i<MAX_VALUE_LENGHT;i++){
-        putchar(cuAnswer[i])
+        debug_putchar(ucAnswer[i]);
 	}
 }
 
@@ -204,37 +212,35 @@ void returnPARAM(unsigned char ucPARAM)
 /* ************************************************ */
 void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT])
 {
-	float aux;
-	switch(ucParam){
-	case: 't':
+    float aux;
+    switch(ucPARAM){
+    case 't':
 	    /*no projeto será implementado*/
-	    for(int i=0; i<MAX_VALUE_LENGHT; i++)
-			{
-				ucTemperatura[i] = ucValue[i];
-			}
+	    for(int i=0; i<MAX_VALUE_LENGHT; i++){
+            ucTemperatura[i] = ucValue[i];
+        }
 	    break;
-	case: 'e':
+     case 'e':
 	    /*no projeto será implementado*/
 	    ucEnable = ucValue[0];
-		break;
-	case: 'a':
+        break;
+     case 'a':
 	    for(int i=0;i<4;i++){
-	    	aux = UARTReceiveIRQ(ucValue[i]);
+            aux = convertChar2Float(ucValue[i]);
 	    }
+	    /* Limita o duty cycle do aquecedor em 50% */
 	    if(aux>0.5){
 	        aux=0.5;
 	    }
 	    heater_PWMDuty(aux);
-		break;
-	case: 'c':
+        break;
+     case 'c':
 	    for(int i=0;i<4;i++){
-			aux = UARTReceiveIRQ(ucValue[i]);
-		}
+            aux = convertChar2Float(ucValue[i]);
+        }
 	    coolerfan_PWMDuty(aux);
-		break;
-	}
-
-
+        break;
+    }
 }
 
 /* ************************************************* */
@@ -247,13 +253,13 @@ void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT])
 /* ************************************************* */
 void lerTemp()
 {
-	adc_initConvertion();
+    adc_initConvertion();
     while(!adc_isAdcDone())
     {
 
     }
     iValorTempAtual = tabela_temp[adc_getConvertionValue()];
-    //atualizar answer
+    convertInt2Char(iValorTempAtual);
 }
 
 /* ************************************************* */
@@ -266,10 +272,10 @@ void lerTemp()
 /* ************************************************* */
 void lerHeaterDuty()
 {
-	for(int i=0;i<4;i++){
+    for(int i=0;i<4;i++){
         ucAnswer[i+2] = ucHeaterDuty[i];
-	}
-	ucAnswer[6] = 0x3b;
+    }
+    ucAnswer[6] = 0x3b;
 }
 
 /* ************************************************* */
@@ -282,21 +288,23 @@ void lerHeaterDuty()
 /* ************************************************* */
 void lerCoolerFanDuty()
 {
-	for(int i=0;i<4;i++){
+    for(int i=0;i<4;i++){
 	    ucAnswer[i+2] = ucCoolerDuty[i];
-	}
-	ucAnswer[6] = 0x3b;
+    }
+    ucAnswer[6] = 0x3b;
 }
 
-
-
-
-
-
+/* **************************************************** */
+/* Method name:        convertChar2Float                */
+/* Method description: Funcao que converte 4 caracteres */
+/*                     para um valor float              */
+/* Input params:       caracter                         */
+/* Output params:      valor float                      */
+/* **************************************************** */
 float convertChar2Float(unsigned char ucReceivedChar)
 {
 	floatUCharType varFloatUChar;
-	static unsignedchar ucCount;
+	static unsigned char ucCount;
 
 	varFloatUChar.ucBytes[ucCount] = ucReceivedChar;
 	if(++ucCount>= 4)
@@ -308,15 +316,17 @@ float convertChar2Float(unsigned char ucReceivedChar)
 	return (0);
 }
 
-
-
-
+/* **************************************************** */
+/* Method name:        convertInt2Char                  */
+/* Method description: Funcao que converte um valor int */
+/*                     para um valor de 4 caracteres    */
+/* Input params:       valor int                        */
+/* Output params:      n/a                              */
+/* **************************************************** */
 void convertInt2Char(int ucReceivedInt)
 {
-	unsigned char ucAux[4];
 	intUCharType varIntUChar;
 	unsigned char ucSendChar, ucCount;
-	int iSendReal;
 
 	varIntUChar.iReal= ucReceivedInt;
 

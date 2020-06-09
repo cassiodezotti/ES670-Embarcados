@@ -11,8 +11,8 @@
 /*                                                                          */
 /* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
 /* RA:                   174217/168988                                      */
-/* Data de criacao:      24abril2020                                        */
-/* Data da revisao:      26abril2020                                        */
+/* Data de criacao:      03abril2020                                        */
+/* Data da revisao:      09abril2020                                        */
 /* ************************************************************************ */
 
 /* our includes */
@@ -24,7 +24,6 @@
 #include "print_scan.h"
 #include "communicationStateMachine.h"
 #include "lcd.h"
-
 
 #define MAX_VALUE_LENGHT 7
 
@@ -49,7 +48,7 @@ void iniciarPlaca(void)
     /* Configuracao e inicializacao do clock */
     mcg_clockInit();
 
-    /* Inicializacao do PWM */
+    /* Iniciando os periféricos */
     adc_initADCModule();
     adc_initConvertion();
     lcd_initLcd();
@@ -67,12 +66,10 @@ void iniciarPlaca(void)
 /* *********************************************************************** */
 int main(void)
 {
-    float fDutyC = 0.5;
-	float fDutyH = 0.5;
-	int iValorTemp = 0;
 	const char cMensagem1[] = "A Temperatura é: ";
 	const char cValor = iValorTempAtual+'0';
 	const char *c;
+	const char cTemp[] = {cValor};
 
     iniciarPlaca();
 
@@ -85,14 +82,9 @@ int main(void)
     	lcd_setCursor(0,1);
     	c = cMensagem1;
     	lcd_writeText(0,c);
-        lerTemperatura();
-    	c = cValor;
+        lerTemp();
+        /* Escreve a temperatura no LCD */
+    	c = cTemp;
         lcd_writeText(1,c);
     }
-
-
-
-
-
-
 }

@@ -1,4 +1,3 @@
-
 /* ************************************************************************ */
 /* Nome do Arquivo:      lcd.h                                              */
 /* Descricao do arquivo: Cabecalho contendo as atribuicoes para as funcoes  */
@@ -107,7 +106,6 @@ void lcd_dummyText(void);
 /* Parametros de entrada: A string e a linha e coluna do LCD              */
 /* Parametros de saida:   n/a                                             */
 /* ********************************************************************** */
-
 void lcd_writeText(int iLinha, const char *cString);
 
 #endif /* SOURCES_LCD_H_ */

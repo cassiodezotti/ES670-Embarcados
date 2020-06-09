@@ -28,12 +28,8 @@
 #define ATUADORES_PWM_BASE_PNT           PTA                                     /* peripheral gpio base pointer */
 
 #define COOLER_PIN                       13U                                      /* register selector */
-/*#define COOLER_DIR                       (GPIO_OUTPUT << COOLER_PIN)
-#define COOLER_ALT                       kPortMuxAsGpio*/
 
 #define AQUECEDOR_PIN                    12U                                      /* register selector */
-/*#define DISPLAY_7SEG_D3_DIR              (GPIO_OUTPUT << DISPLAY_7SEG_D3_PIN)
-#define DISPLAY_7SEG_D3_ALT              kPortMuxAsGpio*/
 
 #define  CGC_CLOCK_DISABLED         0x00U
 #define  CGC_CLOCK_ENABLED          0x01U
@@ -87,7 +83,6 @@
 #define LCD_DATA_DB6_DIR            (GPIO_OUTPUT << LCD_DATA_DB6_PIN)
 #define LCD_DATA_DB7_DIR            (GPIO_OUTPUT << LCD_DATA_DB7_PIN)
 /*                 END OF LCD definitions                 */
-
 
 /*                 UART definitions                 */
 

@@ -57,7 +57,6 @@ void UART0_enableIRQ(void)
     UART0_C2 |= 0x20;
 }
 
-
 /* ************************************************ */
 /* Method name:        UART0_IRQHandler             */
 /* Method description: Serial port interruption     */
@@ -72,4 +71,3 @@ void UART0_IRQHandler(void)
 	// Echo received character
 	processamentoByte(debug_getchar());
 }
-

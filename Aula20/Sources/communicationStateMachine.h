@@ -2,13 +2,12 @@
 /* File name:        communicationStateMachine.c                           */
 /* File description: Contêm a descrição das funções utilizadas no programa */
 /* Author name:      Gustavo M./Cassio D.                                  */
-/* Creation date:    22mai2020                                             */
-/* Revision date:    24mai2020                                             */
+/* Creation date:    03jun2020                                             */
+/* Revision date:    09jun2020                                             */
 /* *********************************************************************** */
 
 #ifndef COMMUNICATION_STATE_MACHINE_H_
 #define COMMUNICATION_STATE_MACHINE_H_
-
 
 #define MAX_VALUE_LENGHT 7
 
@@ -81,9 +80,22 @@ void lerHeaterDuty();
 /* ************************************************* */
 void lerCoolerFanDuty();
 
+/* **************************************************** */
+/* Method name:        convertChar2Float                */
+/* Method description: Funcao que converte 4 caracteres */
+/*                     para um valor float              */
+/* Input params:       caracter                         */
+/* Output params:      valor float                      */
+/* **************************************************** */
 float convertChar2Float(unsigned char ucReceivedChar);
 
+/* **************************************************** */
+/* Method name:        convertInt2Char                  */
+/* Method description: Funcao que converte um valor int */
+/*                     para um valor de 4 caracteres    */
+/* Input params:       valor int                        */
+/* Output params:      n/a                              */
+/* **************************************************** */
 void convertInt2Char(int ucReceivedInt);
-
 
 #endif /* UART_H_ */

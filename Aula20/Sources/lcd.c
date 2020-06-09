@@ -1,4 +1,3 @@
-
 /* ************************************************************************ */
 /* Nome do Arquivo:      lcd.c                                              */
 /* Descricao do arquivo: Este arquivo e dedicado criar todas as funçoes     */
@@ -10,12 +9,9 @@
 /* Data da revisao:      09abril2020                                        */
 /* ************************************************************************ */
 
-
-
 #include "lcd.h"
 #include "board.h"
 #include "util.h"
-
 
 /* includes do sistema */
 
@@ -23,12 +19,10 @@
 #include "fsl_port_hal.h"
 #include "fsl_gpio_hal.h"
 
-
 /* linha e coluna zero */
 
 #define LINE0        0U
-#define COLUMN0        0U
-
+#define COLUMN0      0U
 #define L0C0_BASE    0x80 /* line 0, column 0 */
 #define L1C0_BASE    0xC0 /* line 1, column 0 */
 #define MAX_COLUMN  15U
@@ -42,7 +36,6 @@
 /* *********************************************************************  */
 void lcd_initLcd(void)
 {
-
     int i;
 
     unsigned int uiVetorInit = 0;
@@ -50,7 +43,6 @@ void lcd_initLcd(void)
 
     /* un-gate port clock*/
     SIM_SCGC5 |= 0x0800;
-
 
     /*
      * set pin as gpio 0 = DB0, 1 = DB1...
@@ -78,7 +70,6 @@ void lcd_initLcd(void)
      */
     GPIOC_PDDR |= uiVetorInit;  //colocando 1 nos pinos de 0 a 9
 
-
     /* turn-on LCD, with no cursor and no blink */
     lcd_sendCommand(CMD_NO_CUR_NO_BLINK);
 
@@ -93,9 +84,7 @@ void lcd_initLcd(void)
 
     /* cursor shift to right */
     lcd_sendCommand(CMD_CURSOR2R);
-
 }
-
 
 /* ****************************************************************** */
 /* Nome da funcao: lcd_write2Lcd                                      */
@@ -113,8 +102,6 @@ void lcd_write2Lcd(unsigned char ucBuffer,  unsigned char cDataType)
     unsigned char ucAux = 0;
     int i;
 
-
-
     /* writing data or command */
     if(LCD_RS_CMD == cDataType){
         /* will send a command */
@@ -126,7 +113,6 @@ void lcd_write2Lcd(unsigned char ucBuffer,  unsigned char cDataType)
        GPIOC_PSOR &= ~(0x17F);
        GPIOC_PSOR |= (1 << LCD_RS_PIN);
     }
-
 
     /*
      * Faz um E bit a bit com o caracter armazenado no ucBuffer
@@ -152,7 +138,6 @@ void lcd_write2Lcd(unsigned char ucBuffer,  unsigned char cDataType)
     util_genDelay1ms();
     util_genDelay1ms();
 }
-
 
 /* ****************************************************************** */
 /* Nome da funcao: lcd_writeData                                      */
@@ -186,7 +171,6 @@ void lcd_sendCommand(unsigned char ucCmd)
     lcd_write2Lcd(ucCmd, LCD_RS_CMD);
 }
 
-
 /* ****************************************************************** */
 /* Nome da funcao: lcd_setCursor                                      */
 /* Descricao da funcao: Coloca o cursor na linha e coluna recebidas   */
@@ -215,7 +199,6 @@ void lcd_setCursor(unsigned char cLine, unsigned char cColumn)
     lcd_sendCommand(cCommand);
 }
 
-
 /* ****************************************************************** */
 /* Nome da funcao: lcd_writeString                                    */
 /* Descricao da funcao: Recebe a string que sera enviada ao           */
@@ -231,7 +214,6 @@ void lcd_writeString(const char *cBuffer)
         lcd_writeData(*cBuffer++);
     };
 }
-
 
 /* ********************************************************************** */
 /* Nome da funcao: lcd_dummyText                                          */
@@ -256,6 +238,7 @@ void lcd_dummyText(void)
     lcd_setCursor(1,0);
     lcd_writeString("Prj Sis Embarcad");
 }
+
 /* ********************************************************************** */
 /* Nome da funcao: lcd_writeText                                          */
 /* Descricao da funcao: Recebe do programador qual mensagem serÃ¡ exibida */
@@ -282,6 +265,4 @@ void lcd_writeText(int iLinha, const char *cString)
         lcd_setCursor(1,COLUMN0);
         lcd_writeString(cString);
     }
-
 }
-
