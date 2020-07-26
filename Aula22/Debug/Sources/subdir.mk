@@ -14,6 +14,7 @@ C_SRCS += \
 ../Sources/lut_adc_3v3.c \
 ../Sources/main.c \
 ../Sources/mcg.c \
+../Sources/pid.c \
 ../Sources/print_scan.c \
 ../Sources/util.c 
 
@@ -28,6 +29,7 @@ OBJS += \
 ./Sources/lut_adc_3v3.o \
 ./Sources/main.o \
 ./Sources/mcg.o \
+./Sources/pid.o \
 ./Sources/print_scan.o \
 ./Sources/util.o 
 
@@ -42,6 +44,7 @@ C_DEPS += \
 ./Sources/lut_adc_3v3.d \
 ./Sources/main.d \
 ./Sources/mcg.d \
+./Sources/pid.d \
 ./Sources/print_scan.d \
 ./Sources/util.d 
 

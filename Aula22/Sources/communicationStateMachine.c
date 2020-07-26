@@ -40,15 +40,21 @@ typedef union{
 }
 intUCharType;
 
+typedef union{
+    unsigned char ucBytes[4];
+    int iReal;
+}
+intSetPointCharType;
+
 unsigned char ucUARTState = IDDLE;
 unsigned char ucValueCount = '0';
 extern int iValorTempAtual;
 extern unsigned char ucAnswer[MAX_VALUE_LENGHT];
-extern unsigned char ucTemperatura[4];
 extern unsigned char ucEnable;
 extern unsigned char ucTempAtual[4];
 extern unsigned char ucHeaterDuty[4];
 extern unsigned char ucCoolerDuty[4];
+extern unsigned int uiSpTempertura;
 
 
 /* ************************************************ */
@@ -217,7 +223,7 @@ void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT])
     case 't':
 	    /*no projeto será implementado*/
 	    for(int i=0; i<MAX_VALUE_LENGHT; i++){
-            ucTemperatura[i] = ucValue[i];
+            uiSpTempertura = convertChar2Int(ucValue[i]);
         }
 	    break;
      case 'e':
@@ -336,4 +342,26 @@ void convertInt2Char(int ucReceivedInt)
 		ucAnswer[ucCount+2] = ucSendChar;
 	}
 	ucAnswer[6] = 0x3b;
+}
+
+/* **************************************************** */
+/* Method name:        convertChar2Float                */
+/* Method description: Funcao que converte 4 caracteres */
+/*                     para um valor float              */
+/* Input params:       caracter                         */
+/* Output params:      valor float                      */
+/* **************************************************** */
+int convertChar2Int(unsigned char ucReceivedChar)
+{
+	intSetPointCharType varChar2int;
+	static unsigned char ucCount;
+
+	varChar2int.ucBytes[ucCount] = ucReceivedChar;
+	if(++ucCount>= 4)
+	{
+		return varChar2int.iReal;
+		ucCount= 0;
+
+	}
+	return (0);
 }

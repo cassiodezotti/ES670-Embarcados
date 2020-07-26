@@ -98,4 +98,13 @@ float convertChar2Float(unsigned char ucReceivedChar);
 /* **************************************************** */
 void convertInt2Char(int ucReceivedInt);
 
+/* **************************************************** */
+/* Method name:        convertChar2Float                */
+/* Method description: Funcao que converte 4 caracteres */
+/*                     para um valor float              */
+/* Input params:       caracter                         */
+/* Output params:      valor float                      */
+/* **************************************************** */
+int convertChar2Int(unsigned char ucReceivedChar);
+
 #endif /* UART_H_ */
