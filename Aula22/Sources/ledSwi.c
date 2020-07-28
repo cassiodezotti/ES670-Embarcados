@@ -123,8 +123,8 @@ int lerChave(int iChave)
 /* Descrição da função:   Recebe do programador um valor de 1 a 4 que           */
 /*                        determina em qual LED deve-se escrever e qual serão   */
 /*                        o status final do LED.                                */
-/*                        Se 0 --> LED irá apagar                               */
-/*                        Se 1 --> LED irá acender                              */
+/*                        Se 1 --> LED irá apagar                               */
+/*                        Se 0 --> LED irá acender                              */
 /* Parâmetros de entrada: Valor de 1 a 4 que indica qual o LED serão usado      */
 /*                        SetClear --> 0 ou 1 para indicar status futuro do LED */
 /* Parâmetros de saída:	  n/a 							                        */
@@ -141,7 +141,7 @@ void escreverLED(int iWriteLed, int iSetClear)
      * fazemos um shift do número 1 para a posição desejada e então um
      * E com o valor que já estava na porta.
      */
-    if(1 == iSetClear){
+    if(0 == iSetClear){
 	    GPIOA_PDOR |= (ucNumeroDeComando << iLedWrite);//se for set dou OU com a mascara do bit q eu quero
     }
         /*
@@ -150,7 +150,7 @@ void escreverLED(int iWriteLed, int iSetClear)
          * anterior, para a posição desejada e então um
          * E com o valor que já estava na porta.
          */
-    else if(0 == iSetClear){
+    else if(1 == iSetClear){
 		    GPIOA_PDOR &= ~(ucNumeroDeComando << iLedWrite);//se for clear dou E com a mascara de bits negada
 	    }
 
@@ -174,9 +174,10 @@ void setarLED(int iSetLed)
     unsigned char ucNumeroDeComando = 1;
     /*
      * Fazemos um shift do número 1 até a posição do bit desejada
-     * então chamamos a função para setar uma porta
+     * então chamamos a função para apagar uma porta
      */
-    GPIOA_PSOR |= (ucNumeroDeComando << iLedSetado);
+    GPIOA_PCOR |= (ucNumeroDeComando << iLedClear);
+
 }
 /* ************************************************************************** */
 /* Nome da função: 	      apagarLED             		                      */
@@ -197,9 +198,9 @@ void apagarLED(int iClearLed)
     unsigned char ucNumeroDeComando = 1;
     /*
      * Fazemos um shift do número 1 até a posição do bit desejada
-     * então chamamos a função para apagar uma porta
+     * então chamamos a função para setar uma porta
      */
-    GPIOA_PCOR |= (ucNumeroDeComando << iLedClear);
+    GPIOA_PSOR |= (ucNumeroDeComando << iLedSetado);
 
 }
 /* ********************************************************************************* */

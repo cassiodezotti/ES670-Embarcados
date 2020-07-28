@@ -27,6 +27,7 @@
 #include "lptmr.h"
 #include "pid.h"
 #include "core_cm0plus.h"
+#include "ledSwi.h"
 
 #define MAX_VALUE_LENGHT 7
 
@@ -39,15 +40,14 @@ int iValorTempAtual = 0;
 unsigned int uiSpTempertura;
 unsigned char ucPeriodo = 0x64;
 
-int iCounter = 0;
-int iFlagLCD = 0;
+
 
 void pidTask(void)
 {
 	int iSensorValue,iSetPoint;
 	float fActuatorValue;
 
-	iCounter = iCounter+1;
+
 
 	lerTemp();
 	iSensorValue = iValorTempAtual;
@@ -56,10 +56,6 @@ void pidTask(void)
 	heater_PWMDuty(fActuatorValue/100);
 
 
-	if(iCounter == 10){
-		iFlagLCD = 1;
-		iCounter = 0;
-	}
 }
 
 /* ************************************************************ */
@@ -81,6 +77,7 @@ void iniciarPlaca(void)
     coolerfan_init();
     heater_init();
     pid_init();
+    iniciarLedSwi({0,0,0,0});
 }
 
 /* *********************************************************************** */
@@ -95,14 +92,15 @@ int main(void)
 	char cMensagem1[] = "KP: ";
 	char cMensagem2[] = "KI: ";
 	char cMensagem3[] = "KD: ";
-	char cMensagem4[] = "Temperatura: ";
-	char cMensagem5[] = "SetPoint: ";
+	char cMensagem4[] = "Temperatura atual: ";
+	char cMensagem5[] = "Temperatura desejada: ";
 	char cMensagem6[] = "Duty Cycle: ";
 	char *c;
 	char cAux[] = " ";
 	float fAuxKp, fAuxKi, fAuxKd, fAuxDt = 0;
 	int iAuxTemp, iAuxSP, iAux, iAux2;
 	int iIndex = 1;
+	int iCount = 1;
 	NVIC_SetPriority(28,0);
 	NVIC_SetPriority(12,1);
 
@@ -121,7 +119,9 @@ int main(void)
 
     while(1){
 
-
+    	fAuxKp = pid_getKp();
+    	fAuxKd = pid_getKd();
+    	fAuxKi = pid_getKi();
     	/* clear LCD */
 		lcd_sendCommand(CMD_CLEAR);
 		/* set the cursor line 0, column 1 */
@@ -139,160 +139,167 @@ int main(void)
 		c = cAux;
 		lcd_writeText(1,c);
 
+		while(iFlagSetTemp){
+			iAuxTemp = uiSpTempertura;
 
-    	if(iFlagLCD){
-    		if(iIndex == 7){
-    			iIndex = 1;
-    		}
-    		switch (iIndex){
-    		case 1:
-    			/* clear LCD */
-				lcd_sendCommand(CMD_CLEAR);
-				/* set the cursor line 0, column 1 */
-				lcd_setCursor(0,1);
-				c = cMensagem1;
-				lcd_writeText(0,c);
-				/*separa dezena de unidade*/
-				fAuxKp = pid_getKp();
-				iAux  = fAuxKp;
-				iAux2 = (iAux/10)+48;
-				cAux[0]=(char)iAux2;
-				iAux2 = (iAux%10)+48;
-				/* converte int para char */
-				cAux[1]=(char)iAux2;
-				/* Escreve a Kp no LCD */
-				cAux[2]=(char)46;
-				iAux = fAuxKp*100;
-				iAux2 = (iAux%100);
-				iAux2 = (iAux/10)+48;
-				cAux[3]=(char)iAux;
-				iAux2 = (iAux%10)+48;
-				cAux[4]=(char)iAux;
-				c = cAux;
-				/* Escreve o KP no LCD */
-				lcd_writeText(1,c);
-    			break;
-    		case 2:
-    			/* clear LCD */
-				lcd_sendCommand(CMD_CLEAR);
-				/* set the cursor line 0, column 1 */
-				lcd_setCursor(0,1);
-				c = cMensagem2;
-				lcd_writeText(0,c);
-				/*separa dezena de unidade*/
-				fAuxKi = pid_getKi();
-				iAux  = fAuxKi;
-				iAux2 = (iAux/10)+48;
-				cAux[0]=(char)iAux2;
-				iAux2 = (iAux%10)+48;
-				/* converte int para char */
-				cAux[1]=(char)iAux2;
-				/* Escreve a temperatura no LCD */
-				cAux[2]=(char)46;
-				iAux = fAuxKi*100;
-				iAux2 = (iAux%100);
-				iAux2 = (iAux/10)+48;
-				cAux[3]=(char)iAux;
-				iAux2 = (iAux%10)+48;
-				cAux[4]=(char)iAux;
-				c = cAux;
-				/* Escreve o KI no LCD */
-				lcd_writeText(1,c);
-    		    break;
-    		case 3:
-    	    	/* clear LCD */
-    	    	lcd_sendCommand(CMD_CLEAR);
-    	    	/* set the cursor line 0, column 1 */
-    	    	lcd_setCursor(0,1);
-    	    	c = cMensagem3;
-    	    	lcd_writeText(0,c);
-    	        /*separa dezena de unidade*/
-    	    	fAuxKd = pid_getKd();
-    	    	iAux  = fAuxKd;
-    	    	iAux2 = (iAux/10)+48;
-    	        cAux[0]=(char)iAux2;
-    	        iAux2 = (iAux%10)+48;
-    	        /* converte int para char */
-    			cAux[1]=(char)iAux2;
-    	        /* Escreve a temperatura no LCD */
-    	        cAux[2]=(char)46;
-    	        iAux = fAuxKd*100;
-    	    	iAux2 = (iAux%100);
-    	    	iAux2 = (iAux/10)+48;
-    	        cAux[3]=(char)iAux;
-    	        iAux2 = (iAux%10)+48;
-    	        cAux[4]=(char)iAux;
-    	        c = cAux;
-    	        /* Escreve o KD no LCD */
-    	        lcd_writeText(1,c);
-    		    break;
-    		case 4:
-    			/* clear LCD */
-				lcd_sendCommand(CMD_CLEAR);
-				/* set the cursor line 0, column 1 */
-				lcd_setCursor(0,1);
-				c = cMensagem4;
-				lcd_writeText(0,c);
-				lerTemp();
-				/*separa dezena de unidade*/
-				iAuxTemp = (iValorTempAtual/10)+48;
-				cAux[0]=(char)iAuxTemp;
-				iAuxTemp = (iValorTempAtual%10)+48;
-				/*converte int para char*/
-				cAux[1]=(char)iAuxTemp;
-				/* Escreve a temperatura no LCD */
-				c = cAux;
-				lcd_writeText(1,c);
-    		    break;
-    		case 5:
-    			/* clear LCD */
+			while(!lerChave(1)){
+
+				/* clear LCD */
 				lcd_sendCommand(CMD_CLEAR);
 				/* set the cursor line 0, column 1 */
 				lcd_setCursor(0,1);
 				c = cMensagem5;
 				lcd_writeText(0,c);
 				/*separa dezena de unidade*/
-				iAuxSP = (uiSpTempertura/10)+48;
+				iAuxSP = (iAuxTemp/10)+48;
 				cAux[0]=(char)iAuxSP;
-				iAuxSP = (uiSpTempertura%10)+48;
+				iAuxSP = (iAuxTemp%10)+48;
 				/*converte int para char*/
 				cAux[1]=(char)iAuxSP;
 				/* Escreve o set point no LCD */
 				c = cAux;
 				lcd_writeText(1,c);
-				/* clear LCD */
-    		    break;
-    		case 6:
-    			lcd_sendCommand(CMD_CLEAR);
-				/* set the cursor line 0, column 1 */
-				lcd_setCursor(0,1);
-				c = cMensagem6;
-				lcd_writeText(0,c);
-				lerTemp();
-				/*separa dezena de unidade*/
-				fAuxDt = fHDuty;
-				iAux  = fAuxDt;
-				iAux2 = (iAux/10)+48;
-				cAux[0]=(char)iAux2;
-				iAux2 = (iAux%10)+48;
-				/* converte int para char */
-				cAux[1]=(char)iAux2;
-				/* Escreve a temperatura no LCD */
-				cAux[2]=(char)46;
-				iAux = fAuxDt*100;
-				iAux2 = (iAux%100);
-				iAux2 = (iAux/10)+48;
-				cAux[3]=(char)iAux;
-				iAux2 = (iAux%10)+48;
-				cAux[4]=(char)iAux;
-				c = cAux;
-				/* Escreve o Duty Cycle no LCD */
-				lcd_writeText(1,c);
-    		    break;
-    		}
-    		iIndex = iIndex+1;
-    		iFlagLCD = 0;
-    	}
+
+				if(lerChave(2)){
+					iAuxTemp = iAuxTemp+1;
+				}
+				if(lerChave(3)){
+					iAuxTemp = iAuxTemp+10;
+				}
+				if(lerChave(4)){
+					iAuxTemp = iAuxTemp-1;
+				}
+			}
+			uiSpTempertura = iAuxTemp;
+			iFlagSetTemp = 0
+		}
+
+		while(iFlagSetK){
+
+			while(!lerChave(1)){
+
+				while(iCount == 1){
+					/* clear LCD */
+					lcd_sendCommand(CMD_CLEAR);
+					/* set the cursor line 0, column 1 */
+					lcd_setCursor(0,1);
+					c = cMensagem1;
+					lcd_writeText(0,c);
+					/*separa dezena de unidade*/
+					fAuxKp = pid_getKp();
+					iAux  = fAuxKp;
+					iAux2 = (iAux/10)+48;
+					cAux[0]=(char)iAux2;
+					iAux2 = (iAux%10)+48;
+					/* converte int para char */
+					cAux[1]=(char)iAux2;
+					/* Escreve o Kp no LCD */
+					cAux[2]=(char)46;
+					iAux = fAuxKp*100;
+					iAux2 = (iAux%100);
+					iAux2 = (iAux/10)+48;
+					cAux[3]=(char)iAux;
+					iAux2 = (iAux%10)+48;
+					cAux[4]=(char)iAux;
+					c = cAux;
+					/* Escreve o KP no LCD */
+					lcd_writeText(1,c);
+
+					if(lerChave(2)){
+						fAuxKp = fAuxKp+0.1;
+					}
+					if(lerChave(3)){
+						fAuxKp = fAuxKp+1;
+					}
+					if(lerChave(4)){
+						fAuxKp = fAuxKp-0.1;
+					}
+				}
+				while(iCount == 2){
+					lcd_sendCommand(CMD_CLEAR);
+					/* set the cursor line 0, column 1 */
+					lcd_setCursor(0,1);
+					c = cMensagem2;
+					lcd_writeText(0,c);
+					/*separa dezena de unidade*/
+					fAuxKi = pid_getKi();
+					iAux  = fAuxKi;
+					iAux2 = (iAux/10)+48;
+					cAux[0]=(char)iAux2;
+					iAux2 = (iAux%10)+48;
+					/* converte int para char */
+					cAux[1]=(char)iAux2;
+					/* Escreve o Ki no LCD */
+					cAux[2]=(char)46;
+					iAux = fAuxKi*100;
+					iAux2 = (iAux%100);
+					iAux2 = (iAux/10)+48;
+					cAux[3]=(char)iAux;
+					iAux2 = (iAux%10)+48;
+					cAux[4]=(char)iAux;
+					c = cAux;
+					/* Escreve o KI no LCD */
+					lcd_writeText(1,c);
+
+					if(lerChave(2)){
+						fAuxKi = fAuxKi+0.1;
+					}
+					if(lerChave(3)){
+						fAuxKi = fAuxKi+1;
+					}
+					if(lerChave(4)){
+						fAuxKi = fAuxKi-0.1;
+					}
+				}
+				while(iCount == 3){
+	    	    	/* clear LCD */
+	    	    	lcd_sendCommand(CMD_CLEAR);
+	    	    	/* set the cursor line 0, column 1 */
+	    	    	lcd_setCursor(0,1);
+	    	    	c = cMensagem3;
+	    	    	lcd_writeText(0,c);
+	    	        /*separa dezena de unidade*/
+	    	    	fAuxKd = pid_getKd();
+	    	    	iAux  = fAuxKd;
+	    	    	iAux2 = (iAux/10)+48;
+	    	        cAux[0]=(char)iAux2;
+	    	        iAux2 = (iAux%10)+48;
+	    	        /* converte int para char */
+	    			cAux[1]=(char)iAux2;
+	    	        /* Escreve a temperatura no LCD */
+	    	        cAux[2]=(char)46;
+	    	        iAux = fAuxKd*100;
+	    	    	iAux2 = (iAux%100);
+	    	    	iAux2 = (iAux/10)+48;
+	    	        cAux[3]=(char)iAux;
+	    	        iAux2 = (iAux%10)+48;
+	    	        cAux[4]=(char)iAux;
+	    	        c = cAux;
+	    	        /* Escreve o KD no LCD */
+	    	        lcd_writeText(1,c);
+
+					if(lerChave(2)){
+						fAuxKd = fAuxKd+0.1;
+					}
+					if(lerChave(3)){
+						fAuxKd = uiSpTempefAuxKdrtura+1;
+					}
+					if(lerChave(4)){
+						fAuxKd = fAuxKd-0.1;
+					}
+				}
+
+			}
+
+			iCount = iCount+1;
+			if(iCount == 4){
+			    pid_setKp(fAuxKp);
+			    pid_setKi(fAuxKi);
+				pid_setKd(fAuxKd);
+				iFlagSetK = 0;
+			}
+		}
+
 
     }
 }
