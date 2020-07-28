@@ -39,7 +39,7 @@ float fCDuty;
 int iValorTempAtual = 0;
 unsigned int uiSpTempertura;
 unsigned char ucPeriodo = 0x64;
-
+int iBotoesInit[4] = {0,0,0,0};
 
 
 void pidTask(void)
@@ -54,8 +54,6 @@ void pidTask(void)
 	iSetPoint = uiSpTempertura;
 	fActuatorValue = pidUpdateData(iSensorValue,iSetPoint);
 	heater_PWMDuty(fActuatorValue/100);
-
-
 }
 
 /* ************************************************************ */
@@ -77,7 +75,7 @@ void iniciarPlaca(void)
     coolerfan_init();
     heater_init();
     pid_init();
-    iniciarLedSwi({0,0,0,0});
+    iniciarLedSwi(iBotoesInit);
 }
 
 /* *********************************************************************** */
@@ -94,13 +92,13 @@ int main(void)
 	char cMensagem3[] = "KD: ";
 	char cMensagem4[] = "Temperatura atual: ";
 	char cMensagem5[] = "Temperatura desejada: ";
-	char cMensagem6[] = "Duty Cycle: ";
 	char *c;
 	char cAux[] = " ";
-	float fAuxKp, fAuxKi, fAuxKd, fAuxDt = 0;
+	float fAuxKp, fAuxKi, fAuxKd = 0;
 	int iAuxTemp, iAuxSP, iAux, iAux2;
-	int iIndex = 1;
 	int iCount = 1;
+	int iFlagSetTemp = 0;
+	int iFlagSetK = 0;
 	NVIC_SetPriority(28,0);
 	NVIC_SetPriority(12,1);
 
@@ -171,7 +169,7 @@ int main(void)
 				}
 			}
 			uiSpTempertura = iAuxTemp;
-			iFlagSetTemp = 0
+			iFlagSetTemp = 0;
 		}
 
 		while(iFlagSetK){
@@ -282,7 +280,7 @@ int main(void)
 						fAuxKd = fAuxKd+0.1;
 					}
 					if(lerChave(3)){
-						fAuxKd = uiSpTempefAuxKdrtura+1;
+						fAuxKd = fAuxKd+1;
 					}
 					if(lerChave(4)){
 						fAuxKd = fAuxKd-0.1;
@@ -299,7 +297,5 @@ int main(void)
 				iFlagSetK = 0;
 			}
 		}
-
-
     }
 }

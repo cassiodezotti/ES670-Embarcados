@@ -37,7 +37,7 @@ void iniciarLedSwi(int iEstados[4]);
 /*      			      0 --> botão pressionado                             */
 /*                        1 --> botão solto                                   */
 /* *************************************************************************  */
-void lerChave(int iChave);
+int lerChave(int iChave);
 /* **************************************************************************** */
 /* Nome da função: 	      escreverLED	         		                        */
 /* Descrição da função:   Recebe do programador um valor de 1 a 4 que           */

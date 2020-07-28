@@ -64,7 +64,6 @@ void iniciarLedSwi(int iEstados[4])
 /* Parâmetros de entrada: Valor de 1 a 4                                                */
 /* Parâmetros de saída:	  Retorna 1,2,4 ou 5 			                                */
 /* ***********************************************************************************  */
-/*função para mapear o valor de entrada*/
 int mapearEntrada(int iValor)
 {
     /*
@@ -89,12 +88,11 @@ int mapearEntrada(int iValor)
 /*      			      0 --> botão pressionado                             */
 /*                        1 --> botão solto                                   */
 /* *************************************************************************  */
-/*função de leitura do status*/
 int lerChave(int iChave)
 {
     unsigned char ucChaveLida = 0;
     /* Mapeamento da entrada para 1245*/
-    int iValorChave = mapeaEntrada(iChave);
+    int iValorChave = mapearEntrada(iChave);
     /*
      * Shifta o retorno da função de leitura da porta A, o número
      * de vezes necessário para extrairmos o bit de interesse, para isso
@@ -116,7 +114,7 @@ int lerChave(int iChave)
     if( '0' == ucChaveLida){
 	    return 1;
     }
-
+    return 0;
 }
 /* **************************************************************************** */
 /* Nome da função: 	      escreverLED	         		                        */
@@ -129,11 +127,10 @@ int lerChave(int iChave)
 /*                        SetClear --> 0 ou 1 para indicar status futuro do LED */
 /* Parâmetros de saída:	  n/a 							                        */
 /* **************************************************************************** */
-/*função para escrita do LED*/
 void escreverLED(int iWriteLed, int iSetClear)
 {
 	/* Mapeamento da entrada para 1245*/
-    int iLedWrite = mapeaEntrada(iWriteLed);
+    int iLedWrite = mapearEntrada(iWriteLed);
     unsigned char ucNumeroDeComando = 1;
 
     /*
@@ -153,7 +150,6 @@ void escreverLED(int iWriteLed, int iSetClear)
     else if(1 == iSetClear){
 		    GPIOA_PDOR &= ~(ucNumeroDeComando << iLedWrite);//se for clear dou E com a mascara de bits negada
 	    }
-
 }
 /* ************************************************************************** */
 /* Nome da função: 	      setarLED             		                          */
@@ -166,18 +162,16 @@ void escreverLED(int iWriteLed, int iSetClear)
 /* Parâmetros de entrada: Valor de 1 a 4 que indica qual o LED serão usado    */
 /* Parâmetros de saída:	  n/a 							                      */
 /* *************************************************************************  */
-/*função para acender LED*/
 void setarLED(int iSetLed)
 {
 	/* Mapeamento da entrada para 1245*/
-    int iLedSetado = mapeaEntrada(iSetLed);
+    int iLedSetado = mapearEntrada(iSetLed);
     unsigned char ucNumeroDeComando = 1;
     /*
      * Fazemos um shift do número 1 até a posição do bit desejada
      * então chamamos a função para apagar uma porta
      */
-    GPIOA_PCOR |= (ucNumeroDeComando << iLedClear);
-
+    GPIOA_PCOR |= (ucNumeroDeComando << iLedSetado);
 }
 /* ************************************************************************** */
 /* Nome da função: 	      apagarLED             		                      */
@@ -190,18 +184,16 @@ void setarLED(int iSetLed)
 /* Parâmetros de entrada: Valor de 1 a 4 que indica qual o LED serão usado    */
 /* Parâmetros de saída:	  n/a 							                      */
 /* *************************************************************************  */
-/*função para apagar LED*/
 void apagarLED(int iClearLed)
 {
 	/* Mapeamento da entrada para 1245*/
-    int iLedClear = mapeaEntrada(iClearLed);
+    int iLedClear = mapearEntrada(iClearLed);
     unsigned char ucNumeroDeComando = 1;
     /*
      * Fazemos um shift do número 1 até a posição do bit desejada
      * então chamamos a função para setar uma porta
      */
-    GPIOA_PSOR |= (ucNumeroDeComando << iLedSetado);
-
+    GPIOA_PSOR |= (ucNumeroDeComando << iLedClear);
 }
 /* ********************************************************************************* */
 /* Nome da função: 	      alternarLED             		                             */
@@ -218,13 +210,11 @@ void apagarLED(int iClearLed)
 void alternarLED(int iToggleLed)
 {
 	/* Mapeamento da entrada para 1245*/
-    int iLedToggled = mapeaEntrada(iToggleLed);
+    int iLedToggled = mapearEntrada(iToggleLed);
     unsigned char ucNumeroDeComando = 1;
     /*
      * Fazemos um shift do número 1 até a posição do bit desejada
      * então chamamos a função para apagar uma porta
      */
     GPIOA_PTOR |= (ucNumeroDeComando << iLedToggled);
-
-
 }
