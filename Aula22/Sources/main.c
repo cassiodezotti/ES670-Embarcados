@@ -109,14 +109,36 @@ int main(void)
     iniciarPlaca();
 
     UART0_enableIRQ();
-    tc_installLptmr0(100000,pidTask);
 
     /* A sintonização dos controladores será implementada no projeto final */
     pid_setKp(1.0);
     pid_setKi(1.0);
 	pid_setKd(1.0);
 
+    tc_installLptmr0(100000,pidTask);
+
+
+
     while(1){
+
+
+    	/* clear LCD */
+		lcd_sendCommand(CMD_CLEAR);
+		/* set the cursor line 0, column 1 */
+		lcd_setCursor(0,1);
+		c = cMensagem4;
+		lcd_writeText(0,c);
+		lerTemp();
+		/*separa dezena de unidade*/
+		iAuxTemp = (iValorTempAtual/10)+48;
+		cAux[0]=(char)iAuxTemp;
+		iAuxTemp = (iValorTempAtual%10)+48;
+		/*converte int para char*/
+		cAux[1]=(char)iAuxTemp;
+		/* Escreve a temperatura no LCD */
+		c = cAux;
+		lcd_writeText(1,c);
+
 
     	if(iFlagLCD){
     		if(iIndex == 7){
