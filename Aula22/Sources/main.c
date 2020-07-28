@@ -33,12 +33,12 @@
 unsigned char ucAnswer[MAX_VALUE_LENGHT];
 unsigned char ucEnable;
 unsigned char ucTempAtual[4];
-unsigned char ucHeaterDuty[4];
-unsigned char ucCoolerDuty[4];
+unsigned float ucHeaterDuty;
+unsigned float ucCoolerDuty;
 int iValorTempAtual = 0;
 unsigned int uiSpTempertura;
 unsigned char ucPeriodo = 0x64;
-float ufSetHeaterDuty;
+
 int iCounter = 0;
 int iFlagLCD = 0;
 
@@ -54,7 +54,7 @@ void pidTask(void)
 	iSetPoint = uiSpTempertura;
 	fActuatorValue = pidUpdateData(iSensorValue,iSetPoint);
 	heater_PWMDuty(fActuatorValue/100);
-	ufSetHeaterDuty = fActuatorValue/100;
+
 
 	if(iCounter == 10){
 		iFlagLCD = 1;
@@ -270,7 +270,7 @@ int main(void)
 				lcd_writeText(0,c);
 				lerTemp();
 				/*separa dezena de unidade*/
-				fAuxDt = ufSetHeaterDuty;
+				fAuxDt = ucHeaterDuty;
 				iAux  = fAuxDt;
 				iAux2 = (iAux/10)+48;
 				cAux[0]=(char)iAux2;

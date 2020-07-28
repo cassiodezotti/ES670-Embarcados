@@ -13,6 +13,7 @@
 #include "aquecedorECooler.h"
 #include "adc.h"
 #include "lut_adc_3v3.h"
+#include "pid.h"
 
 /* system includes */
 #include "fsl_clock_manager.h"
@@ -52,8 +53,8 @@ extern int iValorTempAtual;
 extern unsigned char ucAnswer[MAX_VALUE_LENGHT];
 extern unsigned char ucEnable;
 extern unsigned char ucTempAtual[4];
-extern unsigned char ucHeaterDuty[4];
-extern unsigned char ucCoolerDuty[4];
+extern float fHDuty;
+extern float fCDuty;
 extern unsigned int uiSpTempertura;
 
 
@@ -68,7 +69,7 @@ extern unsigned int uiSpTempertura;
 /* ************************************************ */
 void processamentoByte(unsigned char ucByte)
 {
-	static unsigned char ucPARAM;
+	static unsigned char ucParam;
 	static unsigned char ucValue[MAX_VALUE_LENGHT];
 
 	/* Toda mensagem comeca com '#'*/
@@ -98,12 +99,14 @@ void processamentoByte(unsigned char ucByte)
     		    	break;
     		    /*
     		     * Para get, temos a opcao de temperatura 't',
-    		     * duty do aquecedor 'a' e duty do cooler 'c'
+    		     * duty do aquecedor 'a' e duty do cooler 'c',
+    		     * 'p', 'i' e 'd' para os valores de Kp, Ki e Kd
+    		     * respectivamente
     		     */
     		    case GET:
-    		    	if('t' == ucByte || 'a' == ucByte || 'c' == ucByte)
+    		    	if('t' == ucByte || 'a' == ucByte || 'c' == ucByte || 'i' == ucByte || 'p' == ucByte || 'd' == ucByte)
     		    	{
-    		    		ucPARAM = ucByte;
+    		    		ucParam = ucByte;
     		    		ucUARTState = PARAM;
     		    	}else
     		    	{
@@ -112,14 +115,13 @@ void processamentoByte(unsigned char ucByte)
     		        break;
     		      /*
     		      * Para set, temos a opcao de temperatura 't',
-    		      * a opcao de habilitar/desabilitar a interface
-    		      * local 'e' e as opcoes 'a' e 'c' para o duty cycle
-    		      * do aquecedor e cooler.
+    		      * 'i' para setar o Ki, 'p' para setar o Kp e 'd'
+    		      * para setar o Kd
     		      */
     		    case SET:
-    		    	if('t' == ucByte || 'e' == ucByte || 'a' == ucByte || 'c' == ucByte)
+    		    	if('t' == ucByte || 'i' == ucByte || 'p' == ucByte || 'd' == ucByte)
     		    	{
-    		    		ucPARAM = ucByte;
+    		    		ucParam = ucByte;
     		      		ucUARTState = VALUE;
     		      		ucValueCount = 0;
          		    	}else
@@ -130,7 +132,7 @@ void processamentoByte(unsigned char ucByte)
     		    case PARAM:
     		    	if(';' == ucByte)
     		    	{
-    		    		returnPARAM(ucPARAM);
+    		    		returnParam(ucParam);
     		    	}
     		    	ucUARTState = IDDLE;
     		    	break;
@@ -150,7 +152,7 @@ void processamentoByte(unsigned char ucByte)
     		    		if(';' == ucByte)
     		    		{
     		    			ucValue[ucValueCount] = '\0';
-    		    			setPARAM(ucPARAM,ucValue);
+    		    			setParam(ucParam,ucValue);
     		    		}
     		    		ucUARTState = IDDLE;
     		    	}
@@ -162,7 +164,7 @@ void processamentoByte(unsigned char ucByte)
 }
 
 /* ************************************************ */
-/* Method name:        returnPARAM                  */
+/* Method name:        returnParam                  */
 /* Method description: Funcaco para retornar a      */
 /*                     resposta solicitada por um   */
 /*                     comando get                  */
@@ -172,27 +174,41 @@ void processamentoByte(unsigned char ucByte)
 /*                     para o duty cycle do cooler  */
 /* Output params:      n/a                          */
 /* ************************************************ */
-void returnPARAM(unsigned char ucPARAM)
+void returnParam(unsigned char ucParam)
 {
 	/*
 	 * Colocamos o valor #a no comeco de toda mensagem de retorno
 	 * para identificar a mensagem como resporta, anwser
 	 */
-	ucAnswer[0] = 0x23; //"#"
-	ucAnswer[1] = 0x61; //"a";
 
-	switch(ucPARAM)
+	ucAnswer[0] = 0x23;
+	ucAnswer[1] = 0x61;
+
+	switch(ucParam)
 	{
 	    case 't':
-	    	lerTemp();
+	    	/*Le temperatura e armazena no vetor de answer*/
+	    	lerTemp()
 	        break;
 	    case 'a':
-	    	/*no futuro será implementado*/
+	    	/*Le duty cycle do aquecedor e armazena no vetor de answer*/
 	    	lerHeaterDuty();
 	    	break;
 	    case 'c':
-	    	/*no futuro será implementado*/
+	    	/*Le duty cycle do cooler e armazena no vetor de answer*/
 	    	lerCoolerFanDuty();
+	    	break;
+	    case 'p':
+	    	/*Le Kp e armazena no vetor de answer*/
+	    	lerKp();
+	    	break;
+	    case 'i':
+	    	/*Le Ki e armazena no vetor de answer*/
+	    	lerKi();
+	    	break;
+	    case 'd':
+	    	/*Le Kd e armazena no vetor de answer*/
+	    	lerKd();
 	    	break;
 	    default:
 	    	break;
@@ -204,7 +220,7 @@ void returnPARAM(unsigned char ucPARAM)
 }
 
 /* ************************************************ */
-/* Method name:        setPARAM                     */
+/* Method name:        setParam                     */
 /* Method description: Funcao para setar parametros */
 /*                                                  */
 /* Input params:       recebe um vetor de char com  */
@@ -216,25 +232,55 @@ void returnPARAM(unsigned char ucPARAM)
 /*                     interface local              */
 /* Output params:      n/a                          */
 /* ************************************************ */
-void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT])
+void setParam(unsigned char ucParam,unsigned char ucValue[MAX_VALUE_LENGHT])
 {
-    float aux;
-    switch(ucPARAM){
+    float fAux;
+    switch(ucParam){
+    /*converte o valor de temperatura desejada de char para int e armazena na
+     * variavel global
+     */
     case 't':
-	    /*no projeto será implementado*/
-	    for(int i=0; i<MAX_VALUE_LENGHT; i++){
+
+	    for(int i=3; i<MAX_VALUE_LENGHT; i++){
             uiSpTempertura = convertChar2Int(ucValue[i]);
         }
 	    break;
-     case 'e':
-	    /*no projeto será implementado*/
+	/*converte o valor de Kp desejada de char para float e chama a
+	 * funcao de set
+	 */
+    case 'p':
+    	for(int i=3; i<MAX_VALUE_LENGHT; i++){
+			fAux = convertChar2Float(ucValue[i]);
+		}
+    	pid_setKp(fAux);
+		break;
+	/*converte o valor de Ki desejada de char para float e chama a
+	 * funcao de set
+	 */
+    case 'i':
+    	for(int i=3; i<MAX_VALUE_LENGHT; i++){
+    		fAux = convertChar2Float(ucValue[i]);
+		}
+    	pid_setKi(fAux);
+		break;
+	 /*converte o valor de Kd desejada de char para float e chama a
+	 * funcao de set
+	 */
+    case 'd':
+    	for(int i=3; i<MAX_VALUE_LENGHT; i++){
+    		fAux = convertChar2Float(ucValue[i]);
+		}
+    	pid_setKd(fAux);
+		break;
+     /*case 'e':
+	    no projeto será implementado
 	    ucEnable = ucValue[0];
         break;
      case 'a':
 	    for(int i=0;i<4;i++){
             aux = convertChar2Float(ucValue[i]);
 	    }
-	    /* Limita o duty cycle do aquecedor em 50% */
+	    /* Limita o duty cycle do aquecedor em 50%
 	    if(aux>0.5){
 	        aux=0.5;
 	    }
@@ -245,7 +291,7 @@ void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT])
             aux = convertChar2Float(ucValue[i]);
         }
 	    coolerfan_PWMDuty(aux);
-        break;
+        break;*/
     }
 }
 
@@ -259,13 +305,30 @@ void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT])
 /* ************************************************* */
 void lerTemp()
 {
+
+	unsigned char ucSendChar, ucCount;
+	unsigned char ucAux[4];
+
+	/* inicia a conversao AD e espera terminar */
     adc_initConvertion();
     while(!adc_isAdcDone())
     {
 
     }
+
+    /* pega o valor correspondente a tabela e converte de int para char*/
     iValorTempAtual = tabela_temp[adc_getConvertionValue()];
-    convertInt2Char(iValorTempAtual);
+    ucAux = convertInt2Char(iValorTempAtual);
+
+    /* armazena o valor na variavel answer*/
+    for (ucCount= 0; ucCount< 4; ucCount++)
+    	{
+    		ucSendChar= ucAux[ucCount];
+    		ucAnswer[ucCount+2] = ucSendChar;
+    	}
+    ucAnswer[6] = 0x3b;
+
+
 }
 
 /* ************************************************* */
@@ -278,6 +341,10 @@ void lerTemp()
 /* ************************************************* */
 void lerHeaterDuty()
 {
+	unsigned char ucHeaterDuty[4];
+
+	/* le a variavel global de duty, converte de float para char e armazena na anwser */
+	ucHeaterDuty = convertFloat2Char(fHDuty);
     for(int i=0;i<4;i++){
         ucAnswer[i+2] = ucHeaterDuty[i];
     }
@@ -294,10 +361,77 @@ void lerHeaterDuty()
 /* ************************************************* */
 void lerCoolerFanDuty()
 {
+	unsigned char ucCoolerDuty[4];
+
+	/* le a variavel global de duty, converte de float para char e armazena na anwser */
+	ucCoolerDuty = convertFloat2Char(fCDuty);
+
     for(int i=0;i<4;i++){
 	    ucAnswer[i+2] = ucCoolerDuty[i];
     }
     ucAnswer[6] = 0x3b;
+}
+/* ************************************************* */
+/* Method name:        lerKp                         */
+/* Method description: Funcao para ler duty cycle do */
+/*                     cooler, sera reformulada nas  */
+/*                     proximas etapas               */
+/* Input params:       n/a                           */
+/* Output params:      n/a                           */
+/* ************************************************* */
+void lerKp()
+{
+	unsigned char Kp[4];
+
+	/* le o valor de Kp, converte de float para char e armazena na anwser */
+	Kp = convertFloat2Char(pid_getKp());
+
+	for(int i=0;i<4;i++){
+		ucAnswer[i+2] = Kp[i];
+	}
+	ucAnswer[6] = 0x3b;
+}
+
+/* ************************************************* */
+/* Method name:        lerKi                        */
+/* Method description: Funcao para ler duty cycle do */
+/*                     cooler, sera reformulada nas  */
+/*                     proximas etapas               */
+/* Input params:       n/a                           */
+/* Output params:      n/a                           */
+/* ************************************************* */
+void lerKi()
+{
+	unsigned char Ki[4];
+
+	/* le o valor de Ki, converte de float para char e armazena na anwser */
+	Ki = convertFloat2Char(pid_getKi());
+
+	for(int i=0;i<4;i++){
+		ucAnswer[i+2] = Ki[i];
+	}
+	ucAnswer[6] = 0x3b;
+}
+
+/* ************************************************* */
+/* Method name:        lerKd                         */
+/* Method description: Funcao para ler duty cycle do */
+/*                     cooler, sera reformulada nas  */
+/*                     proximas etapas               */
+/* Input params:       n/a                           */
+/* Output params:      n/a                           */
+/* ************************************************* */
+void lerKd()
+{
+	unsigned char Kd[4];
+
+	/* le o valor de Kd, converte de float para char e armazena na anwser */
+	Kd = convertFloat2Char(pid_getKd());
+
+	for(int i=0;i<4;i++){
+		ucAnswer[i+2] = Kd[i];
+	}
+	ucAnswer[6] = 0x3b;
 }
 
 /* **************************************************** */
@@ -329,19 +463,42 @@ float convertChar2Float(unsigned char ucReceivedChar)
 /* Input params:       valor int                        */
 /* Output params:      n/a                              */
 /* **************************************************** */
+char convertFloat2Char(float fReceivedFloat)
+{
+	floatUCharType varCharUFloat;
+	static unsigned char ucCount;
+	unsigned char ucSendChar;
+	unsigned char ucAux[4];
+
+	varCharUFloat.fReal= fReceivedFloat;
+
+	ucAux= varCharUFloat.ucBytes;
+
+	return(ucAux)
+}
+
+/* **************************************************** */
+/* Method name:        convertInt2Char                  */
+/* Method description: Funcao que converte um valor int */
+/*                     para um valor de 4 caracteres    */
+/* Input params:       valor int                        */
+/* Output params:      n/a                              */
+/* **************************************************** */
 void convertInt2Char(int ucReceivedInt)
 {
 	intUCharType varIntUChar;
 	unsigned char ucSendChar, ucCount;
+	unsigned char ucAux[4];
 
 	varIntUChar.iReal= ucReceivedInt;
-
-	for (ucCount= 0; ucCount< 4; ucCount++)
+	ucAux = varIntUChar.ucBytes
+	/*for (ucCount= 0; ucCount< 4; ucCount++)
 	{
 		ucSendChar= varIntUChar.ucBytes[ucCount];
-		ucAnswer[ucCount+2] = ucSendChar;
+		ucAux[ucCount+2] = ucSendChar;
 	}
-	ucAnswer[6] = 0x3b;
+	ucAux[6] = 0x3b;*/
+	return(ucAux)
 }
 
 /* **************************************************** */

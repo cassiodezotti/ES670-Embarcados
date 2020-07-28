@@ -13,7 +13,8 @@
 #include "aquecedorECooler.h"
 #include "board.h"
 extern unsigned char ucPeriodo;
-
+extern float fHDuty;
+extern float fCDuty;
 /* *********************************************************************  */
 /* Nome da função: PWM_init                                               */
 /* Descrição da função: Essa função inicializa o PWM e os parâmetros      */
@@ -94,6 +95,8 @@ void heater_init()
 /* ************************************************************************* */
 void coolerfan_PWMDuty(float fCoolerDuty)
 {
+
+	fCDuty = fCoolerDuty;
     /* Define o novo valor para o Duty Cycle do cooler */
     if(fCoolerDuty > 0 && fCoolerDuty < 1)
     {
@@ -111,8 +114,16 @@ void coolerfan_PWMDuty(float fCoolerDuty)
 /* **************************************************************************** */
 void heater_PWMDuty(float fHeaterDuty)
 {
+
+
+	if (fHeaterDuty > 0.5){
+		fHeaterDuty = 0.5;
+	}
+
+	fHDuty = fHeaterDuty;
+
     /* Define o novo valor para o Duty Cycle do aquecedor */
-    if(fHeaterDuty > 0 && fHeaterDuty < 1)
+    if(fHeaterDuty > 0.5 && fHeaterDuty < 1)
     {
         TPM0_C0V |= convertDuty(fHeaterDuty);
     }
