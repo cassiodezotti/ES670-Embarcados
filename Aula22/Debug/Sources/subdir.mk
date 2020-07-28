@@ -10,6 +10,7 @@ C_SRCS += \
 ../Sources/communicationStateMachine.c \
 ../Sources/fsl_debug_console.c \
 ../Sources/lcd.c \
+../Sources/ledSwi.c \
 ../Sources/lptmr.c \
 ../Sources/lut_adc_3v3.c \
 ../Sources/main.c \
@@ -25,6 +26,7 @@ OBJS += \
 ./Sources/communicationStateMachine.o \
 ./Sources/fsl_debug_console.o \
 ./Sources/lcd.o \
+./Sources/ledSwi.o \
 ./Sources/lptmr.o \
 ./Sources/lut_adc_3v3.o \
 ./Sources/main.o \
@@ -40,6 +42,7 @@ C_DEPS += \
 ./Sources/communicationStateMachine.d \
 ./Sources/fsl_debug_console.d \
 ./Sources/lcd.d \
+./Sources/ledSwi.d \
 ./Sources/lptmr.d \
 ./Sources/lut_adc_3v3.d \
 ./Sources/main.d \

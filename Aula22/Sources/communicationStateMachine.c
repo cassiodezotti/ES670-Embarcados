@@ -188,7 +188,7 @@ void returnParam(unsigned char ucParam)
 	{
 	    case 't':
 	    	/*Le temperatura e armazena no vetor de answer*/
-	    	lerTemp()
+	    	lerTemp();
 	        break;
 	    case 'a':
 	    	/*Le duty cycle do aquecedor e armazena no vetor de answer*/
@@ -307,7 +307,7 @@ void lerTemp()
 {
 
 	unsigned char ucSendChar, ucCount;
-	unsigned char ucAux[4];
+	unsigned char *ucAux;
 
 	/* inicia a conversao AD e espera terminar */
     adc_initConvertion();
@@ -341,7 +341,7 @@ void lerTemp()
 /* ************************************************* */
 void lerHeaterDuty()
 {
-	unsigned char ucHeaterDuty[4];
+	unsigned char *ucHeaterDuty;
 
 	/* le a variavel global de duty, converte de float para char e armazena na anwser */
 	ucHeaterDuty = convertFloat2Char(fHDuty);
@@ -361,7 +361,7 @@ void lerHeaterDuty()
 /* ************************************************* */
 void lerCoolerFanDuty()
 {
-	unsigned char ucCoolerDuty[4];
+	unsigned char *ucCoolerDuty;
 
 	/* le a variavel global de duty, converte de float para char e armazena na anwser */
 	ucCoolerDuty = convertFloat2Char(fCDuty);
@@ -381,7 +381,7 @@ void lerCoolerFanDuty()
 /* ************************************************* */
 void lerKp()
 {
-	unsigned char Kp[4];
+	unsigned char *Kp;
 
 	/* le o valor de Kp, converte de float para char e armazena na anwser */
 	Kp = convertFloat2Char(pid_getKp());
@@ -402,7 +402,7 @@ void lerKp()
 /* ************************************************* */
 void lerKi()
 {
-	unsigned char Ki[4];
+	unsigned char *Ki;
 
 	/* le o valor de Ki, converte de float para char e armazena na anwser */
 	Ki = convertFloat2Char(pid_getKi());
@@ -423,7 +423,7 @@ void lerKi()
 /* ************************************************* */
 void lerKd()
 {
-	unsigned char Kd[4];
+	unsigned char *Kd;
 
 	/* le o valor de Kd, converte de float para char e armazena na anwser */
 	Kd = convertFloat2Char(pid_getKd());
@@ -463,18 +463,18 @@ float convertChar2Float(unsigned char ucReceivedChar)
 /* Input params:       valor int                        */
 /* Output params:      n/a                              */
 /* **************************************************** */
-char convertFloat2Char(float fReceivedFloat)
+unsigned char* convertFloat2Char(float fReceivedFloat)
 {
 	floatUCharType varCharUFloat;
 	static unsigned char ucCount;
 	unsigned char ucSendChar;
-	unsigned char ucAux[4];
+	unsigned char *ucAux;
 
 	varCharUFloat.fReal= fReceivedFloat;
 
-	ucAux= varCharUFloat.ucBytes;
+	ucAux = varCharUFloat.ucBytes;
 
-	return(ucAux)
+	return(ucAux);
 }
 
 /* **************************************************** */
@@ -484,21 +484,21 @@ char convertFloat2Char(float fReceivedFloat)
 /* Input params:       valor int                        */
 /* Output params:      n/a                              */
 /* **************************************************** */
-void convertInt2Char(int ucReceivedInt)
+unsigned char* convertInt2Char(int ucReceivedInt)
 {
 	intUCharType varIntUChar;
 	unsigned char ucSendChar, ucCount;
-	unsigned char ucAux[4];
+	unsigned char *ucAux;
 
 	varIntUChar.iReal= ucReceivedInt;
-	ucAux = varIntUChar.ucBytes
+	ucAux = varIntUChar.ucBytes;
 	/*for (ucCount= 0; ucCount< 4; ucCount++)
 	{
 		ucSendChar= varIntUChar.ucBytes[ucCount];
 		ucAux[ucCount+2] = ucSendChar;
 	}
 	ucAux[6] = 0x3b;*/
-	return(ucAux)
+	return(ucAux);
 }
 
 /* **************************************************** */

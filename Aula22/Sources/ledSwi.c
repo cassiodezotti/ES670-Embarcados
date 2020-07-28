@@ -92,10 +92,9 @@ int mapearEntrada(int iValor)
 /*função de leitura do status*/
 int lerChave(int iChave)
 {
-
     unsigned char ucChaveLida = 0;
     /* Mapeamento da entrada para 1245*/
-    int iValorChave = mapeaEntrada(chave);
+    int iValorChave = mapeaEntrada(iChave);
     /*
      * Shifta o retorno da função de leitura da porta A, o número
      * de vezes necessário para extrairmos o bit de interesse, para isso
@@ -134,7 +133,7 @@ int lerChave(int iChave)
 void escreverLED(int iWriteLed, int iSetClear)
 {
 	/* Mapeamento da entrada para 1245*/
-    int iLedWrite = mapeaEntrada(writeLed);
+    int iLedWrite = mapeaEntrada(iWriteLed);
     unsigned char ucNumeroDeComando = 1;
 
     /*

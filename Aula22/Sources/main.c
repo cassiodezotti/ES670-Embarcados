@@ -33,8 +33,8 @@
 unsigned char ucAnswer[MAX_VALUE_LENGHT];
 unsigned char ucEnable;
 unsigned char ucTempAtual[4];
-unsigned float ucHeaterDuty;
-unsigned float ucCoolerDuty;
+float fHDuty;
+float fCDuty;
 int iValorTempAtual = 0;
 unsigned int uiSpTempertura;
 unsigned char ucPeriodo = 0x64;
@@ -142,7 +142,7 @@ int main(void)
 
     	if(iFlagLCD){
     		if(iIndex == 7){
-    			iIndex == 1
+    			iIndex = 1;
     		}
     		switch (iIndex){
     		case 1:
@@ -270,7 +270,7 @@ int main(void)
 				lcd_writeText(0,c);
 				lerTemp();
 				/*separa dezena de unidade*/
-				fAuxDt = ucHeaterDuty;
+				fAuxDt = fHDuty;
 				iAux  = fAuxDt;
 				iAux2 = (iAux/10)+48;
 				cAux[0]=(char)iAux2;

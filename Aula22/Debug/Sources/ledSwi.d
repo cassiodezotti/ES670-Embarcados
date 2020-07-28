@@ -1,13 +1,9 @@
-Sources/communicationStateMachine.o: \
- ../Sources/communicationStateMachine.c \
- ../Sources/communicationStateMachine.h ../Sources/board.h \
+Sources/ledSwi.o: ../Sources/ledSwi.c ../Sources/board.h \
  ../SDK/platform/devices/MKL25Z4/include/MKL25Z4.h \
  ../SDK/platform/CMSIS/Include/core_cm0plus.h \
  ../SDK/platform/CMSIS/Include/core_cmInstr.h \
  ../SDK/platform/CMSIS/Include/core_cmFunc.h \
  ../Project_Settings/Startup_Code/system_MKL25Z4.h \
- ../Sources/aquecedorECooler.h ../Sources/adc.h ../Sources/lut_adc_3v3.h \
- ../Sources/pid.h \
  C:/Freescale/KSDK_1.2.0/platform/system/inc/fsl_clock_manager.h \
  ../SDK/platform/devices/fsl_device_registers.h \
  ../SDK/platform/devices/MKL25Z4/include/MKL25Z4.h \
@@ -23,12 +19,7 @@ Sources/communicationStateMachine.o: \
  C:/Freescale/KSDK_1.2.0/platform/hal/inc/fsl_mcg_hal.h \
  C:/Freescale/KSDK_1.2.0/platform/hal/inc/fsl_osc_hal.h \
  C:/Freescale/KSDK_1.2.0/platform/hal/inc/fsl_port_hal.h \
- C:/Freescale/KSDK_1.2.0/platform/hal/inc/fsl_smc_hal.h \
- C:/Freescale/KSDK_1.2.0/platform/utilities/inc/fsl_debug_console.h \
- C:/Freescale/KSDK_1.2.0/platform/osa/inc/fsl_os_abstraction.h \
- C:/Freescale/KSDK_1.2.0/platform/osa/inc/fsl_os_abstraction_bm.h
-
-../Sources/communicationStateMachine.h:
+ C:/Freescale/KSDK_1.2.0/platform/hal/inc/fsl_gpio_hal.h
 
 ../Sources/board.h:
 
@@ -41,14 +32,6 @@ Sources/communicationStateMachine.o: \
 ../SDK/platform/CMSIS/Include/core_cmFunc.h:
 
 ../Project_Settings/Startup_Code/system_MKL25Z4.h:
-
-../Sources/aquecedorECooler.h:
-
-../Sources/adc.h:
-
-../Sources/lut_adc_3v3.h:
-
-../Sources/pid.h:
 
 C:/Freescale/KSDK_1.2.0/platform/system/inc/fsl_clock_manager.h:
 
@@ -80,10 +63,4 @@ C:/Freescale/KSDK_1.2.0/platform/hal/inc/fsl_osc_hal.h:
 
 C:/Freescale/KSDK_1.2.0/platform/hal/inc/fsl_port_hal.h:
 
-C:/Freescale/KSDK_1.2.0/platform/hal/inc/fsl_smc_hal.h:
-
-C:/Freescale/KSDK_1.2.0/platform/utilities/inc/fsl_debug_console.h:
-
-C:/Freescale/KSDK_1.2.0/platform/osa/inc/fsl_os_abstraction.h:
-
-C:/Freescale/KSDK_1.2.0/platform/osa/inc/fsl_os_abstraction_bm.h:
+C:/Freescale/KSDK_1.2.0/platform/hal/inc/fsl_gpio_hal.h:
