@@ -11,7 +11,6 @@
 
 /* system includes */
 #include "fsl_lptmr_driver.h"
-
 #include "fsl_clock_manager.h"
 #include "fsl_port_hal.h"
 #include "fsl_gpio_hal.h"

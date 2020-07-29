@@ -39,6 +39,7 @@
 #include <ctype.h>
 #include <stdint.h>
 #include <stdbool.h>
+
 // Keil: suppress ellipsis warning in va_arg usage below
 #if defined(__CC_ARM)
 #pragma diag_suppress 1256

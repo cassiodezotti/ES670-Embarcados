@@ -9,6 +9,7 @@ C_SRCS += \
 ../Sources/aquecedorECooler.c \
 ../Sources/communicationStateMachine.c \
 ../Sources/fsl_debug_console.c \
+../Sources/interruptButton.c \
 ../Sources/lcd.c \
 ../Sources/ledSwi.c \
 ../Sources/lptmr.c \
@@ -25,6 +26,7 @@ OBJS += \
 ./Sources/aquecedorECooler.o \
 ./Sources/communicationStateMachine.o \
 ./Sources/fsl_debug_console.o \
+./Sources/interruptButton.o \
 ./Sources/lcd.o \
 ./Sources/ledSwi.o \
 ./Sources/lptmr.o \
@@ -41,6 +43,7 @@ C_DEPS += \
 ./Sources/aquecedorECooler.d \
 ./Sources/communicationStateMachine.d \
 ./Sources/fsl_debug_console.d \
+./Sources/interruptButton.d \
 ./Sources/lcd.d \
 ./Sources/ledSwi.d \
 ./Sources/lptmr.d \

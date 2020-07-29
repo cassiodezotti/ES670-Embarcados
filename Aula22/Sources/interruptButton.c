@@ -1,10 +1,11 @@
-/* ***************************************************************** */
-/* File name:        UART.c                                          */
-/* File description: Debugging through UART interface                */
-/* Author name:      dloubach, rbacurau                              */
-/* Creation date:    22out2015                                       */
-/* Revision date:    01mai2020                                       */
-/* ***************************************************************** */
+/* *********************************************************************** */
+/* Nome do Arquivo:      interruptButton.c                                 */
+/* Descricao do arquivo: Funcoes que configuram as interrupcoes dos botoes */
+/* Nome dos autores:     Gustavo M./Cassio D.                              */
+/* RA:                   174217/168988                                     */
+/* Data de criacao:      03jun2020                                         */
+/* Data da revisao:      29jul2020                                         */
+/* *********************************************************************** */
 
 /* definition include */
 #include "interruptButton.h"
@@ -17,9 +18,10 @@
 #include "fsl_debug_console.h"
 #include "communicationStateMachine.h"
 #include "board.h"
+#include "core_cm0plus.h"
 
-extern int iFlagSetTemp = 0;
-extern int iFlagSetK = 0;
+extern int iFlagSetTemp;
+extern int iFlagSetK;
 
 /* ************************************************ */
 /* Method name:        interruptButton_init               */
@@ -31,7 +33,6 @@ void interruptButton_init (void)
 {
 	PORTA_PCR1 |= (0XA0000);
 	PORTA_PCR2 |= (0XA0000);
-
 }
 
 /* ************************************************ */

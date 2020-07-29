@@ -1,10 +1,11 @@
-/* ***************************************************************** */
-/* File name:        UART.h                                          */
-/* File description: Debugging through UART interface                */
-/* Author name:      dloubach, rbacurau                              */
-/* Creation date:    22out2015                                       */
-/* Revision date:    01mai2020                                       */
-/* ***************************************************************** */
+/* ************************************************************* */
+/* Nome do Arquivo:      interruptButton.h                       */
+/* Descricao do arquivo: Funcoes para as interrupcoes dos botoes */
+/* Nome dos autores:     Gustavo M./Cassio D.                    */
+/* RA:                   174217/168988                           */
+/* Data de criacao:      03jun2020                               */
+/* Data da revisao:      29jul2020                               */
+/* ************************************************************* */
 
 #ifndef interruptButton_H_
 #define interruptButton_H_
@@ -50,4 +51,4 @@ void interruptButton_disableIRQ(void);
 /* ************************************************ */
 void PORTA_IRQHandler(void);
 
-#endif /* UART_H_ */
+#endif /* interruptButton_H_ */

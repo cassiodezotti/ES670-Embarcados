@@ -27,6 +27,7 @@
 #include "pid.h"
 #include "core_cm0plus.h"
 #include "ledSwi.h"
+#include "interruptButton.h"
 
 #define MAX_VALUE_LENGHT 7
 
@@ -127,8 +128,6 @@ int main(void)
     tc_installLptmr0(100000,pidTask);
     UART0_enableIRQ();
     interruptButton_enableIRQ();
-
-
 
     while(1){
 

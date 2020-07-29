@@ -58,7 +58,6 @@ extern float fHDuty;
 extern float fCDuty;
 extern unsigned int uiSpTempertura;
 
-
 /* ************************************************ */
 /* Method name:        processamentoByte            */
 /* Method description: Funcao contendo maquina de   */

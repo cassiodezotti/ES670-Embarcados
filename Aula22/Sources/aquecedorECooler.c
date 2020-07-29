@@ -12,6 +12,7 @@
 /* our includes */
 #include "aquecedorECooler.h"
 #include "board.h"
+
 extern unsigned char ucPeriodo;
 extern float fHDuty;
 extern float fCDuty;

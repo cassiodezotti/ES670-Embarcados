@@ -17,7 +17,7 @@ Sources/main.o: ../Sources/main.c ../Sources/board.h \
  ../SDK/platform/devices/MKL25Z4/include/MKL25Z4_features.h \
  C:/Freescale/KSDK_1.2.0/platform/hal/inc/fsl_sim_hal.h \
  c:\freescale\ksdk_1.2.0\platform\hal\src\sim\mkl25z4\fsl_sim_hal_mkl25z4.h \
- ../Sources/pid.h ../Sources/ledSwi.h
+ ../Sources/pid.h ../Sources/ledSwi.h ../Sources/interruptButton.h
 
 ../Sources/board.h:
 
@@ -70,3 +70,5 @@ c:\freescale\ksdk_1.2.0\platform\hal\src\sim\mkl25z4\fsl_sim_hal_mkl25z4.h:
 ../Sources/pid.h:
 
 ../Sources/ledSwi.h:
+
+../Sources/interruptButton.h:

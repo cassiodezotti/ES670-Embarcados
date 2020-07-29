@@ -33,6 +33,10 @@
 #include <stdlib.h>
 #include "fsl_device_registers.h"
 #include "fsl_debug_console.h"
+#include "fsl_clock_manager.h"
+#include "fsl_os_abstraction.h"
+#include "print_scan.h"
+
 #if defined(UART_INSTANCE_COUNT)
 #include "fsl_uart_hal.h"
 #endif
@@ -42,9 +46,6 @@
 #if defined(UART0_INSTANCE_COUNT)
 #include "fsl_lpsci_hal.h"
 #endif
-#include "fsl_clock_manager.h"
-#include "fsl_os_abstraction.h"
-#include "print_scan.h"
 
 #if (defined(USB_INSTANCE_COUNT) &&  (defined(BOARD_USE_VIRTUALCOM)))
   #include "usb_device_config.h"

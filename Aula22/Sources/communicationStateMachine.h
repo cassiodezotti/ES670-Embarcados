@@ -147,4 +147,4 @@ void lerKi();
 /* ************************************************* */
 void lerKd();
 
-#endif /* UART_H_ */
+#endif /* COMMUNICATION_STATE_MACHINE_H_ */

@@ -14,13 +14,11 @@
 #include "util.h"
 
 /* includes do sistema */
-
 #include "fsl_clock_manager.h"
 #include "fsl_port_hal.h"
 #include "fsl_gpio_hal.h"
 
 /* linha e coluna zero */
-
 #define LINE0        0U
 #define COLUMN0      0U
 #define L0C0_BASE    0x80 /* line 0, column 0 */

@@ -10,7 +10,6 @@
 #ifndef SOURCES_CONTROLLER_PID_H_
 #define SOURCES_CONTROLLER_PID_H_
 
-
 typedef struct pid_data_type {
 	float fKp, fKi, fKd;         // PID gains
 	float fError_previous;       // used in the derivative

@@ -48,5 +48,4 @@ char adc_isAdcDone(void);
 /* ************************************************** */
 int adc_getConvertionValue(void);
 
-
 #endif /* SOURCES_ADC_H_ */

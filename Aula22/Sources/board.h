@@ -7,14 +7,13 @@
 /* Revision date:    28jul2020                                       */
 /* ***************************************************************** */
 
-#ifndef SOURCES_BOARD_H_
-#define SOURCES_BOARD_H_
-
 /* system includes */
 #include <MKL25Z4.h>
 
-/*                 General uC definitions                 */
+#ifndef SOURCES_BOARD_H_
+#define SOURCES_BOARD_H_
 
+/*                 General uC definitions                 */
 
 /* 					Definicoes dos botoes                */
 #define LEDSWI1_PORT   PORTA /* peripheral port base pointer */

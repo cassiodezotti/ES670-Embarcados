@@ -96,4 +96,4 @@ void alternarLED(int iToggleLed);
 int mapearEntrada(int iValor);
 
 
-#endif /* SOURCES_LEDRGB_H_ */
+#endif /* SOURCES_LEDSWI_H_ */

@@ -27,14 +27,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef __print_scan_h__
-#define __print_scan_h__
 
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
+
+#ifndef __PRINT_SCAN_H__
+#define __PRINT_SCAN_H__
 
 //#define PRINTF_FLOAT_ENABLE   1
 //#define PRINT_MAX_COUNT       1
@@ -88,4 +89,4 @@ int _sputc(int c, void * input_string);
  */
 int scan_prv(const char *line_ptr, char *format, va_list args_ptr);
 
-#endif
+#endif /* __PRINT_SCAN_H__ */
