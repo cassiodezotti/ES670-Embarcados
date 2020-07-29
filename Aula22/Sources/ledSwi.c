@@ -31,9 +31,13 @@ void iniciarLedSwi(int iEstados[4])
     SIM_SCGC5 |= 0x0200;
 
     /* seta os pinos 1 2 4 5 como gpio */
+    PORTA_PCR1 &= ~(0X600);
     PORTA_PCR1 |= 0X100;
+    PORTA_PCR2 &= ~(0X600);
     PORTA_PCR2 |= 0X100;
+    PORTA_PCR4 &= ~(0X600);
     PORTA_PCR4 |= 0X100;
+    PORTA_PCR5 &= ~(0X600);
     PORTA_PCR5 |= 0X100;
 	/*
 	 * Percorre o vetor, como as 2 opções de entrada são 0 ou 1

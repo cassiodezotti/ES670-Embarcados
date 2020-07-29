@@ -39,13 +39,13 @@ int iValorTempAtual = 0;
 unsigned int uiSpTempertura;
 unsigned char ucPeriodo = 0x64;
 int iBotoesInit[4] = {0,0,0,0};
-
+int iFlagSetTemp = 0;
+int iFlagSetK = 0;
 
 void pidTask(void)
 {
 	int iSensorValue,iSetPoint;
 	float fActuatorValue;
-
 
 
 	lerTemp();
@@ -75,6 +75,7 @@ void iniciarPlaca(void)
     heater_init();
     pid_init();
     iniciarLedSwi(iBotoesInit);
+
 }
 
 /* *********************************************************************** */
@@ -96,21 +97,36 @@ int main(void)
 	float fAuxKp, fAuxKi, fAuxKd = 0;
 	int iAuxTemp, iAuxSP, iAux, iAux2;
 	int iCount = 1;
-	int iFlagSetTemp = 0;
-	int iFlagSetK = 0;
-	NVIC_SetPriority(28,0);
-	NVIC_SetPriority(12,1);
 
+	/* Definimos como maior prioridade a interrupcao do
+	 * LPTMR, pois ela controla o controlador PID que
+	 * necessita de uma periodicidade de 100ms para
+	 * funcionar corretamente. Definimos as interrupcoes dos
+	 * botes e Uart como a mesma prioridade pois assumimos que
+	 * o usuario nao ira acionar as duas ao mesmo tempo.
+	 */
+	NVIC_SetPriority(LPTMR0_IRQn,0);
+	NVIC_SetPriority(PORTA_IRQn,1);
+	NVIC_SetPriority(UART0_IRQn,1);
+
+	/* iniciamos os componentes */
     iniciarPlaca();
 
-    UART0_enableIRQ();
 
-    /* A sintonização dos controladores será implementada no projeto final */
+
+
+    /* Valores iniciais para K, como iniciamos o controlador com os K = 0,
+     * ele permanece sem executar nenhuma função até receber algum valor para K.
+     * Assim primeiro passo do usuario deve ser a sintonizacao dos controladores.
+     */
     pid_setKp(1.0);
     pid_setKi(1.0);
 	pid_setKd(1.0);
 
+	/* Habilitando interrupcoes */
     tc_installLptmr0(100000,pidTask);
+    UART0_enableIRQ();
+    interruptButton_enableIRQ();
 
 
 
@@ -138,7 +154,10 @@ int main(void)
 
 		while(iFlagSetTemp){
 			iAuxTemp = uiSpTempertura;
-
+			/* Desabilitamos as interrupcoes dos botoes pois eles tem outras
+			 * funcoes nessa parte do codigo
+			 */
+			interruptButton_disableIRQ();
 			while(!lerChave(1)){
 
 				/* clear LCD */
@@ -168,11 +187,15 @@ int main(void)
 				}
 			}
 			uiSpTempertura = iAuxTemp;
+			interruptButton_enableIRQ();
 			iFlagSetTemp = 0;
 		}
 
 		while(iFlagSetK){
-
+			/* Desabilitamos as interrupcoes dos botoes pois eles tem outras
+			 * funcoes nessa parte do codigo
+			 */
+			interruptButton_disableIRQ();
 			while(!lerChave(1)){
 
 				while(iCount == 1){
@@ -289,10 +312,15 @@ int main(void)
 			}
 
 			iCount = iCount+1;
+			/* se o usuario ja setou Kp Ki e Kd, atualizamos os ganhos
+			 * habilitamos a interrupcao dos botoes e resetamos a flag
+			 * de set dos K.
+			 */
 			if(iCount == 4){
 			    pid_setKp(fAuxKp);
 			    pid_setKi(fAuxKi);
 				pid_setKd(fAuxKd);
+				interruptButton_enableIRQ();
 				iFlagSetK = 0;
 			}
 		}
