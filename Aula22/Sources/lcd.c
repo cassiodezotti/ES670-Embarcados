@@ -1,8 +1,8 @@
 /* ************************************************************************ */
 /* Nome do Arquivo:      lcd.c                                              */
-/* Descricao do arquivo: Este arquivo e dedicado criar todas as funçoes     */
+/* Descricao do arquivo: Este arquivo e dedicado criar todas as funcoes     */
 /*                   	 do lcd, escrita de comando, escrita de dados e     */
-/*                       inicializaçao                                      */
+/*                       inicializacao                                      */
 /* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
 /* RA:                   174217/168988                                      */
 /* Data de criacao:      06abril2020                                        */

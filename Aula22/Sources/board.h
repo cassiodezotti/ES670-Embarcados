@@ -1,11 +1,10 @@
 /* ***************************************************************** */
 /* File name:        board.h                                         */
 /* File description: Header file containing the peripherals mapping  */
-/*                     of the peripheral board for the ES670 hardware*/
-/*                                                                   */
+/*                   of the peripheral board for the ES670 hardware  */
 /* Author name:      Rodrigo M Bacurau/Gustavo M./Cassio D.          */
 /* Creation date:    26fev2020                                       */
-/* Revision date:    18abr2020                                       */
+/* Revision date:    28jul2020                                       */
 /* ***************************************************************** */
 
 #ifndef SOURCES_BOARD_H_
@@ -15,7 +14,6 @@
 #include <MKL25Z4.h>
 
 /*                 General uC definitions                 */
-
 
 
 /* 					Definicoes dos botoes                */

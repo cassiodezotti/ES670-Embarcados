@@ -3,7 +3,6 @@
 /* File description: Header file containing the functions/methods    */
 /*                   interfaces for handling the Multipurpose clock  */
 /*                   generator module                                */
-/*                                                                   */
 /* Author name:      dloubach                                        */
 /* Creation date:    21out2015                                       */
 /* Revision date:    25fev2016                                       */

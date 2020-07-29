@@ -2,16 +2,11 @@
 /* Nome do Arquivo:      lcd.h                                              */
 /* Descricao do arquivo: Cabecalho contendo as atribuicoes para as funcoes  */
 /*                       utilzadas na lcd.c                                 */
-/*                                                                          */
-/*                                                                          */
-/*                                                                          */
 /* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
 /* RA:                   174217/168988                                      */
 /* Data de criacao:      06abril2020                                        */
 /* Data da revisao:      09abril2020                                        */
 /* ************************************************************************ */
-
-
 
 #ifndef SOURCES_LCD_H_
 #define SOURCES_LCD_H_

@@ -8,11 +8,10 @@
 /*                       128 KB program flash memory                        */
 /*                       16 KB SRAM                                         */
 /*                       Voltage range: 1.71 to 3.6 V                       */
-/*                                                                          */
 /* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
 /* RA:                   174217/168988                                      */
 /* Data de criacao:      03abril2020                                        */
-/* Data da revisao:      09abril2020                                        */
+/* Data da revisao:      29jul2020                                          */
 /* ************************************************************************ */
 
 /* our includes */

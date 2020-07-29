@@ -1,10 +1,11 @@
-/* *********************************************************************** */
-/* File name:        communicationStateMachine.c                           */
-/* File description: Contêm a descrição das funções utilizadas no programa */
-/* Author name:      Gustavo M./Cassio D.                                  */
-/* Creation date:    03jun2020                                             */
-/* Revision date:    09jun2020                                             */
-/* *********************************************************************** */
+/* *************************************************************************** */
+/* Nome do Arquivo:      communicationStateMachine.c                           */
+/* Descricao do arquivo: Contêm a descrição das funções utilizadas no programa */
+/* Nome dos autores:     Gustavo M./Cassio D.                                  */
+/* RA:                   174217/168988                                         */
+/* Data de criacao:      03jun2020                                             */
+/* Data da revisao:      09jun2020                                             */
+/* *************************************************************************** */
 
 #ifndef COMMUNICATION_STATE_MACHINE_H_
 #define COMMUNICATION_STATE_MACHINE_H_
@@ -33,7 +34,7 @@ void processamentoByte(unsigned char ucByte);
 /*                     para o duty cycle do cooler  */
 /* Output params:      n/a                          */
 /* ************************************************ */
-void returnPARAM(unsigned char ucPARAM);
+void returnParam(unsigned char ucParam);
 
 /* ************************************************ */
 /* Method name:        setPARAM                     */
@@ -48,7 +49,7 @@ void returnPARAM(unsigned char ucPARAM);
 /*                     interface local              */
 /* Output params:      n/a                          */
 /* ************************************************ */
-void setPARAM(unsigned char ucPARAM,unsigned char ucValue[MAX_VALUE_LENGHT+1]);
+void setParam(unsigned char ucParam,unsigned char ucValue[MAX_VALUE_LENGHT]);
 
 /* ************************************************* */
 /* Method name:        lerTemp                       */
@@ -115,5 +116,35 @@ int convertChar2Int(unsigned char ucReceivedChar);
 /* Output params:      valor float                      */
 /* **************************************************** */
 unsigned char* convertFloat2Char(float fReceivedFloat);
+
+/* ************************************************* */
+/* Method name:        lerKp                         */
+/* Method description: Funcao para ler duty cycle do */
+/*                     cooler, sera reformulada nas  */
+/*                     proximas etapas               */
+/* Input params:       n/a                           */
+/* Output params:      n/a                           */
+/* ************************************************* */
+void lerKp();
+
+/* ************************************************* */
+/* Method name:        lerKi                        */
+/* Method description: Funcao para ler duty cycle do */
+/*                     cooler, sera reformulada nas  */
+/*                     proximas etapas               */
+/* Input params:       n/a                           */
+/* Output params:      n/a                           */
+/* ************************************************* */
+void lerKi();
+
+/* ************************************************* */
+/* Method name:        lerKd                         */
+/* Method description: Funcao para ler duty cycle do */
+/*                     cooler, sera reformulada nas  */
+/*                     proximas etapas               */
+/* Input params:       n/a                           */
+/* Output params:      n/a                           */
+/* ************************************************* */
+void lerKd();
 
 #endif /* UART_H_ */

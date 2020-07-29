@@ -1,12 +1,12 @@
 /************************************************************************ */
 /* Nome do Arquivo:      aquecedorECooler.c                               */
-/* Descricao do arquivo: Arquivo que construi as funções que controlam o  */
+/* Descricao do arquivo: Arquivo que construi as funcoes que controlam o  */
 /*                       PWM e os atuadores                               */
 /*                                                                        */
 /* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                    */
 /* RA:                   174217/168988                                    */
 /* Data de criacao:      24abril2020                                      */
-/* Data da revisao:      26abril2020                                      */
+/* Data da revisao:      27jul2020                                        */
 /* ********************************************************************** */
 
 /* our includes */

@@ -1,13 +1,12 @@
-/* ************************************************************************ */
-/* Nome do Arquivo:      aquecedorECooler.h                                 */
-/* Descrição do arquivo: Este arquivo é dedicado a apresentar todas as      */
-/*                       funções utilizadas no programa                     */
-/*                                                                          */
-/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
-/* RA:                   174217/168988                                      */
-/* Data de criação:      24abril2020                                        */
-/* Data da revisão:      26abril2020                                        */
-/* ************************************************************************ */
+/* ******************************************************************** */
+/* Nome do Arquivo:      aquecedorECooler.h                             */
+/* Descricao do arquivo: Este arquivo eh dedicado a apresentar todas as */
+/*                       funcoes utilizadas no programa                 */
+/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                  */
+/* RA:                   174217/168988                                  */
+/* Data de criacao:      24abril2020                                    */
+/* Data da revisao:      26abril2020                                    */
+/* ******************************************************************** */
 
 #ifndef SOURCES_AQUECEDORECOOLER_H_
 #define SOURCES_AQUECEDORECOOLER_H_

@@ -1,19 +1,15 @@
 /* ********************************************************************** */
 /* Nome do Arquivo:        ledSwi.h                                       */
-/* Descrição do arquivo:   Este arquivo contem funções para inicialização */
-/*                   	   e utilização dos leds e botões do kit.         */
-/*                                                                        */
-/*                                                                        */
+/* Descrição do arquivo:   Este arquivo contem funcoes para inicializacao */
+/*                   	   e utilizacao dos leds e botoes do kit.         */
 /* Nome dos autores:       Gustavo Moraes/Cassio Dezotti                  */
 /* RA:                     174217/168988                                  */
-/* Data de criação:        26mar2020                                      */
-/* Data da revisão:        04abril2020                                    */
+/* Data de criacao:        26mar2020                                      */
+/* Data da revisao:        28jul2020                                      */
 /* ********************************************************************** */
-
 
 /* our includes */
 #include "board.h"
-
 
 /* system includes */
 #include "fsl_clock_manager.h"

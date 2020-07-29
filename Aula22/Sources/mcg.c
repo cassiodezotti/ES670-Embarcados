@@ -17,7 +17,6 @@
 /*                   For clock definitions, check the chapter        */
 /*                   5.4 Clock definitions from                      */
 /*                   KL25 Sub-Family Reference Manual                */
-/*                                                                   */
 /* Author name:      dloubach                                        */
 /* Creation date:    21out2015                                       */
 /* Revision date:    21mar2016                                       */

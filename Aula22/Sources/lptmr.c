@@ -2,7 +2,6 @@
 /* File name:        tc_hal.c                                        */
 /* File description: This file has a couple of useful functions to   */
 /*                   timer and counter hardware abstraction layer    */
-/*                                                                   */
 /* Author name:      dloubach                                        */
 /* Creation date:    23out2015                                       */
 /* Revision date:    25fev2016                                       */

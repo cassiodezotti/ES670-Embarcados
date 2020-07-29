@@ -1,11 +1,12 @@
-/* ********************************************************************* */
-/* File name:        communicationStateMachine.c                         */
-/* File description: Desenvolve a maquina de estados e as outras funções */
-/*                   que cuidam da comunicação                           */
-/* Author name:      Gustavo M./Cassio D.                                */
-/* Creation date:    03jun2020                                           */
-/* Revision date:    09jun2020                                           */
-/* ********************************************************************* */
+/* ************************************************************************* */
+/* Nome do Arquivo:      communicationStateMachine.c                         */
+/* Descricao do arquivo: Desenvolve a maquina de estados e as outras funcoes */
+/*                       que cuidam da comunicacao                           */
+/* Nome dos autores:     Gustavo M./Cassio D.                                */
+/* RA:                   174217/168988                                       */
+/* Data de criacao:      03jun2020                                           */
+/* Data da revisao:      28jul2020                                           */
+/* ************************************************************************* */
 
 /* definition include */
 #include "communicationStateMachine.h"
@@ -279,19 +280,7 @@ void setParam(unsigned char ucParam,unsigned char ucValue[MAX_VALUE_LENGHT])
      case 'a':
 	    for(int i=0;i<4;i++){
             aux = convertChar2Float(ucValue[i]);
-	    }
-	    /* Limita o duty cycle do aquecedor em 50%
-	    if(aux>0.5){
-	        aux=0.5;
-	    }
-	    heater_PWMDuty(aux);
-        break;
-     case 'c':
-	    for(int i=0;i<4;i++){
-            aux = convertChar2Float(ucValue[i]);
-        }
-	    coolerfan_PWMDuty(aux);
-        break;*/
+	    } */
     }
 }
 
@@ -466,8 +455,6 @@ float convertChar2Float(unsigned char ucReceivedChar)
 unsigned char* convertFloat2Char(float fReceivedFloat)
 {
 	floatUCharType varCharUFloat;
-	static unsigned char ucCount;
-	unsigned char ucSendChar;
 	unsigned char *ucAux;
 
 	varCharUFloat.fReal= fReceivedFloat;
@@ -487,7 +474,6 @@ unsigned char* convertFloat2Char(float fReceivedFloat)
 unsigned char* convertInt2Char(int ucReceivedInt)
 {
 	intUCharType varIntUChar;
-	unsigned char ucSendChar, ucCount;
 	unsigned char *ucAux;
 
 	varIntUChar.iReal= ucReceivedInt;

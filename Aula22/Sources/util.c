@@ -6,7 +6,6 @@
 /*                   Remarks: The soft delays consider               */
 /*                   core clock @ 40MHz                              */
 /*                   bus clock @ 20MHz                               */
-/*                                                                   */
 /* Author name:      dloubach                                        */
 /* Creation date:    09jan2015                                       */
 /* Revision date:    21mar2016                                       */

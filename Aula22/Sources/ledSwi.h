@@ -1,19 +1,15 @@
-
-/* ********************************************************************** */
-/* Nome do Arquivo:        ledSwi.h                                       */
-/* Descrição do arquivo:   Este arquivo contem funções para inicialização */
-/*                   	   e utilização dos leds e botões do kit.         */
-/*                                                                        */
-/*                                                                        */
-/* Author name:            Gustavo Moraes/Cassio Dezotti                  */
-/* RA:                     174217/168988                                  */
-/* Data de criação:        26mar2020                                      */
-/* Data da revisão:        04abril2020                                    */
-/* ********************************************************************** */
+/* ********************************************************************* */
+/* Nome do Arquivo:      ledSwi.h                                        */
+/* Descricao do arquivo: Este arquivo contem funcoes para inicializacao  */
+/*                   	 e utilizacao dos leds e botoes do kit.          */
+/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                   */
+/* RA:                   174217/168988                                   */
+/* Data de criacao:      26mar2020                                       */
+/* Data da revisao:      04abril2020                                     */
+/* ********************************************************************* */
 
 #ifndef SOURCES_LEDSWI_H_
 #define SOURCES_LEDSWI_H_
-
 
 /* ********************************************************************************* */
 /* Nome da função: 	       iniciarLedSwi        		                             */
