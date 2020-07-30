@@ -36,7 +36,7 @@ void interruptButton_init (void)
 }
 
 /* ************************************************ */
-/* Method name:        interruptButton_enableIRQ              */
+/* Method name:        interruptButton_enableIRQ    */
 /* Method description: Enable the interruption for  */
 /*                     serial port inputs and       */
 /*                     prepare the buffer           */
@@ -51,7 +51,7 @@ void interruptButton_enableIRQ(void)
 }
 
 /* ************************************************ */
-/* Method name:        interruptButton_enableIRQ              */
+/* Method name:        interruptButton_enableIRQ    */
 /* Method description: Enable the interruption for  */
 /*                     serial port inputs and       */
 /*                     prepare the buffer           */
@@ -83,9 +83,11 @@ void PORTA_IRQHandler(void)
 	ucAux = (0x1) & (ucLido >> 1);
 	if(ucAux){
 		iFlagSetTemp = 1;
+		PORTA_ISFR |= 0x2;
 	}
 	ucAux = (0x1) & (ucLido >> 2);
 	if(ucAux){
 		iFlagSetK = 1;
+		PORTA_ISFR |= 0x4;
 	}
 }
