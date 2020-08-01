@@ -1,0 +1,71 @@
+16:23:25 **** Incremental Build of configuration Debug for project Aula22 ****
+make all 
+Building file: ../Sources/UART.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/UART.d" -MT"Sources/UART.o" -c -o "Sources/UART.o" "../Sources/UART.c"
+Finished building: ../Sources/UART.c
+ 
+Building file: ../Sources/adc.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/adc.d" -MT"Sources/adc.o" -c -o "Sources/adc.o" "../Sources/adc.c"
+Finished building: ../Sources/adc.c
+ 
+Building file: ../Sources/aquecedorECooler.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/aquecedorECooler.d" -MT"Sources/aquecedorECooler.o" -c -o "Sources/aquecedorECooler.o" "../Sources/aquecedorECooler.c"
+Finished building: ../Sources/aquecedorECooler.c
+ 
+Building file: ../Sources/communicationStateMachine.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/communicationStateMachine.d" -MT"Sources/communicationStateMachine.o" -c -o "Sources/communicationStateMachine.o" "../Sources/communicationStateMachine.c"
+Finished building: ../Sources/communicationStateMachine.c
+ 
+Building file: ../Sources/interruptButton.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/interruptButton.d" -MT"Sources/interruptButton.o" -c -o "Sources/interruptButton.o" "../Sources/interruptButton.c"
+Finished building: ../Sources/interruptButton.c
+ 
+Building file: ../Sources/lcd.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/lcd.d" -MT"Sources/lcd.o" -c -o "Sources/lcd.o" "../Sources/lcd.c"
+Finished building: ../Sources/lcd.c
+ 
+Building file: ../Sources/ledSwi.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/ledSwi.d" -MT"Sources/ledSwi.o" -c -o "Sources/ledSwi.o" "../Sources/ledSwi.c"
+Finished building: ../Sources/ledSwi.c
+ 
+Building file: ../Sources/lptmr.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/lptmr.d" -MT"Sources/lptmr.o" -c -o "Sources/lptmr.o" "../Sources/lptmr.c"
+Finished building: ../Sources/lptmr.c
+ 
+Building file: ../Sources/lut_adc_3v3.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/lut_adc_3v3.d" -MT"Sources/lut_adc_3v3.o" -c -o "Sources/lut_adc_3v3.o" "../Sources/lut_adc_3v3.c"
+Finished building: ../Sources/lut_adc_3v3.c
+ 
+Building file: ../Sources/main.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/main.d" -MT"Sources/main.o" -c -o "Sources/main.o" "../Sources/main.c"
+Finished building: ../Sources/main.c
+ 
+Building file: ../Sources/pid.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/pid.d" -MT"Sources/pid.o" -c -o "Sources/pid.o" "../Sources/pid.c"
+Finished building: ../Sources/pid.c
+ 
+Building target: biblioteca.elf
+Invoking: Cross ARM C++ Linker
+arm-none-eabi-g++ -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -T "MKL25Z128xxx4_flash.ld" -Xlinker --gc-sections -L"C:/Users/parap/workspace.kds/Aula22/Project_Settings/Linker_Files" -Wl,-Map,"biblioteca.map" -specs=nosys.specs -specs=nano.specs -o "biblioteca.elf"  ./Sources/UART.o ./Sources/adc.o ./Sources/aquecedorECooler.o ./Sources/communicationStateMachine.o ./Sources/fsl_debug_console.o ./Sources/interruptButton.o ./Sources/lcd.o ./Sources/ledSwi.o ./Sources/lptmr.o ./Sources/lut_adc_3v3.o ./Sources/main.o ./Sources/mcg.o ./Sources/pid.o ./Sources/print_scan.o ./Sources/util.o  ./Project_Settings/Startup_Code/startup.o ./Project_Settings/Startup_Code/startup_MKL25Z4.o ./Project_Settings/Startup_Code/system_MKL25Z4.o  C:/Freescale/KSDK_1.2.0/lib/ksdk_platform_lib/kds/KL25Z4/debug/libksdk_platform.a 
+Finished building target: biblioteca.elf
+ 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "biblioteca.elf"
+   text	   data	    bss	    dec	    hex	filename
+  26436	    140	   2220	  28796	   707c	biblioteca.elf
+Finished building: biblioteca.siz
+ 
+
+16:23:32 Build Finished (took 7s.482ms)
+

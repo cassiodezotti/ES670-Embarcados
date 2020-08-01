@@ -1,0 +1,93 @@
+/* *********************************************************************** */
+/* Nome do Arquivo:      interruptButton.c                                 */
+/* Descricao do arquivo: Funcoes que configuram as interrupcoes dos botoes */
+/* Nome dos autores:     Gustavo M./Cassio D.                              */
+/* RA:                   174217/168988                                     */
+/* Data de criacao:      03jun2020                                         */
+/* Data da revisao:      29jul2020                                         */
+/* *********************************************************************** */
+
+/* definition include */
+#include "interruptButton.h"
+
+/* system includes */
+#include "fsl_clock_manager.h"
+#include "fsl_device_registers.h"
+#include "fsl_port_hal.h"
+#include "fsl_smc_hal.h"
+#include "fsl_debug_console.h"
+#include "communicationStateMachine.h"
+#include "board.h"
+#include "core_cm0plus.h"
+
+extern int iFlagSetTemp;
+extern int iFlagSetK;
+
+/* ************************************************ */
+/* Method name:        interruptButton_init               */
+/* Method description: Initialize the UART0 as debug*/
+/* Input params:       n/a                          */
+/* Output params:      n/a                          */
+/* ************************************************ */
+void interruptButton_init (void)
+{
+	PORTA_PCR1 |= (0XA0000);
+	PORTA_PCR2 |= (0XA0000);
+}
+
+/* ************************************************ */
+/* Method name:        interruptButton_enableIRQ    */
+/* Method description: Enable the interruption for  */
+/*                     serial port inputs and       */
+/*                     prepare the buffer           */
+/* Input params:       n/a                          */
+/* Output params:      n/a                          */
+/* ************************************************ */
+void interruptButton_enableIRQ(void)
+{
+    /* Enable interruption in the NVIC */
+	NVIC_EnableIRQ(PORTA_IRQn);
+
+}
+
+/* ************************************************ */
+/* Method name:        interruptButton_enableIRQ    */
+/* Method description: Enable the interruption for  */
+/*                     serial port inputs and       */
+/*                     prepare the buffer           */
+/* Input params:       n/a                          */
+/* Output params:      n/a                          */
+/* ************************************************ */
+void interruptButton_disableIRQ(void)
+{
+    /* Enable interruption in the NVIC */
+	NVIC_DisableIRQ(PORTA_IRQn);
+
+}
+
+/* ************************************************ */
+/* Method name:        PORTA_IRQHandler             */
+/* Method description: Serial port interruption     */
+/*                     handler method. It Reads the */
+/*                     new character and saves in   */
+/*                     the buffer                   */
+/* Input params:       n/a                          */
+/* Output params:      n/a                          */
+/* ************************************************ */
+void PORTA_IRQHandler(void)
+{
+	/* Fazer logica para verificacao de flags de cada botao */
+	unsigned char ucAux, ucLido;
+	ucLido = PORTA_ISFR;
+
+	ucAux = (0x1) & (ucLido >> 1);
+	if(ucAux){
+		iFlagSetTemp = 1;
+		PORTA_ISFR |= 0x2;
+	}
+	ucAux = (0x1) & (ucLido >> 2);
+	if(ucAux){
+		iFlagSetK = 1;
+		PORTA_ISFR |= 0x4;
+	}
+}

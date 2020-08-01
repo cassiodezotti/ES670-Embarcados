@@ -1,0 +1,21 @@
+17:36:08 **** Incremental Build of configuration Debug for project Aula10 ****
+make all 
+Building file: ../Sources/display7seg.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -std=c99 -MMD -MP -MF"Sources/display7seg.d" -MT"Sources/display7seg.o" -c -o "Sources/display7seg.o" "../Sources/display7seg.c"
+Finished building: ../Sources/display7seg.c
+ 
+Building target: biblioteca.elf
+Invoking: Cross ARM C++ Linker
+arm-none-eabi-g++ -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -T "MKL25Z128xxx4_flash.ld" -Xlinker --gc-sections -L"C:/Users/parap/workspace.kds/Aula10/Project_Settings/Linker_Files" -Wl,-Map,"biblioteca.map" -specs=nosys.specs -specs=nano.specs -o "biblioteca.elf"  ./Sources/display7seg.o ./Sources/lptmr.o ./Sources/main.o ./Sources/mcg.o ./Sources/util.o  ./Project_Settings/Startup_Code/startup.o ./Project_Settings/Startup_Code/startup_MKL25Z4.o ./Project_Settings/Startup_Code/system_MKL25Z4.o  C:/Freescale/KSDK_1.2.0/lib/ksdk_platform_lib/kds/KL25Z4/debug/libksdk_platform.a 
+Finished building target: biblioteca.elf
+ 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "biblioteca.elf"
+   text	   data	    bss	    dec	    hex	filename
+  12920	    132	   2132	  15184	   3b50	biblioteca.elf
+Finished building: biblioteca.siz
+ 
+
+17:36:09 Build Finished (took 700ms)
+

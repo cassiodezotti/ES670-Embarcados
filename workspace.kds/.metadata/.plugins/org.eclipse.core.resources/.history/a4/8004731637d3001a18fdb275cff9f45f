@@ -1,0 +1,327 @@
+/* ************************************************************************ */
+/* Nome do Arquivo:      main.c                                             */
+/* Descricao do arquivo: Este arquivo inicializa a placa                    */
+/*                       fazendo a inicializacao do clock e do PWM          */
+/*                                                                          */
+/*                       Caracteristicas do processador MKL25Z128VLK4       */
+/*                       48 MHz ARM Cortex-M0+ core                         */
+/*                       128 KB program flash memory                        */
+/*                       16 KB SRAM                                         */
+/*                       Voltage range: 1.71 to 3.6 V                       */
+/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
+/* RA:                   174217/168988                                      */
+/* Data de criacao:      03abril2020                                        */
+/* Data da revisao:      29jul2020                                          */
+/* ************************************************************************ */
+
+/* our includes */
+#include "board.h"
+#include "mcg.h"
+#include "aquecedorECooler.h"
+#include "adc.h"
+#include "UART.h"
+#include "print_scan.h"
+#include "communicationStateMachine.h"
+#include "lcd.h"
+#include "lptmr.h"
+#include "pid.h"
+#include "core_cm0plus.h"
+#include "ledSwi.h"
+#include "interruptButton.h"
+
+#define MAX_VALUE_LENGHT 7
+
+unsigned char ucAnswer[MAX_VALUE_LENGHT];
+unsigned char ucEnable;
+unsigned char ucTempAtual[4];
+float fHDuty;
+float fCDuty;
+int iValorTempAtual = 0;
+unsigned int uiSpTempertura;
+unsigned char ucPeriodo = 0x64;
+int iBotoesInit[4] = {0,0,0,0};
+int iFlagSetTemp = 0;
+int iFlagSetK = 0;
+
+void pidTask(void)
+{
+	int iSensorValue,iSetPoint;
+	float fActuatorValue;
+
+
+	lerTemp();
+	iSensorValue = iValorTempAtual;
+	iSetPoint = uiSpTempertura;
+	fActuatorValue = pidUpdateData(iSensorValue,iSetPoint);
+	heater_PWMDuty(fActuatorValue/100);
+}
+
+/* ************************************************************ */
+/* Nome da funcao: 	           iniciarPlaca         		    */
+/* Descricao da funcao:        Inicia a placa e o PWM           */
+/* parametros de entrada:	   n/a                              */
+/* parametros de saida:	       n/a 					            */
+/* ************************************************************ */
+void iniciarPlaca(void)
+{
+    /* Configuracao e inicializacao do clock */
+    mcg_clockInit();
+
+    /* Iniciando os periféricos */
+    adc_initADCModule();
+    adc_initConvertion();
+    lcd_initLcd();
+    UART0_init();
+    coolerfan_init();
+    heater_init();
+    pid_init();
+    iniciarLedSwi(iBotoesInit);
+
+}
+
+/* *********************************************************************** */
+/* Nome da funcao: 	           main         		                       */
+/* Descricao da funcao:        Inicializa o contador e chama as funções    */
+/*                             dos atuadores para o controle do Duty Cycle */
+/* parametros de entrada:	   n/a                                         */
+/* parametros de saida:	       n/a 					                       */
+/* *********************************************************************** */
+int main(void)
+{
+	char cMensagem1[] = "KP: ";
+	char cMensagem2[] = "KI: ";
+	char cMensagem3[] = "KD: ";
+	char cMensagem4[] = "Temperatura atual: ";
+	char cMensagem5[] = "Temperatura desejada: ";
+	char *c;
+	char cAux[] = " ";
+	float fAuxKp, fAuxKi, fAuxKd = 0;
+	int iAuxTemp, iAuxSP, iAux, iAux2;
+	int iCount = 1;
+
+	/* Definimos como maior prioridade a interrupcao do
+	 * LPTMR, pois ela controla o controlador PID que
+	 * necessita de uma periodicidade de 100ms para
+	 * funcionar corretamente. Definimos as interrupcoes dos
+	 * botes e Uart como a mesma prioridade pois assumimos que
+	 * o usuario nao ira acionar as duas ao mesmo tempo.
+	 */
+	NVIC_SetPriority(LPTMR0_IRQn,0);
+	NVIC_SetPriority(PORTA_IRQn,1);
+	NVIC_SetPriority(UART0_IRQn,1);
+
+	/* iniciamos os componentes */
+    iniciarPlaca();
+
+
+
+
+    /* Valores iniciais para K, como iniciamos o controlador com os K = 0,
+     * ele permanece sem executar nenhuma função até receber algum valor para K.
+     * Assim primeiro passo do usuario deve ser a sintonizacao dos controladores.
+     */
+    pid_setKp(1.0);
+    pid_setKi(1.0);
+	pid_setKd(1.0);
+
+	/* Habilitando interrupcoes */
+    tc_installLptmr0(100000,pidTask);
+    UART0_enableIRQ();
+    interruptButton_enableIRQ();
+
+    while(1){
+
+    	fAuxKp = pid_getKp();
+    	fAuxKd = pid_getKd();
+    	fAuxKi = pid_getKi();
+    	/* clear LCD */
+		lcd_sendCommand(CMD_CLEAR);
+		/* set the cursor line 0, column 1 */
+		lcd_setCursor(0,1);
+		c = cMensagem4;
+		lcd_writeText(0,c);
+		lerTemp();
+		/*separa dezena de unidade*/
+		iAuxTemp = (iValorTempAtual/10)+48;
+		cAux[0]=(char)iAuxTemp;
+		iAuxTemp = (iValorTempAtual%10)+48;
+		/*converte int para char*/
+		cAux[1]=(char)iAuxTemp;
+		/* Escreve a temperatura no LCD */
+		c = cAux;
+		lcd_writeText(1,c);
+
+		while(iFlagSetTemp){
+			iAuxTemp = uiSpTempertura;
+			/* Desabilitamos as interrupcoes dos botoes pois eles tem outras
+			 * funcoes nessa parte do codigo
+			 */
+			interruptButton_disableIRQ();
+			while(!lerChave(1)){
+
+				/* clear LCD */
+				lcd_sendCommand(CMD_CLEAR);
+				/* set the cursor line 0, column 1 */
+				lcd_setCursor(0,1);
+				c = cMensagem5;
+				lcd_writeText(0,c);
+				/*separa dezena de unidade*/
+				iAuxSP = (iAuxTemp/10)+48;
+				cAux[0]=(char)iAuxSP;
+				iAuxSP = (iAuxTemp%10)+48;
+				/*converte int para char*/
+				cAux[1]=(char)iAuxSP;
+				/* Escreve o set point no LCD */
+				c = cAux;
+				lcd_writeText(1,c);
+
+				if(lerChave(2)){
+					iAuxTemp = iAuxTemp+1;
+				}
+				if(lerChave(3)){
+					iAuxTemp = iAuxTemp+10;
+				}
+				if(lerChave(4)){
+					iAuxTemp = iAuxTemp-1;
+				}
+			}
+			uiSpTempertura = iAuxTemp;
+			interruptButton_enableIRQ();
+			iFlagSetTemp = 0;
+		}
+
+		while(iFlagSetK){
+			/* Desabilitamos as interrupcoes dos botoes pois eles tem outras
+			 * funcoes nessa parte do codigo
+			 */
+			interruptButton_disableIRQ();
+			while(!lerChave(1)){
+
+				while(iCount == 1){
+					/* clear LCD */
+					lcd_sendCommand(CMD_CLEAR);
+					/* set the cursor line 0, column 1 */
+					lcd_setCursor(0,1);
+					c = cMensagem1;
+					lcd_writeText(0,c);
+					/*separa dezena de unidade*/
+					fAuxKp = pid_getKp();
+					iAux  = fAuxKp;
+					iAux2 = (iAux/10)+48;
+					cAux[0]=(char)iAux2;
+					iAux2 = (iAux%10)+48;
+					/* converte int para char */
+					cAux[1]=(char)iAux2;
+					/* Escreve o Kp no LCD */
+					cAux[2]=(char)46;
+					iAux = fAuxKp*100;
+					iAux2 = (iAux%100);
+					iAux2 = (iAux/10)+48;
+					cAux[3]=(char)iAux;
+					iAux2 = (iAux%10)+48;
+					cAux[4]=(char)iAux;
+					c = cAux;
+					/* Escreve o KP no LCD */
+					lcd_writeText(1,c);
+
+					if(lerChave(2)){
+						fAuxKp = fAuxKp+0.1;
+					}
+					if(lerChave(3)){
+						fAuxKp = fAuxKp+1;
+					}
+					if(lerChave(4)){
+						fAuxKp = fAuxKp-0.1;
+					}
+				}
+				while(iCount == 2){
+					lcd_sendCommand(CMD_CLEAR);
+					/* set the cursor line 0, column 1 */
+					lcd_setCursor(0,1);
+					c = cMensagem2;
+					lcd_writeText(0,c);
+					/*separa dezena de unidade*/
+					fAuxKi = pid_getKi();
+					iAux  = fAuxKi;
+					iAux2 = (iAux/10)+48;
+					cAux[0]=(char)iAux2;
+					iAux2 = (iAux%10)+48;
+					/* converte int para char */
+					cAux[1]=(char)iAux2;
+					/* Escreve o Ki no LCD */
+					cAux[2]=(char)46;
+					iAux = fAuxKi*100;
+					iAux2 = (iAux%100);
+					iAux2 = (iAux/10)+48;
+					cAux[3]=(char)iAux;
+					iAux2 = (iAux%10)+48;
+					cAux[4]=(char)iAux;
+					c = cAux;
+					/* Escreve o KI no LCD */
+					lcd_writeText(1,c);
+
+					if(lerChave(2)){
+						fAuxKi = fAuxKi+0.1;
+					}
+					if(lerChave(3)){
+						fAuxKi = fAuxKi+1;
+					}
+					if(lerChave(4)){
+						fAuxKi = fAuxKi-0.1;
+					}
+				}
+				while(iCount == 3){
+	    	    	/* clear LCD */
+	    	    	lcd_sendCommand(CMD_CLEAR);
+	    	    	/* set the cursor line 0, column 1 */
+	    	    	lcd_setCursor(0,1);
+	    	    	c = cMensagem3;
+	    	    	lcd_writeText(0,c);
+	    	        /*separa dezena de unidade*/
+	    	    	fAuxKd = pid_getKd();
+	    	    	iAux  = fAuxKd;
+	    	    	iAux2 = (iAux/10)+48;
+	    	        cAux[0]=(char)iAux2;
+	    	        iAux2 = (iAux%10)+48;
+	    	        /* converte int para char */
+	    			cAux[1]=(char)iAux2;
+	    	        /* Escreve a temperatura no LCD */
+	    	        cAux[2]=(char)46;
+	    	        iAux = fAuxKd*100;
+	    	    	iAux2 = (iAux%100);
+	    	    	iAux2 = (iAux/10)+48;
+	    	        cAux[3]=(char)iAux;
+	    	        iAux2 = (iAux%10)+48;
+	    	        cAux[4]=(char)iAux;
+	    	        c = cAux;
+	    	        /* Escreve o KD no LCD */
+	    	        lcd_writeText(1,c);
+
+					if(lerChave(2)){
+						fAuxKd = fAuxKd+0.1;
+					}
+					if(lerChave(3)){
+						fAuxKd = fAuxKd+1;
+					}
+					if(lerChave(4)){
+						fAuxKd = fAuxKd-0.1;
+					}
+				}
+
+			}
+
+			iCount = iCount+1;
+			/* se o usuario ja setou Kp Ki e Kd, atualizamos os ganhos
+			 * habilitamos a interrupcao dos botoes e resetamos a flag
+			 * de set dos K.
+			 */
+			if(iCount == 4){
+			    pid_setKp(fAuxKp);
+			    pid_setKi(fAuxKi);
+				pid_setKd(fAuxKd);
+				interruptButton_enableIRQ();
+				iFlagSetK = 0;
+			}
+		}
+    }
+}

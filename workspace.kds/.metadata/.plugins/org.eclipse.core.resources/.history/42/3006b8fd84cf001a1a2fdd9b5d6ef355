@@ -1,0 +1,272 @@
+/* ************************************************************************ */
+/* Nome do Arquivo:      main.c                                             */
+/* Descricao do arquivo: Este arquivo inicializa a placa                    */
+/*                       fazendo a inicializacao do clock e do PWM          */
+/*                                                                          */
+/*                       Caracteristicas do processador MKL25Z128VLK4       */
+/*                       48 MHz ARM Cortex-M0+ core                         */
+/*                       128 KB program flash memory                        */
+/*                       16 KB SRAM                                         */
+/*                       Voltage range: 1.71 to 3.6 V                       */
+/*                                                                          */
+/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
+/* RA:                   174217/168988                                      */
+/* Data de criacao:      03abril2020                                        */
+/* Data da revisao:      09abril2020                                        */
+/* ************************************************************************ */
+
+/* our includes */
+#include "board.h"
+#include "mcg.h"
+#include "aquecedorECooler.h"
+#include "adc.h"
+#include "UART.h"
+#include "print_scan.h"
+#include "communicationStateMachine.h"
+#include "lcd.h"
+#include "lptmr.h"
+#include "pid.h"
+#include "core_cm0plus.h"
+
+#define MAX_VALUE_LENGHT 7
+
+unsigned char ucAnswer[MAX_VALUE_LENGHT];
+unsigned char ucEnable;
+unsigned char ucTempAtual[4];
+unsigned char ucHeaterDuty[4];
+unsigned char ucCoolerDuty[4];
+int iValorTempAtual = 0;
+unsigned int uiSpTempertura;
+unsigned char ucPeriodo = 0x64;
+float ufSetHeaterDuty;
+
+
+void pidTask(void)
+{
+	int iSensorValue,iSetPoint;
+	float fActuatorValue;
+
+	lerTemp();
+	iSensorValue = iValorTempAtual;
+	iSetPoint = uiSpTempertura;
+	fActuatorValue = pidUpdateData(iSensorValue,iSetPoint);
+	heater_PWMDuty(fActuatorValue/100);
+	ufSetHeaterDuty = fActuatorValue/100;
+}
+
+/* ************************************************************ */
+/* Nome da funcao: 	           iniciarPlaca         		    */
+/* Descricao da funcao:        Inicia a placa e o PWM           */
+/* parametros de entrada:	   n/a                              */
+/* parametros de saida:	       n/a 					            */
+/* ************************************************************ */
+void iniciarPlaca(void)
+{
+    /* Configuracao e inicializacao do clock */
+    mcg_clockInit();
+
+    /* Iniciando os periféricos */
+    adc_initADCModule();
+    adc_initConvertion();
+    lcd_initLcd();
+    UART0_init();
+    coolerfan_init();
+    heater_init();
+}
+
+/* *********************************************************************** */
+/* Nome da funcao: 	           main         		                       */
+/* Descricao da funcao:        Inicializa o contador e chama as funções    */
+/*                             dos atuadores para o controle do Duty Cycle */
+/* parametros de entrada:	   n/a                                         */
+/* parametros de saida:	       n/a 					                       */
+/* *********************************************************************** */
+int main(void)
+{
+	char cMensagem1[] = "KP: ";
+	char cMensagem2[] = "KI: ";
+	char cMensagem3[] = "KD: ";
+	char cMensagem4[] = "Temperatura: ";
+	char cMensagem5[] = "SetPoint: ";
+	char cMensagem6[] = "Duty Cycle: ";
+	char *c;
+	char cAux[] = " ";
+	float fAuxKp, fAuxKi, fAuxKd, fAuxDt = 0;
+	int iAuxTemp, iAuxSP, iAux, iAux2;
+
+	NVIC_SetPriority(28,0);
+	NVIC_SetPriority(12,1);
+
+    iniciarPlaca();
+
+    UART0_enableIRQ();
+    tc_installLptmr0(100000,pidTask);
+
+    /* A sintonização dos controladores será implementada no projeto final */
+    pid_setKp(1.0);
+    pid_setKi(1.0);
+	pid_setKd(1.0);
+
+    while(1){
+    	/* clear LCD */
+    	lcd_sendCommand(CMD_CLEAR);
+    	/* set the cursor line 0, column 1 */
+    	lcd_setCursor(0,1);
+    	c = cMensagem1;
+    	lcd_writeText(0,c);
+        /*separa dezena de unidade*/
+    	fAuxKp = pid_getKp();
+
+    	iAux  = fAuxKp;
+
+    	iAux2 = (iAux/10)+48;
+        cAux[0]=(char)iAux2;
+
+        iAux2 = (iAux%10)+48;
+        /* converte int para char */
+		cAux[1]=(char)iAux2;
+        /* Escreve a temperatura no LCD */
+        cAux[2]=(char)46;
+        iAux = fAuxKp*100;
+
+    	iAux2 = (iAux%100);
+    	iAux2 = (iAux/10)+48;
+        cAux[3]=(char)iAux;
+        iAux2 = (iAux%10)+48;
+        cAux[4]=(char)iAux;
+
+        c = cAux;
+        /* Escreve o KP no LCD */
+        lcd_writeText(1,c);
+
+    	/* clear LCD */
+    	lcd_sendCommand(CMD_CLEAR);
+    	/* set the cursor line 0, column 1 */
+    	lcd_setCursor(0,1);
+    	c = cMensagem2;
+    	lcd_writeText(0,c);
+        /*separa dezena de unidade*/
+    	fAuxKi = pid_getKi();
+
+    	iAux  = fAuxKi;
+
+    	iAux2 = (iAux/10)+48;
+        cAux[0]=(char)iAux2;
+
+        iAux2 = (iAux%10)+48;
+        /* converte int para char */
+		cAux[1]=(char)iAux2;
+        /* Escreve a temperatura no LCD */
+        cAux[2]=(char)46;
+        iAux = fAuxKi*100;
+
+    	iAux2 = (iAux%100);
+    	iAux2 = (iAux/10)+48;
+        cAux[3]=(char)iAux;
+        iAux2 = (iAux%10)+48;
+        cAux[4]=(char)iAux;
+
+        c = cAux;
+
+        /* Escreve o KI no LCD */
+        lcd_writeText(1,c);
+
+    	/* clear LCD */
+    	lcd_sendCommand(CMD_CLEAR);
+    	/* set the cursor line 0, column 1 */
+    	lcd_setCursor(0,1);
+    	c = cMensagem3;
+    	lcd_writeText(0,c);
+        /*separa dezena de unidade*/
+    	fAuxKd = pid_getKd();
+
+    	iAux  = fAuxKd;
+
+    	iAux2 = (iAux/10)+48;
+        cAux[0]=(char)iAux2;
+
+        iAux2 = (iAux%10)+48;
+        /* converte int para char */
+		cAux[1]=(char)iAux2;
+        /* Escreve a temperatura no LCD */
+        cAux[2]=(char)46;
+        iAux = fAuxKd*100;
+
+    	iAux2 = (iAux%100);
+    	iAux2 = (iAux/10)+48;
+        cAux[3]=(char)iAux;
+        iAux2 = (iAux%10)+48;
+        cAux[4]=(char)iAux;
+
+        c = cAux;
+        /* Escreve o KD no LCD */
+        lcd_writeText(1,c);
+
+    	/* clear LCD */
+    	lcd_sendCommand(CMD_CLEAR);
+    	/* set the cursor line 0, column 1 */
+    	lcd_setCursor(0,1);
+    	c = cMensagem4;
+    	lcd_writeText(0,c);
+        lerTemp();
+        /*separa dezena de unidade*/
+        iAuxTemp = (iValorTempAtual/10)+48;
+        cAux[0]=(char)iAuxTemp;
+
+        iAuxTemp = (iValorTempAtual%10)+48;
+        /*converte int para char*/
+        cAux[1]=(char)iAuxTemp;
+        /* Escreve a temperatura no LCD */
+    	c = cAux;
+        lcd_writeText(1,c);
+
+    	/* clear LCD */
+    	lcd_sendCommand(CMD_CLEAR);
+    	/* set the cursor line 0, column 1 */
+    	lcd_setCursor(0,1);
+    	c = cMensagem5;
+    	lcd_writeText(0,c);
+        /*separa dezena de unidade*/
+        iAuxSP = (uiSpTempertura/10)+48;
+        cAux[0]=(char)iAuxSP;
+
+        iAuxSP = (uiSpTempertura%10)+48;
+        /*converte int para char*/
+        cAux[1]=(char)iAuxSP;
+        /* Escreve o set point no LCD */
+    	c = cAux;
+        lcd_writeText(1,c);
+
+    	/* clear LCD */
+    	lcd_sendCommand(CMD_CLEAR);
+    	/* set the cursor line 0, column 1 */
+    	lcd_setCursor(0,1);
+    	c = cMensagem6;
+    	lcd_writeText(0,c);
+        lerTemp();
+        /*separa dezena de unidade*/
+        fAuxDt = ufSetHeaterDuty;
+
+    	iAux  = fAuxDt;
+
+    	iAux2 = (iAux/10)+48;
+        cAux[0]=(char)iAux2;
+
+        iAux2 = (i%10)+48;
+        /* converte int para char */
+		cAux[1]=(char)iAux2;
+        /* Escreve a temperatura no LCD */
+        cAux[2]=(char)46;
+        iAux = fAuxDt*100;
+
+    	iAux2 = (iAux%100);
+    	iAux2 = (iAux/10)+48;
+        cAux[3]=(char)iAux;
+        iAux2 = (iAux%10)+48;
+        cAux[4]=(char)iAux;
+
+        c = cAux;
+        /* Escreve o Duty Cycle no LCD */
+        lcd_writeText(1,c);
+    }
+}
