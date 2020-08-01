@@ -16,7 +16,6 @@
 #include "fsl_port_hal.h"
 #include "fsl_smc_hal.h"
 #include "fsl_debug_console.h"
-#include "communicationStateMachine.h"
 #include "board.h"
 #include "core_cm0plus.h"
 
