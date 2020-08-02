@@ -1,0 +1,18 @@
+17:43:05 **** Incremental Build of configuration Debug for project aula6 ****
+make all 
+Building file: ../Sources/ledSwi.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -std=c99 -MMD -MP -MF"Sources/ledSwi.d" -MT"Sources/ledSwi.o" -c -o "Sources/ledSwi.o" "../Sources/ledSwi.c"
+In file included from ../Sources/ledSwi.c:14:0:
+../Sources/board.h:31:1: error: expected identifier or '(' before '<<' token
+ <<<<<<< Updated upstream
+ ^
+../Sources/ledSwi.c:18:31: fatal error: fsl_clock_manager.h: No such file or directory
+ #include "fsl_clock_manager.h"
+                               ^
+compilation terminated.
+Sources/subdir.mk:21: recipe for target 'Sources/ledSwi.o' failed
+make: *** [Sources/ledSwi.o] Error 1
+
+17:43:06 Build Finished (took 760ms)
+

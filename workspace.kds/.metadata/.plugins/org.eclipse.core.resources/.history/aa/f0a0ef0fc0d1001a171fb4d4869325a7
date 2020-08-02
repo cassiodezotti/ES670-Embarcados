@@ -1,0 +1,108 @@
+/* ************************************************************************ */
+/* Nome do Arquivo:      lcd.h                                              */
+/* Descricao do arquivo: Cabecalho contendo as atribuicoes para as funcoes  */
+/*                       utilzadas na lcd.c                                 */
+/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                      */
+/* RA:                   174217/168988                                      */
+/* Data de criacao:      06abril2020                                        */
+/* Data da revisao:      09abril2020                                        */
+/* ************************************************************************ */
+
+
+
+#ifndef SOURCES_LCD_H_
+#define SOURCES_LCD_H_
+
+/* lcd basic commands list */
+#define CMD_INIT_LCD        0x0F
+#define CMD_CLEAR           0x01
+#define CMD_NO_CURSOR       0x0C
+#define CMD_CURSOR2R        0x06 /* cursor to right */
+#define CMD_NO_CUR_NO_BLINK 0x38 /* no cursor, no blink */
+
+
+/* *********************************************************************  */
+/* Nome da funcao: lcd_initLcd                                            */
+/* Descricao da funcao: Essa funcao inicializa todo o LCD e os parametros */
+/*                      necessarios como o clock, a porta e os pinos.     */
+/* Parametros de entrada:    n/a                                          */
+/* Parametros de saida:      n/a                                          */
+/* *********************************************************************  */
+void lcd_initLcd(void);
+
+/* ****************************************************************** */
+/* Nome da funcao: lcd_write2Lcd                                      */
+/* Descricao da funcao: funcao que faz a escrita de um dado no LCD.   */
+/*                                                                    */
+/* Parametros de entrada: Recebe um caractere de dado ou comando      */
+/*                        e o tipo da acao que ela realizarao.        */
+/*                        Se 0 --> LCD recebera um comando            */
+/*                        Se 1 --> LCD recebera um dado               */
+/* Parametros de saida:   n/a                                         */
+/* ****************************************************************** */
+void lcd_write2Lcd(unsigned char ucBuffer,  unsigned char cDataType);
+
+/* ****************************************************************** */
+/* Nome da funcao: lcd_writeData                                      */
+/* Descricao da funcao: funcao de apoio que faz a chamada da          */
+/*                      funcao lcd_Write2Lcd a qual escreve no LCD    */
+/*                                                                    */
+/* Parametros de entrada: Recebe um valor 0 ou 1                      */
+/*                        Se 0 --> LCD recebera um comando            */
+/*                        Se 1 --> LCD recebera um dado               */
+/* Parametros de saida:   n/a                                         */
+/* ****************************************************************** */
+void lcd_writeData(unsigned char ucData);
+
+/* ****************************************************************** */
+/* Nome da funcao: lcd_sendoCommand                                   */
+/* Descricao da funcao: funcao que manda um comando para a            */
+/*                      funcao lcd_Write2Lcd a qual realiza no LCD    */
+/*                                                                    */
+/* Parametros de entrada: Recebe um valor 0 ou 1                      */
+/*                        Se 0 --> mandara um comando ao LCD          */
+/*                        Se 1 --> mandara um dado ao LCD             */
+/* Parametros de saida:   n/a                                         */
+/* ****************************************************************** */
+void lcd_sendCommand(unsigned char ucCmd);
+
+/* ****************************************************************** */
+/* Nome da funcao: lcd_setCursor                                      */
+/* Descricao da funcao: Coloca o cursor na linha e coluna recebidas   */
+/*                      por parametro                                 */
+/*                                                                    */
+/* Parametros de entrada: Recebe um valor para a linha e coluna       */
+/* Parametros de saida:   n/a                                         */
+/* ****************************************************************** */
+void lcd_setCursor(unsigned char cLine, unsigned char cColumn);
+
+/* ****************************************************************** */
+/* Nome da funcao: lcd_writeString                                    */
+/* Descricao da funcao: Recebe a string que sera enviada ao           */
+/*                      o LCD                                         */
+/*                                                                    */
+/* Parametros de entrada: A string                                    */
+/* Parametros de saida:   n/a                                         */
+/* ****************************************************************** */
+void lcd_writeString(const char *cBuffer);
+
+/* ********************************************************************** */
+/* Nome da funcao: lcd_dummyText                                          */
+/* Descricao da funcao: Faz a configuracao da mensagem que sera exibida   */
+/*                                                                        */
+/* Parametros de entrada: n/a                                             */
+/* Parametros de saida:   n/a                                             */
+/* ********************************************************************** */
+void lcd_dummyText(void);
+
+/* ********************************************************************** */
+/* Nome da funcao: lcd_writeText                                          */
+/* Descricao da funcao: Recebe do programador qual mensagem será exibida */
+/*                      e em qual linha e coluna do LCD isso ocorrera     */
+/*                                                                        */
+/* Parametros de entrada: A string e a linha e coluna do LCD              */
+/* Parametros de saida:   n/a                                             */
+/* ********************************************************************** */
+void lcd_writeText(int iLinha, const char *cString);
+
+#endif /* SOURCES_LCD_H_ */

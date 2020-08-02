@@ -1,0 +1,52 @@
+/* ************************************************************* */
+/* Nome do Arquivo:      interruptButton.h                       */
+/* Descricao do arquivo: Funcoes para as interrupcoes dos botoes */
+/* Nome dos autores:     Gustavo M./Cassio D.                    */
+/* RA:                   174217/168988                           */
+/* Data de criacao:      03jun2020                               */
+/* Data da revisao:      29jul2020                               */
+/* ************************************************************* */
+
+#ifndef interruptButton_H_
+#define interruptButton_H_
+
+/* ****************************************** */
+/* Method name:        interruptButton_init   */
+/* Method description: Initialize the buttons */
+/* Input params:       n/a                    */
+/* Output params:      n/a                    */
+/* ****************************************** */
+void interruptButton_init (void);
+
+/* ************************************************ */
+/* Method name:        interruptButton_enableIRQ    */
+/* Method description: Enable the interruption for  */
+/*                     serial port inputs and       */
+/*                     prepare the buffer           */
+/* Input params:       n/a                          */
+/* Output params:      n/a                          */
+/* ************************************************ */
+void interruptButton_enableIRQ(void);
+
+/* ************************************************ */
+/* Method name:        interruptButton_enableIRQ    */
+/* Method description: Disable the interruption for */
+/*                     serial port inputs and       */
+/*                     prepare the buffer           */
+/* Input params:       n/a                          */
+/* Output params:      n/a                          */
+/* ************************************************ */
+void interruptButton_disableIRQ(void);
+
+/* ************************************************ */
+/* Method name:        PORTA_IRQHandler             */
+/* Method description: Serial port interruption     */
+/*                     handler method. It Reads the */
+/*                     new character and saves in   */
+/*                     the buffer                   */
+/* Input params:       n/a                          */
+/* Output params:      n/a                          */
+/* ************************************************ */
+void PORTA_IRQHandler(void);
+
+#endif /* interruptButton_H_ */

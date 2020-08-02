@@ -1,0 +1,26 @@
+20:05:39 **** Build of configuration Debug for project Projeto ****
+make all 
+Building file: ../Sources/aquecedorECooler.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/aquecedorECooler.d" -MT"Sources/aquecedorECooler.o" -c -o "Sources/aquecedorECooler.o" "../Sources/aquecedorECooler.c"
+Finished building: ../Sources/aquecedorECooler.c
+ 
+Building file: ../Sources/lcd.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -D"CPU_MKL25Z128VLK4" -I"../Sources" -I"../Project_Settings/Startup_Code" -I"../SDK/platform/CMSIS/Include" -I"../SDK/platform/devices" -I"../SDK/platform/devices/MKL25Z4/include" -IC:/Freescale/KSDK_1.2.0/platform/drivers/inc -IC:/Freescale/KSDK_1.2.0/platform/utilities/inc -IC:/Freescale/KSDK_1.2.0/platform/hal/inc -IC:/Freescale/KSDK_1.2.0/platform/system/inc -IC:/Freescale/KSDK_1.2.0/platform/osa/inc -I"C:\Freescale\KSDK_1.2.0/platform/utilities/inc" -I"C:\Freescale\KSDK_1.2.0/platform/utilities/src" -std=c99 -MMD -MP -MF"Sources/lcd.d" -MT"Sources/lcd.o" -c -o "Sources/lcd.o" "../Sources/lcd.c"
+Finished building: ../Sources/lcd.c
+ 
+Building target: biblioteca.elf
+Invoking: Cross ARM C++ Linker
+arm-none-eabi-g++ -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -T "MKL25Z128xxx4_flash.ld" -Xlinker --gc-sections -L"C:/Users/parap/workspace.kds/Projeto/Project_Settings/Linker_Files" -Wl,-Map,"biblioteca.map" -specs=nosys.specs -specs=nano.specs -o "biblioteca.elf"  ./Sources/UART.o ./Sources/adc.o ./Sources/aquecedorECooler.o ./Sources/communicationStateMachine.o ./Sources/fsl_debug_console.o ./Sources/interruptButton.o ./Sources/lcd.o ./Sources/ledSwi.o ./Sources/lptmr.o ./Sources/lut_adc_3v3.o ./Sources/main.o ./Sources/mcg.o ./Sources/pid.o ./Sources/print_scan.o ./Sources/util.o  ./Project_Settings/Startup_Code/startup.o ./Project_Settings/Startup_Code/startup_MKL25Z4.o ./Project_Settings/Startup_Code/system_MKL25Z4.o  C:/Freescale/KSDK_1.2.0/lib/ksdk_platform_lib/kds/KL25Z4/debug/libksdk_platform.a 
+Finished building target: biblioteca.elf
+ 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "biblioteca.elf"
+   text	   data	    bss	    dec	    hex	filename
+  26404	    140	   2220	  28764	   705c	biblioteca.elf
+Finished building: biblioteca.siz
+ 
+
+20:05:48 Build Finished (took 9s.48ms)
+

@@ -1,0 +1,75 @@
+/* ******************************************************************** */
+/* Nome do Arquivo:      aquecedorECooler.h                             */
+/* Descricao do arquivo: Este arquivo eh dedicado a apresentar todas as */
+/*                       funcoes utilizadas no programa                 */
+/* Nome dos autores:     Gustavo Moraes/Cassio Dezotti                  */
+/* RA:                   174217/168988                                  */
+/* Data de criacao:      24abril2020                                    */
+/* Data da revisao:      26abril2020                                    */
+/* ******************************************************************** */
+
+#ifndef SOURCES_AQUECEDORECOOLER_H_
+#define SOURCES_AQUECEDORECOOLER_H_
+
+/* ******************************************************************* */
+/* Nome da função:        PWM_init                                     */
+/* Descrição da função:   Essa função inicializa o PWM e os parâmetros */
+/*                        necessários como o clock e contador.         */
+/*                                                                     */
+/* Parâmetros de entrada: n/a                                          */
+/* Parâmetros de saída:   n/a                                          */
+/* ******************************************************************* */
+void PWM_init();
+
+/* ********************************************************************** */
+/* Nome da função:        coolerfan_init                                  */
+/* Descrição da função:   Função que habilita o clock, a porta do atuador */
+/*                        e configura o pino como PWM                     */
+/*                                                                        */
+/* Parâmetros de entrada: n/a                                             */
+/* Parâmetros de saída:   n/a                                             */
+/* ********************************************************************** */
+void coolerfan_init();
+
+/* ********************************************************************** */
+/* Nome da função:        heater_init                                     */
+/* Descrição da função:   Função que habilita o clock, a porta do atuador */
+/*                        e configura o pino 12 como PWM                  */
+/*                                                                        */
+/* Parâmetros de entrada: n/a                                             */
+/* Parâmetros de saída:   n/a                                             */
+/* ********************************************************************** */
+void heater_init();
+
+/* ************************************************************************** */
+/* Nome da função:        definirDutyC                                        */
+/* Descrição da função:   Recebe um numero que corresponde ao Duty Cycle      */
+/*                        desejado para o cooler e altera o Duty Cycle do PWM */
+/*                                                                            */
+/* Parâmetros de entrada: Recebe um float entre 0 e 1                         */
+/* Parâmetros de saída:   n/a                                                 */
+/* ************************************************************************** */
+void definirDutyC(float fCoolerDuty);
+
+/* ***************************************************************************** */
+/* Nome da função:        definirDutyH                                           */
+/* Descrição da função:   Recebe um numero que corresponde ao Duty Cycle         */
+/*                        desejado para o aquecedor e altera o Duty Cycle do PWM */
+/*                                                                               */
+/* Parâmetros de entrada: Recebe um float entre 0 e 1                            */
+/* Parâmetros de saída:   n/a                                                    */
+/* ***************************************************************************** */
+void definirDutyH(float fHeaterDuty);
+
+/* ******************************************************************* */
+/* Nome da função:        convertDuty                                  */
+/* Descrição da função:   Função de apoio recebe o valor do Duty Cycle */
+/*                        e converte para um numero de 16 bits         */
+/*                                                                     */
+/* Parâmetros de entrada: Recebe um float entre 0 e 1                  */
+/* Parâmetros de saída:   Retorna um unsigned char com o valor do Duty */
+/*                        Cycle nos primeiros 16 bits                  */
+/* ******************************************************************* */
+unsigned char convertDuty(float duty);
+
+#endif /* SOURCES_AQUECEDORECOOLER_H_ */

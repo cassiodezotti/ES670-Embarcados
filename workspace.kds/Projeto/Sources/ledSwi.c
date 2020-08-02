@@ -1,0 +1,235 @@
+/* ********************************************************************** */
+/* Nome do Arquivo:        ledSwi.h                                       */
+/* Descrição do arquivo:   Este arquivo contem funcoes para inicializacao */
+/*                   	   e utilizacao dos leds e botoes do kit.         */
+/* Nome dos autores:       Gustavo Moraes/Cassio Dezotti                  */
+/* RA:                     174217/168988                                  */
+/* Data de criacao:        26mar2020                                      */
+/* Data da revisao:        28jul2020                                      */
+/* ********************************************************************** */
+
+/* our includes */
+#include "board.h"
+
+/* system includes */
+#include "fsl_clock_manager.h"
+#include "fsl_port_hal.h"
+#include "fsl_gpio_hal.h"
+
+/* ********************************************************************************* */
+/* Nome da função: 	       iniciarLedSwi        		                             */
+/* Descrição da função:    Inicializa os LEDS e os botões conforme especificado.     */
+/*                         Se 0 --> configura pino como botão(input)                 */
+/*                         Se 1 --> configura pino como LED (output)                 */
+/*                                                                                   */
+/* parâmetros de entrada:  Vetor de entrada com quais LEDS ou botões serão usados.   */
+/* parâmetros de saída:	   n/a 					                                     */
+/* ********************************************************************************* */
+void iniciarLedSwi(int iEstados[4])
+{
+    unsigned char ucEstado = 0;
+
+    /* ligar o clock da porta A*/
+    SIM_SCGC5 |= 0x0200;
+
+    /* seta os pinos 1 2 4 5 como gpio */
+    PORTA_PCR1 &= ~(0X600);
+    PORTA_PCR1 |= 0X100;
+    PORTA_PCR2 &= ~(0X600);
+    PORTA_PCR2 |= 0X100;
+    PORTA_PCR4 &= ~(0X600);
+    PORTA_PCR4 |= 0X100;
+    PORTA_PCR5 &= ~(0X600);
+    PORTA_PCR5 |= 0X100;
+	/*
+	 * Percorre o vetor, como as 2 opcoes de entrada sao 0 ou 1
+	 * shifta a entrada para o lugar que ele deveria corresponder
+	 * no vetor final que sera atribuido a função PDDR para definir
+	 * o pino como entrada ou saida
+	 */
+    ucEstado |= (iEstados[0] << 1);
+    ucEstado |= (iEstados[1] << 2);
+    ucEstado |= (iEstados[2] << 4);
+    ucEstado |= (iEstados[3] << 5);
+
+    GPIOA_PDDR |= ucEstado;
+
+}
+
+/* ***********************************************************************************  */
+/* Nome da função: 	      mapearEntrada           		                                */
+/* Descrição da função:   Recebe um número de 1 a 4 e mapeia ele para o respectivo LED  */
+/*                        Se 1 --> retorna 1                                            */
+/*                        Se 2 --> retorna 2                                            */
+/*                        Se 3 --> retorna 4                                            */
+/*                        Se 3 --> retorna 5                                            */
+/*                        Se 4 --> LED 5 alterado                                       */
+/*                                                                                      */
+/* Parâmetros de entrada: Valor de 1 a 4                                                */
+/* Parâmetros de saída:	  Retorna 1,2,4 ou 5 			                                */
+/* ***********************************************************************************  */
+int mapearEntrada(int iValor)
+{
+    /*
+     * Queremos que os numeros 1234 representem 1245
+     * Nessa funcao, se o numero eh maior que 2 acrescentamos 1
+     */
+    if(iValor > 2){
+	    iValor += 1;
+    }
+
+    return iValor;
+}
+
+/* ************************************************************************** */
+/* Nome da função: 	      lerChave	         		                          */
+/* Descrição da função:   Recebe do programador um valor de 1 a 4 que         */
+/*                        determina qual botão deverão ser lido e retorna     */
+/*                        o status atual do botão.                            */
+/*                        Se 0 --> botão pressionado                          */
+/*                        Se 1 --> botão solto                                */
+/*                                                                            */
+/* Parâmetros de entrada: Valor de de 1 a 4                                   */
+/* Parâmetros de saída:	  Retorna 0 ou 1                                      */
+/*      			      0 --> botão pressionado                             */
+/*                        1 --> botão solto                                   */
+/* ************************************************************************** */
+int lerChave(int iChave)
+{
+    unsigned char ucChaveLida = 0;
+
+    /* Mapeamento da entrada para 1245*/
+    int iValorChave = mapearEntrada(iChave);
+    /*
+     * Shifta o retorno da funcao de leitura da porta A, o numero
+     * de vezes necessario para extrairmos o bit de interesse, para isso
+     * fazendo um E com o número 1.
+     */
+    ucChaveLida = (GPIOA_PDIR >> iValorChave) & 1;
+
+	/*
+	 * Se o valor lido for 1, o botao esta liberado entao,
+	 * retornamos 0.
+	 */
+    if( '1' == ucChaveLida){
+	    return 0;
+    }
+    /*
+	 *  Se o valor lido for 0, o botão esta pressionado,
+	 * retornamos 1.
+	 */
+   if( '0' == ucChaveLida){
+       return 1;
+   }
+   return 0;
+}
+
+/* **************************************************************************** */
+/* Nome da função: 	      escreverLED	         		                        */
+/* Descrição da função:   Recebe do programador um valor de 1 a 4 que           */
+/*                        determina em qual LED deve-se escrever e qual serão   */
+/*                        o status final do LED.                                */
+/*                        Se 1 --> LED irá apagar                               */
+/*                        Se 0 --> LED irá acender                              */
+/*                                                                              */
+/* Parâmetros de entrada: Valor de 1 a 4 que indica qual o LED serão usado      */
+/*                        SetClear --> 0 ou 1 para indicar status futuro do LED */
+/* Parâmetros de saída:	  n/a 							                        */
+/* **************************************************************************** */
+void escreverLED(int iWriteLed, int iSetClear)
+{
+	/* Mapeamento da entrada para 1245*/
+    int iLedWrite = mapearEntrada(iWriteLed);
+    unsigned char ucNumeroDeComando = 1;
+
+    /*
+     * Analisa se o parâmetro de entrada eh 1, se for
+     * fazemos um shift do número 1 para a posicao desejada e entao um
+     * E com o valor que ja estava na porta.
+     */
+    if(0 == iSetClear){
+	    GPIOA_PDOR |= (ucNumeroDeComando << iLedWrite);//se for set dou OU com a mascara do bit q eu quero
+    }
+        /*
+         * Analisa se o parametro de entrada eh 0, se for
+         * fazemos um shift do número 1 negado, para nao perder o conteudo
+         * anterior, para a posicao desejada e entao um
+         * E com o valor que ja estava na porta.
+         */
+    else if(1 == iSetClear){
+       /* se for clear damos E com a mascara de bits negada */
+	   GPIOA_PDOR &= ~(ucNumeroDeComando << iLedWrite);
+    }
+}
+
+/* ************************************************************************** */
+/* Nome da função: 	      setarLED             		                          */
+/* Descrição da função:   Recebe do programador um valor de 1 a 4 que         */
+/*                        determina qual LED serão alterado.                  */
+/*                        Se 1 --> LED 1 acende                               */
+/*                        Se 2 --> LED 2 acende                               */
+/*                        Se 3 --> LED 4 acende                               */
+/*                        Se 4 --> LED 5 acende                               */
+/*                                                                            */
+/* Parâmetros de entrada: Valor de 1 a 4 que indica qual o LED serão usado    */
+/* Parâmetros de saída:	  n/a 							                      */
+/* ************************************************************************** */
+void setarLED(int iSetLed)
+{
+    /* Mapeamento da entrada para 1245*/
+    int iLedSetado = mapearEntrada(iSetLed);
+    unsigned char ucNumeroDeComando = 1;
+    /*
+     * Fazemos um shift do numero 1 ate a posicao do bit desejada
+     * entao chamamos a funcao para apagar uma porta
+     */
+    GPIOA_PCOR |= (ucNumeroDeComando << iLedSetado);
+}
+
+/* ************************************************************************** */
+/* Nome da função: 	      apagarLED             		                      */
+/* Descrição da função:   Recebe do programador um valor de 1 a 4 que         */
+/*                        determina qual LED serão alterado.                  */
+/*                        Se 1 --> LED 1 apaga                                */
+/*                        Se 2 --> LED 2 apaga                                */
+/*                        Se 3 --> LED 4 apaga                                */
+/*                        Se 4 --> LED 5 apaga                                */
+/*                                                                            */
+/* Parâmetros de entrada: Valor de 1 a 4 que indica qual o LED serão usado    */
+/* Parâmetros de saída:	  n/a 							                      */
+/* ************************************************************************** */
+void apagarLED(int iClearLed)
+{
+    /* Mapeamento da entrada para 1245*/
+    int iLedClear = mapearEntrada(iClearLed);
+    unsigned char ucNumeroDeComando = 1;
+    /*
+     * Fazemos um shift do numero 1 ate a posicao do bit desejada
+     * entao chamamos a funcao para setar uma porta
+     */
+    GPIOA_PSOR |= (ucNumeroDeComando << iLedClear);
+}
+
+/* ********************************************************************************** */
+/* Nome da função: 	      alternarLED             		                              */
+/* Descrição da função:   Recebe do programador um valor de 1 a 4 que                 */
+/*                        determina qual LED mudarão de status (0 para 1 ou 1 para 0) */
+/*                        Se 1 --> LED 1 alterado                                     */
+/*                        Se 2 --> LED 2 alterado                                     */
+/*                        Se 3 --> LED 4 alterado                                     */
+/*                        Se 4 --> LED 5 alterado                                     */
+/*                                                                                    */
+/* Parâmetros de entrada: Valor de 1 a 4 que indica qual o LED serão usado            */
+/* Parâmetros de saída:	  n/a 							                              */
+/* ********************************************************************************** */
+void alternarLED(int iToggleLed)
+{
+    /* Mapeamento da entrada para 1245*/
+    int iLedToggled = mapearEntrada(iToggleLed);
+    unsigned char ucNumeroDeComando = 1;
+    /*
+     * Fazemos um shift do numero 1 ate a posicao do bit desejada
+     * entao chamamos a funcao para apagar uma porta
+     */
+    GPIOA_PTOR |= (ucNumeroDeComando << iLedToggled);
+}
